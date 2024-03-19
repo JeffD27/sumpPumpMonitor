@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white"> #f2f2f2</color>
+    <color name="brightRed">#e60000</color>
+    <color name="black">#404040</color>
+    <color name="green"> #00b33c</color>
+    <color name="red">#990000</color>
+    <color name="darkActivityBackground">#0086b3</color>
+    <color name="activityBackground">#0099cc</color>
+
+</resources>

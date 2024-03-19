@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">sumpPumpBeta3</string>
+
+    <string name="waterLevel_High"></string>
+    <string name="waterLevel_Mid"></string>
+    <string name="waterLevel_Low"></string>
+    <string name="MainPump_State"></string>
+    <string name="BackupPump_State"></string>
+    <string name="batteryVolts12">11.7</string>
+    <string name="batteryVolts5" >4.8</string>
+    <string name="PumpRuntimeWarning" > Pump has run more\n than 10 minutes</string>
+    <string name="title">Sump Pump Monitor</string>
+    <string name="data_all"> </string>
+    <string name="waterLevelWarning">ERROR in water\n level sensor</string>
+    <string name="mainPumpTitle">Main Pump</string>
+    <string name="WaterLevelTitle">Water Level</string>
+    <string name="warnTriangContentDescript">warning triangle</string>
+    <string name="statisticsTitle">Statistics</string>
+    <string name="backupPumpTitle">Backup Pump</string>
+    <string name="largeBattery">Large Battery</string>
+    <string name="smallBattery">small battery</string>
+    <string name="batteryVoltsTitle">Battery Volts</string>
+    <string name="settingsTitle">Settings</string>
+    <string name="waterLevelemptycontentdescription">An empty tank</string>
+    <string name="warningsButtonText">Warnings/Notifications</string>
+    <string name="xToClose">\"X\" to close</string>
+</resources>
