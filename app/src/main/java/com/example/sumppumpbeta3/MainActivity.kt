@@ -1,4 +1,4 @@
-
+package com.example.sumppumpbeta3;
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.example.sumppump3.R
+import com.example.sumppump3.databinding.ActivityMainBinding
 //import com.example.sumppumpbeta3.R
-import com.example.sumppumpbeta3.databinding.ActivityMainBinding
+//import com.example.sumppumpbeta3.databinding.ActivityMainBinding
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -117,11 +119,12 @@ class MainActivity : ComponentActivity() {
 
                         try {
                             val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
-                            Log.i("mainactivity oncreate", "calling get")
-                            get( "http://10.0.0.218:3000/",  parameters, null)
+                            Log.i("mainactivity oncreate", "calling get on jeffs-handyman")
+                            get( "jeffs-handyman.net/sumppump",  parameters, null)
+
                         } catch (e: java.lang.Exception) {
                             e.printStackTrace()
-                            Log.i("mainActivity after get", "Error in server")
+                            Log.i("mainActivity after get", e.toString())
 
                         }
                         firstRun = false
@@ -180,7 +183,7 @@ class MainActivity : ComponentActivity() {
                         if (mainRunWarnVis == true) {binding.mainRunWarnView = true}
                         else {binding.mainRunWarnView = false}
 
-                        sleep(200)
+                        sleep(1500)
                     }
                 }
                 threadServer.start()
@@ -269,7 +272,7 @@ class MainActivity : ComponentActivity() {
         val requestBody = payload.toRequestBody()
         val request = Request.Builder()
             .post(requestBody)
-            .url("http://10.0.0.218:3000/")
+            .url("www.jeffs-handyman.net/")
             .build()
         //this is a post request i hope...we will see
         okHttpClient.newCall(request).enqueue(object : Callback {
@@ -288,7 +291,7 @@ class MainActivity : ComponentActivity() {
 
 
     private val moshi = Moshi.Builder().build()
-    private val adapter: JsonAdapter<PyData> = moshi.adapter(PyData::class.java)
+    //private val adapter: JsonAdapter<PyData> = moshi.adapter(PyData::class.java)
 
     private val client = OkHttpClient().newBuilder()
         .connectTimeout(10, TimeUnit.SECONDS)
