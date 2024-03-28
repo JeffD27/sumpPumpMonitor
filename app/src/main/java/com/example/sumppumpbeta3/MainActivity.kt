@@ -2,6 +2,7 @@ package com.example.sumppumpbeta3;
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
@@ -21,8 +22,6 @@ import com.example.sumppump3.databinding.ActivityMainBinding
 //import com.example.sumppumpbeta3.R
 //import com.example.sumppumpbeta3.databinding.ActivityMainBinding
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.*
@@ -35,16 +34,17 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import okhttp3.internal.notify
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import java.lang.Thread.sleep
-import java.security.KeyStore.TrustedCertificateEntry
 //import java.time.LocalDate
 //import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
 
 //import kotlin.time.Duration
 
@@ -101,15 +101,24 @@ class MainActivity : ComponentActivity() {
     private var generalWarnSilence = false
     private lateinit var mainPumpSilenceTime: Instant
     private lateinit var backupPumpSilenceTime:Instant
-
-
+    private  var notificationManager: NotificationManager? = null
+//the following are for resetting notifications
+    private lateinit var notificationServerErrorDeployed: Pair<Boolean, Instant> //to calculate if notification needs to be reset <if deployed, time deployed>
+    private lateinit var notifactionWaterLevelSensorErrorDeployed: Pair<Boolean, Instant>
+    private lateinit var notificationACPowerDeployed: Pair<Boolean, Instant>
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         //val binding: DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, false)
         val activity: Activity = this
+        if (!this::notificationServerErrorDeployed.isInitialized) {notificationServerErrorDeployed = Pair(false, Clock.System.now())}
+        if (!this::notifactionWaterLevelSensorErrorDeployed.isInitialized) {notifactionWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())}
+        if (!this::notificationACPowerDeployed.isInitialized) {notificationACPowerDeployed = Pair(false, Clock.System.now())}
+
+
         var firstRun: Boolean = true
+
 
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -124,27 +133,29 @@ class MainActivity : ComponentActivity() {
         binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(this, R.drawable.noacplug)
         var acPowerLargeBatteryBoolean = false
         var acPowerSmallBatteryBoolean = true
-        createNotifcations()
 
+        notificationManager = createNotifications()
 
-
-
-
-        //binding.pyDataVar = PyDataLayout(mainRunning_, backupRunning_, highFlooding_, midFlooding_, lowFlooding_, voltage5_, charging5_, voltage12_)
-        //setContentView(R.layout.activity_main)
         runBlocking {
             launch {
                 println("World!")
                 Log.i("mainRunning onCreate", mainRunning_.toString())
 
-
-
                 val threadServer = Thread {
                     while (true) {
-
+                        charging5_ = false
                         if (!charging5_!! && !generalWarnSilence){
                             binding.generalErrorView = true
-                            binding.generalErrorText = "USB disconnected\n / no power!"}
+                            binding.generalErrorText = "USB disconnected\n / no power!"
+                            val (deployed, timeDeployed) = notificationACPowerDeployed
+                            Log.i("time and deploy", timeDeployed.toString())
+                            Log.i("time and deploy", deployed.toString())
+                            if (!deployed){
+                                Log.i("charging5_", "starting notification for charging 5")
+                                notificationBuilder("SumpPump RPi: No AC Power", "Usb is disconnected\nOr there is no power going to RPi","high", "22222", "11111", notificationManager!!)
+                                notificationACPowerDeployed = Pair(true, Clock.System.now())
+                            }
+                        }
                         else{binding.generalErrorView = false
                             binding.generalErrorText = "Message shouldn't be here!"}
 
@@ -154,9 +165,18 @@ class MainActivity : ComponentActivity() {
                             get( "jeffs-handyman.net/sumppump",  parameters, null)
 
                         } catch (e: java.lang.Exception) {
-                            e.printStackTrace()
+                            //e.printStackTrace()
                             binding.generalErrorText = "Error in Server.\n NO Data"
-                            Log.i("mainActivity after get", e.toString())
+                            //Log.i("mainActivity after get", e.toString())
+
+
+
+                            val (deployed, timeDeployed) = notificationServerErrorDeployed
+                            if (!deployed){
+                                notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", "11111","44444", notificationManager!!)
+                                notificationServerErrorDeployed = Pair(true, Clock.System.now())
+                            }
+
 
                         }
                         firstRun = false
@@ -228,13 +248,14 @@ class MainActivity : ComponentActivity() {
                         }
                         else{ binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)}
 
-
+                        resetNotifications()
                         sleep(1500)
                     }
                 }
                 threadServer.start()
 
             }
+
             println("Hello")
         }
 
@@ -268,10 +289,35 @@ class MainActivity : ComponentActivity() {
     }*/
 
 
-
+    private fun resetNotifications(){
+        if (this::notificationServerErrorDeployed.isInitialized) {
+            val (deployed, timeDeployed) = notificationServerErrorDeployed
+            Log.i("resetNotifications() server", timeDeployed.toString())
+            val timeDif = (Clock.System.now() - timeDeployed)
+            Log.i("timeDIFf_ResetNotifications", timeDif.toString())
+            if (deployed && (Clock.System.now() - timeDeployed) > 1.days) {
+                notificationServerErrorDeployed = Pair(false, Clock.System.now())
+            }
+        }
+        if (this::notifactionWaterLevelSensorErrorDeployed.isInitialized){ //this notification was never tested
+            val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
+            Log.i("resetNotifications() wl sensor", timeDeployed.toString())
+            if (deployed && (Clock.System.now() - timeDeployed) > 1.hours) {
+                notifactionWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())
+            }
+        }
+        if (this::notificationACPowerDeployed.isInitialized){ //this notification was never tested
+            val (deployed, timeDeployed) = notificationACPowerDeployed
+            Log.i("resetNotifications() ac power", timeDeployed.toString())
+            Log.i("deployed", deployed.toString())
+            if (deployed && (Clock.System.now() - timeDeployed) > 12.hours) {
+                notificationACPowerDeployed = Pair(false, Clock.System.now())
+            }
+        }
+    }
 
     fun closeMainPumpNotification(view: View){
-        Log.i("closeMainPumpNotification", "starting close main pump notifcation")
+        Log.i("closeMainPumpNotification", "starting close main pump notification")
         Log.i("closeMainPumpNotification", mainPumpWarnSilence.toString())
         if (!mainPumpWarnSilence){
             mainPumpSilenceTime = Clock.System.now()
@@ -281,7 +327,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun closeBackupPumpNotification(view: View){
-        Log.i("closebackupPumpNotification", "starting close backup pump notifcation")
+        Log.i("closebackupPumpNotification", "starting close backup pump notification")
         Log.i("closebackupPumpNotification", backupPumpWarnSilence.toString())
         if (!backupPumpWarnSilence){
             backupPumpSilenceTime = Clock.System.now()
@@ -291,7 +337,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun closeGeneralWarn(view: View){
-        Log.i("closeGeneralPumpNotification", "starting close general warn notifcation")
+        Log.i("closeGeneralPumpNotification", "starting close general warn notification")
         Log.i("closegeneralNotification", generalWarnSilence.toString())
         if (!generalWarnSilence){
 
@@ -597,9 +643,24 @@ class MainActivity : ComponentActivity() {
                     "ERROR: Raise notification",
                     " Water Level Sensor Error:High Flooding is true, but others are false"
                 )
+                val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
+                if (!deployed) {
+                    notificationBuilder(
+                        "SumpPump WaterLevel Sensor Error",
+                        "Error In water level sensor\nhigh=true mid/low = false",
+                        "high",
+                        "22222",
+                        "33333",
+                        notificationManager!!)
+                    notifactionWaterLevelSensorErrorDeployed = Pair(true, Clock.System.now())
+                }
+
             }
         }
+
+
         Log.i("MIDFLOODING STRING", midFloodingStr.toString())
+
         if (midFloodingStr == "false") {
             midFloodingApply = false
         } else if (midFloodingStr == "true") {
@@ -612,9 +673,21 @@ class MainActivity : ComponentActivity() {
                     "ERROR: Raise notification",
                     "Water Level Sensor Error:Mid Sensor is true, but Low  is false"
                 )
+                val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
+                if (!deployed) {
+                    notificationBuilder(
+                        "SumpPump WaterLevel Sensor Error",
+                        "Error In water level sensor\nmid=true low = false",
+                        "high",
+                        "22222",
+                        "22222",
+                        notificationManager!!)
+                    notifactionWaterLevelSensorErrorDeployed = Pair(true, Clock.System.now())
+                }
             } }
         else {
             Log.i("Failure in applyWaterlevel", "failure in apply waterlevel mid")
+
         }
 
 
@@ -665,17 +738,37 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun notificationBuilder(title:String, content:String){
-        val builder = NotificationCompat.Builder(this, title)
-        builder.setContentTitle(content)
-        builder.setSmallIcon(BitmapFactory.decodeResource(this.resources, R.drawable.))
+    private fun notificationBuilder(title:String, content:String, priority: String, channelid: String, notifid:String, notificationManager: NotificationManager  ){ //priority: high default low
+        Log.i("notificationBuilder()", "starting notification builder")
+        val builder = NotificationCompat.Builder(this, channelid)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        builder.setContentTitle(title)
+        builder.setContentText(content)
+        builder.setContentIntent(pendingIntent)
+        Log.i("notificationBuilder", title )
+        Log.i("notificationBuilder", content )
+        builder.setSmallIcon(R.drawable.flood_house_svg)
+        if (priority == "high"){
+            builder.priority = NotificationCompat.PRIORITY_HIGH}
+        else if(priority=="default"){
+            builder.priority = NotificationCompat.PRIORITY_DEFAULT}
+        else if(priority == "low"){
+            builder.priority = NotificationCompat.PRIORITY_LOW
+        }
+
+        notificationManager.notify(channelid.toInt(), builder.build())
+
+
+
+
     }
 
-    private fun createNotifcations (){
+    private fun createNotifications (): NotificationManager? {
+        Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel.
-
+            Log.i("createNotifications", "software requirements met!")
             val mChannelA = NotificationChannel("11111", getString(R.string.pumpProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
 
             mChannelA.description =  getString(R.string.pumpProblemsChannelDescription)
@@ -690,9 +783,9 @@ class MainActivity : ComponentActivity() {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannelA)
             notificationManager.createNotificationChannel(mChannelB)
-
-
+            return notificationManager
         }
+        return null
     }
 
 
