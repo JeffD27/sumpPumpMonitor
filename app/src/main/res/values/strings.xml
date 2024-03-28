@@ -24,4 +24,11 @@
     <string name="waterLevelemptycontentdescription">An empty tank</string>
     <string name="warningsButtonText">Warnings/Notifications</string>
     <string name="xToClose">\"X\" to close</string>
+    <string name="pumpProblemsChannel">Pump Errors/Warnings</string>
+    <string name="pumpProblemsChannelDescription">E.g. pump has run too long</string>
+    <string name="systemProblemsChannel">System Issues</string>
+    <string name="systemProblemsChannelDescription">E.g. server issue, sensor error</string>
+    <string name="generalInfoChannel"> General Info</string>
+    <string name="generalInfoChannelDescription">E.G. Main pump has run</string>
+
 </resources>

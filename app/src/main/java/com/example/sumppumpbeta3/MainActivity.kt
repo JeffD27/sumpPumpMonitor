@@ -1,5 +1,8 @@
 package com.example.sumppumpbeta3;
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.sumppump3.R
@@ -35,9 +39,13 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import java.lang.Thread.sleep
+import java.security.KeyStore.TrustedCertificateEntry
 //import java.time.LocalDate
 //import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
+
 //import kotlin.time.Duration
 
 
@@ -78,16 +86,21 @@ data class PyData (
     val voltage12: Float?){}
 
 class MainActivity : ComponentActivity() {
-    var mainRunning_: Boolean = false
-    var backupRunning_: Boolean? = false
+    private var mainRunning_: Boolean = false
+    private var backupRunning_: Boolean? = false
 
-    var voltage12_: Float? = 0.00f
-    var voltage5_: Float? = 0.00f
-    var charging5_: Boolean? = false
+    private var voltage12_: Float? = 0.00f
+    private var voltage5_: Float? = 0.00f
+    private var charging5_: Boolean? = false
 
-    var highFlooding_: Boolean? = false
-    var midFlooding_: Boolean? = false
-    var lowFlooding_: Boolean? = false
+    private var highFlooding_: Boolean? = false
+    private var midFlooding_: Boolean? = false
+    private var lowFlooding_: Boolean? = false
+    private var mainPumpWarnSilence = false
+    private var backupPumpWarnSilence = false
+    private var generalWarnSilence = false
+    private lateinit var mainPumpSilenceTime: Instant
+    private lateinit var backupPumpSilenceTime:Instant
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -104,6 +117,19 @@ class MainActivity : ComponentActivity() {
         binding.backupRunningBoxColor = ContextCompat.getColor(this, R.color.green)
         binding.waterLevelImage = ContextCompat.getDrawable(this, R.drawable.water_low)
         binding.mainRunWarnView = true
+        binding.backupRunWarnView = true
+        binding.generalErrorView = true
+
+        binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(this, R.drawable.acplug)
+        binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(this, R.drawable.noacplug)
+        var acPowerLargeBatteryBoolean = false
+        var acPowerSmallBatteryBoolean = true
+        createNotifcations()
+
+
+
+
+
         //binding.pyDataVar = PyDataLayout(mainRunning_, backupRunning_, highFlooding_, midFlooding_, lowFlooding_, voltage5_, charging5_, voltage12_)
         //setContentView(R.layout.activity_main)
         runBlocking {
@@ -116,6 +142,11 @@ class MainActivity : ComponentActivity() {
                 val threadServer = Thread {
                     while (true) {
 
+                        if (!charging5_!! && !generalWarnSilence){
+                            binding.generalErrorView = true
+                            binding.generalErrorText = "USB disconnected\n / no power!"}
+                        else{binding.generalErrorView = false
+                            binding.generalErrorText = "Message shouldn't be here!"}
 
                         try {
                             val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
@@ -124,6 +155,7 @@ class MainActivity : ComponentActivity() {
 
                         } catch (e: java.lang.Exception) {
                             e.printStackTrace()
+                            binding.generalErrorText = "Error in Server.\n NO Data"
                             Log.i("mainActivity after get", e.toString())
 
                         }
@@ -180,8 +212,22 @@ class MainActivity : ComponentActivity() {
                         binding.battery12vText = voltage12_.toString() + "V"
                         binding.battery5vText = voltage5_.toString() + "V"
 
-                        if (mainRunWarnVis == true) {binding.mainRunWarnView = true}
+                        if (mainRunWarnVis && !mainPumpWarnSilence) {binding.mainRunWarnView = true}
                         else {binding.mainRunWarnView = false}
+                        if (backupRunWarnVis && !backupPumpWarnSilence) {binding.backupRunWarnView = true}
+                        else {binding.backupRunWarnView = false}
+
+
+                        if (acPowerLargeBatteryBoolean){
+                            binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
+                        }
+                        else{ binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)}
+
+                        if (acPowerSmallBatteryBoolean){
+                            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
+                        }
+                        else{ binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)}
+
 
                         sleep(1500)
                     }
@@ -224,7 +270,33 @@ class MainActivity : ComponentActivity() {
 
 
 
+    fun closeMainPumpNotification(view: View){
+        Log.i("closeMainPumpNotification", "starting close main pump notifcation")
+        Log.i("closeMainPumpNotification", mainPumpWarnSilence.toString())
+        if (!mainPumpWarnSilence){
+            mainPumpSilenceTime = Clock.System.now()
+            mainPumpWarnSilence = true}
 
+
+    }
+
+    fun closeBackupPumpNotification(view: View){
+        Log.i("closebackupPumpNotification", "starting close backup pump notifcation")
+        Log.i("closebackupPumpNotification", backupPumpWarnSilence.toString())
+        if (!backupPumpWarnSilence){
+            backupPumpSilenceTime = Clock.System.now()
+            backupPumpWarnSilence = true}
+
+
+    }
+
+    fun closeGeneralWarn(view: View){
+        Log.i("closeGeneralPumpNotification", "starting close general warn notifcation")
+        Log.i("closegeneralNotification", generalWarnSilence.toString())
+        if (!generalWarnSilence){
+
+            generalWarnSilence = true}
+    }
     private fun getRunTime(timeStarted: String): Int {
         val monthConvert = mapOf("Jan" to "1", "Feb" to "2", "Mar" to "3", "Apr" to "4", "May" to "5", "Jun" to "6", "Jul" to "7", "Aug" to "8", "Sep" to "9", "Oct" to "10", "Nov" to "11", "Dec" to "12")
         val regex = "\\w{3,9},\\s*(\\d*)\\s(\\w+)\\s*(\\d{4})\\s*(\\d{2}):(\\d{2}):(\\d{2})".toRegex()
@@ -290,8 +362,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private val moshi = Moshi.Builder().build()
-    //private val adapter: JsonAdapter<PyData> = moshi.adapter(PyData::class.java)
+
 
     private val client = OkHttpClient().newBuilder()
         .connectTimeout(10, TimeUnit.SECONDS)
@@ -360,6 +431,9 @@ class MainActivity : ComponentActivity() {
         }
         match = responseString?.let {backupRunWarnReg.find(it)}
         val backupRunningWarnStr = match?.groupValues?.get(1)
+        if (backupRunningWarnStr != null) {
+            applyBackupPumpWarn(backupRunningWarnStr)
+        }
         match = responseString?.let {mainTimeStartedReg.find(it)}
         val mainTimeStartedStr = match?.groupValues?.get(1)
         if (mainTimeStartedStr != null) {
@@ -405,31 +479,32 @@ class MainActivity : ComponentActivity() {
 
 
 
-
-    //private fun getDataTake999(): Callback {}
-
-
-
-    /*
-    val request: Request = Request.Builder()
-        .url("http://10.0.0.218:3000/")
-
-        .header("Connection", "close")
-        .build()
-
-
-    runBlocking {
-
-
-        client.newCall(request).execute().use { response ->
-            //println("here")
-            if (!response.isSuccessful) println("not succesful i think")//throw IOException("Unexpected code $response")
-            // println("&&&&&$$$%%%%^^^#^^$^&@#**#&^^%")
-    */
-    var mainRunWarnVis: Boolean = false
+    private var mainRunWarnVis: Boolean = true
+    private var backupRunWarnVis: Boolean = true
     private fun applyMainPumpWarn(mainRunWarnStr: String){
+        Log.i("applymainpumpwarn", "starting apply main pump warn")
+        if (mainPumpWarnSilence){
+            val now = Clock.System.now()
+            if ((now - mainPumpSilenceTime )>  30.minutes ){
+                mainPumpWarnSilence = false
+            }
+        }
+        Log.i("applyMainPumpWarn", mainPumpWarnSilence.toString())
         if (mainRunWarnStr == "true"){mainRunWarnVis = true}
         else {mainRunWarnVis = false}
+    }
+
+    private fun applyBackupPumpWarn(backupRunWarnStr: String){
+        Log.i("applybackuppumpwarn", "starting apply backup pump warn")
+        if (backupPumpWarnSilence){
+            val now = Clock.System.now()
+            if ((now - backupPumpSilenceTime )>  10.minutes ){
+                backupPumpWarnSilence = false
+            }
+        }
+        Log.i("applyMainPumpWarn", backupPumpWarnSilence.toString())
+        if (backupRunWarnStr == "true"){backupRunWarnVis = true}
+        else {backupRunWarnVis = false}
     }
 
     private fun applyRelayData(mainRunningStr: String?, backupRunningStr: String?) {
@@ -469,6 +544,7 @@ class MainActivity : ComponentActivity() {
         voltage5Str: String?,
         voltage12Str: String?,
         charging5Str: String?
+
     ) {
         var voltage5Apply: Float? = 0.0F
         var voltage12Apply: Float? = 0.0F
@@ -586,6 +662,36 @@ class MainActivity : ComponentActivity() {
             } catch (e: Exception) {
                 println("An error occurred while closing the file: ${e.message}")
             }
+        }
+    }
+
+    private fun notificationBuilder(title:String, content:String){
+        val builder = NotificationCompat.Builder(this, title)
+        builder.setContentTitle(content)
+        builder.setSmallIcon(BitmapFactory.decodeResource(this.resources, R.drawable.))
+    }
+
+    private fun createNotifcations (){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel.
+
+            val mChannelA = NotificationChannel("11111", getString(R.string.pumpProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
+
+            mChannelA.description =  getString(R.string.pumpProblemsChannelDescription)
+            val mChannelB = NotificationChannel("22222", getString(R.string.systemProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
+            mChannelB.description =  getString(R.string.systemProblemsChannelDescription)
+            val mChannelC = NotificationChannel("33333", getString(R.string.generalInfoChannel), NotificationManager.IMPORTANCE_DEFAULT)
+            mChannelC.description =  getString(R.string.systemProblemsChannelDescription)
+
+
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannelA)
+            notificationManager.createNotificationChannel(mChannelB)
+
+
         }
     }
 

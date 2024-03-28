@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -8,10 +10,11 @@ android {
     namespace = "com.example.sumppump3"
     compileSdk = 34
 
+
     buildFeatures {
         compose = true
         dataBinding = true
-        viewBinding = true
+
     }
 
     composeOptions {
@@ -51,8 +54,10 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+
     // Choose one of the following:
     // Material Design 3
+    //implementation ("androidx.core:core:2.2.0") //this breaks EVERYTHING
     implementation("androidx.compose.material3:material3")
     implementation ("androidx.compose.ui:ui-tooling:1.4.3")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
