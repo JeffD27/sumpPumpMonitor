@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 //import kotlin.time.Duration
 
@@ -87,7 +88,7 @@ data class PyData (
 
 class MainActivity : ComponentActivity() {
     private var mainRunning_: Boolean = false
-    private var backupRunning_: Boolean? = false
+    private var backupRunning_: Boolean? = true
 
     private var voltage12_: Float? = 0.00f
     private var voltage5_: Float? = 0.00f
@@ -105,7 +106,12 @@ class MainActivity : ComponentActivity() {
 //the following are for resetting notifications
     private lateinit var notificationServerErrorDeployed: Pair<Boolean, Instant> //to calculate if notification needs to be reset <if deployed, time deployed>
     private lateinit var notifactionWaterLevelSensorErrorDeployed: Pair<Boolean, Instant>
+    private lateinit var notifactionWaterLevelSensorErrorBDeployed: Pair<Boolean, Instant>
     private lateinit var notificationACPowerDeployed: Pair<Boolean, Instant>
+    private lateinit var notificationHighWaterDeployed: Pair<Boolean, Instant>
+    private lateinit var notificationMainRunWarnDeployed: Pair<Boolean, Instant>
+    private lateinit var notificationBackupRan: Pair<Boolean, Instant>
+    private lateinit var notificationWaterTooLow: Pair<Boolean, Instant>
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -115,7 +121,11 @@ class MainActivity : ComponentActivity() {
         if (!this::notificationServerErrorDeployed.isInitialized) {notificationServerErrorDeployed = Pair(false, Clock.System.now())}
         if (!this::notifactionWaterLevelSensorErrorDeployed.isInitialized) {notifactionWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())}
         if (!this::notificationACPowerDeployed.isInitialized) {notificationACPowerDeployed = Pair(false, Clock.System.now())}
-
+        if (!this::notifactionWaterLevelSensorErrorBDeployed.isInitialized) {notifactionWaterLevelSensorErrorBDeployed = Pair(false, Clock.System.now())}
+        if (!this::notificationHighWaterDeployed.isInitialized) {notificationHighWaterDeployed = Pair(false, Clock.System.now())}
+        if (!this::notificationMainRunWarnDeployed.isInitialized) {notificationMainRunWarnDeployed = Pair(false, Clock.System.now())}
+        if (!this::notificationBackupRan.isInitialized) {notificationBackupRan = Pair(false, Clock.System.now())}
+        if (!this::notificationWaterTooLow.isInitialized) {notificationWaterTooLow = Pair(false, Clock.System.now())}
 
         var firstRun: Boolean = true
 
@@ -143,7 +153,7 @@ class MainActivity : ComponentActivity() {
 
                 val threadServer = Thread {
                     while (true) {
-                        charging5_ = false
+
                         if (!charging5_!! && !generalWarnSilence){
                             binding.generalErrorView = true
                             binding.generalErrorText = "USB disconnected\n / no power!"
@@ -169,9 +179,8 @@ class MainActivity : ComponentActivity() {
                             binding.generalErrorText = "Error in Server.\n NO Data"
                             //Log.i("mainActivity after get", e.toString())
 
-
-
                             val (deployed, timeDeployed) = notificationServerErrorDeployed
+                            Log.i("server error deployed", deployed.toString())
                             if (!deployed){
                                 notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", "11111","44444", notificationManager!!)
                                 notificationServerErrorDeployed = Pair(true, Clock.System.now())
@@ -198,6 +207,13 @@ class MainActivity : ComponentActivity() {
 
 
                         if (backupRunning_ == true) {
+
+                            val (deployed, timeDeployed) = notificationBackupRan
+
+                            if (!deployed){
+                                notificationBuilder("Check Sump Pump", "Backup Pump has run!","high", "22222", "88888", notificationManager!!)
+                                notificationBackupRan = Pair(true, Clock.System.now())
+                            }
                             binding.backupRunning = "Running"
                             binding.backupRunningBoxColor =
                                 ContextCompat.getColor(activity, R.color.green)
@@ -211,11 +227,28 @@ class MainActivity : ComponentActivity() {
                             Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
                         }
 
+                        highFlooding_ = true
+                        lowFlooding_ = false
                         if (highFlooding_ == true) {
                             binding.waterLevelImage =
                                 ContextCompat.getDrawable(activity, R.drawable.water_high)
                             binding.waterLevelText = "High\n(100%)"
-                        } else if (midFlooding_ == true) {
+
+
+                            val (deployed, timeDeployed) = notificationHighWaterDeployed
+                            if (!deployed){
+                                notificationBuilder(
+                                    "WARNING: HIGH Water in Sump Well",
+                                    "The water has reached the top of the well.\nBasement flooding is imminent.",
+                                    "high",
+                                    "00000",
+                                    "55555",
+                                    notificationManager!!
+                                )
+                                notificationHighWaterDeployed = Pair(true, Clock.System.now())
+                            }
+                        }
+                        else if (midFlooding_ == true) {
                             binding.waterLevelImage =
                                 ContextCompat.getDrawable(activity, R.drawable.water_50)
                             binding.waterLevelText = "50%"
@@ -232,7 +265,17 @@ class MainActivity : ComponentActivity() {
                         binding.battery12vText = voltage12_.toString() + "V"
                         binding.battery5vText = voltage5_.toString() + "V"
 
-                        if (mainRunWarnVis && !mainPumpWarnSilence) {binding.mainRunWarnView = true}
+
+
+
+                        val (deployed, timeDeployed) = notificationMainRunWarnDeployed
+
+                        if (mainRunWarnVis and !deployed){
+                            notificationBuilder("Check Sump Pump", "The pump has run for 10 minutes without stopping","high", "11111", "77777", notificationManager!!)
+                            notificationMainRunWarnDeployed = Pair(true, Clock.System.now())
+                        }
+                        if (mainRunWarnVis && !mainPumpWarnSilence) {
+                            binding.mainRunWarnView = true}
                         else {binding.mainRunWarnView = false}
                         if (backupRunWarnVis && !backupPumpWarnSilence) {binding.backupRunWarnView = true}
                         else {binding.backupRunWarnView = false}
@@ -247,6 +290,26 @@ class MainActivity : ComponentActivity() {
                             binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
                         }
                         else{ binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)}
+
+                        if (mainRunning_|| backupRunning_ == true){
+                            if (lowFlooding_ == false){
+                                val (deployed, timeDeployed) = notificationWaterTooLow
+                                if (!deployed){
+                                    notificationBuilder(
+                                        "URGENT: Check Pump",
+                                        "The water level seems empty, but the pump is running",
+                                        "high",
+                                        "00000",
+                                        "99999",
+                                        notificationManager!!)
+
+                                    notificationWaterTooLow = Pair(true, Clock.System.now())
+                                }
+
+
+                            }
+
+                        }
 
                         resetNotifications()
                         sleep(1500)
@@ -306,12 +369,50 @@ class MainActivity : ComponentActivity() {
                 notifactionWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())
             }
         }
-        if (this::notificationACPowerDeployed.isInitialized){ //this notification was never tested
+        if (this::notifactionWaterLevelSensorErrorBDeployed.isInitialized){ //this notification was never tested
+            val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
+            Log.i("resetNotifications() wl sensor", timeDeployed.toString())
+            if (deployed && (Clock.System.now() - timeDeployed) > 1.hours) {
+                notifactionWaterLevelSensorErrorBDeployed = Pair(false, Clock.System.now())
+            }
+        }
+        if (this::notificationACPowerDeployed.isInitialized){
             val (deployed, timeDeployed) = notificationACPowerDeployed
             Log.i("resetNotifications() ac power", timeDeployed.toString())
             Log.i("deployed", deployed.toString())
             if (deployed && (Clock.System.now() - timeDeployed) > 12.hours) {
                 notificationACPowerDeployed = Pair(false, Clock.System.now())
+            }
+        }
+        if (this::notificationHighWaterDeployed.isInitialized){
+            val (deployed, timeDeployed) = notificationHighWaterDeployed
+            Log.i("resetNotifications() ac power", timeDeployed.toString())
+            Log.i("deployed", deployed.toString())
+            if (deployed && (Clock.System.now() - timeDeployed) > 20.minutes) {
+                notificationHighWaterDeployed = Pair(false, Clock.System.now())
+            }
+        }
+
+        if (this::notificationMainRunWarnDeployed.isInitialized){
+            val (deployed, timeDeployed) = notificationMainRunWarnDeployed
+            Log.i("resetNotifications() ac power", timeDeployed.toString())
+            Log.i("deployed", deployed.toString())
+            if (deployed && (Clock.System.now() - timeDeployed) > 30.minutes) {
+                notificationMainRunWarnDeployed = Pair(false, Clock.System.now())
+            }
+        }
+
+        if (this::notificationBackupRan.isInitialized){
+            val (deployed, timeDeployed) = notificationBackupRan
+            if (deployed && (Clock.System.now() - timeDeployed) > 30.minutes) {
+                notificationBackupRan = Pair(false, Clock.System.now())
+            }
+        }
+
+        if (this::notificationWaterTooLow.isInitialized){
+            val (deployed, timeDeployed) = notificationWaterTooLow
+            if (deployed && (Clock.System.now() - timeDeployed) > 30.seconds) {
+                notificationWaterTooLow = Pair(false, Clock.System.now())
             }
         }
     }
@@ -623,6 +724,10 @@ class MainActivity : ComponentActivity() {
         midFloodingStr: String?,
         lowFloodingStr: String?
     ) {
+        //delete this later:
+        val highFloodingStrTest = "true"
+        val midFloodingStrTest = "true"
+        val lowFloodingStrTest ="false"
         var highFloodingApply: Boolean = false
         var midFloodingApply: Boolean = false
         var lowFloodingApply: Boolean = false
@@ -650,7 +755,7 @@ class MainActivity : ComponentActivity() {
                         "Error In water level sensor\nhigh=true mid/low = false",
                         "high",
                         "22222",
-                        "33333",
+                        "11111",
                         notificationManager!!)
                     notifactionWaterLevelSensorErrorDeployed = Pair(true, Clock.System.now())
                 }
@@ -673,7 +778,7 @@ class MainActivity : ComponentActivity() {
                     "ERROR: Raise notification",
                     "Water Level Sensor Error:Mid Sensor is true, but Low  is false"
                 )
-                val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
+                val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorBDeployed
                 if (!deployed) {
                     notificationBuilder(
                         "SumpPump WaterLevel Sensor Error",
@@ -682,7 +787,7 @@ class MainActivity : ComponentActivity() {
                         "22222",
                         "22222",
                         notificationManager!!)
-                    notifactionWaterLevelSensorErrorDeployed = Pair(true, Clock.System.now())
+                    notifactionWaterLevelSensorErrorBDeployed = Pair(true, Clock.System.now())
                 }
             } }
         else {
@@ -745,6 +850,7 @@ class MainActivity : ComponentActivity() {
         builder.setContentTitle(title)
         builder.setContentText(content)
         builder.setContentIntent(pendingIntent)
+
         Log.i("notificationBuilder", title )
         Log.i("notificationBuilder", content )
         builder.setSmallIcon(R.drawable.flood_house_svg)
@@ -756,7 +862,7 @@ class MainActivity : ComponentActivity() {
             builder.priority = NotificationCompat.PRIORITY_LOW
         }
 
-        notificationManager.notify(channelid.toInt(), builder.build())
+        notificationManager.notify(notifid.toInt(), builder.build())
 
 
 
@@ -769,20 +875,25 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel.
             Log.i("createNotifications", "software requirements met!")
+            val mChannelAA = NotificationChannel("00000", "Most Urgent Warnings", NotificationManager.IMPORTANCE_HIGH)
+            mChannelAA.description = "e.g. \"Pump is running on no water\" or \"flooding in basement\""
+
             val mChannelA = NotificationChannel("11111", getString(R.string.pumpProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
 
             mChannelA.description =  getString(R.string.pumpProblemsChannelDescription)
             val mChannelB = NotificationChannel("22222", getString(R.string.systemProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
             mChannelB.description =  getString(R.string.systemProblemsChannelDescription)
             val mChannelC = NotificationChannel("33333", getString(R.string.generalInfoChannel), NotificationManager.IMPORTANCE_DEFAULT)
-            mChannelC.description =  getString(R.string.systemProblemsChannelDescription)
+            mChannelC.description =  getString(R.string.generalInfoChannelDescription)
 
 
             // Register the channel with the system. You can't change the importance
             // or other notification behaviors after this.
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannelAA)
             notificationManager.createNotificationChannel(mChannelA)
             notificationManager.createNotificationChannel(mChannelB)
+            notificationManager.createNotificationChannel(mChannelC)
             return notificationManager
         }
         return null
