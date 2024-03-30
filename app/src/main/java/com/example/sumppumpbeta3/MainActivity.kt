@@ -3,11 +3,13 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.graphics.BitmapFactory
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -17,6 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.sumppump3.R
 import com.example.sumppump3.databinding.ActivityMainBinding
 //import com.example.sumppumpbeta3.R
@@ -34,7 +41,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import okhttp3.internal.notify
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
@@ -47,15 +53,15 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-//import kotlin.time.Duration
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
-
-/*import com.example.sumppumpmonitor.ui.theme.SumpPumpMonitorTheme*/
-/*import androidx.navigation.compose.rememberNavController*/
-/*http://127.0.0.1:5000*/
-
-
-
+var notificationServerErrorMuteDuration: kotlin.time.Duration = 1.days
+var notifactionWaterLevelSensorErrorMuteDuration: kotlin.time.Duration = 1.days
+var notificationACPowerMuteDuration: kotlin.time.Duration = 8.hours
+var notificationHighWaterMuteDuration: kotlin.time.Duration = 20.minutes
+var notificationMainRunWarnMuteDuration: kotlin.time.Duration = 30.minutes
+var notificationBackupRanMuteDuration: kotlin.time.Duration = 60.minutes
+var notificationWaterTooLowMuteDuration:  kotlin.time.Duration = 3.minutes
 
 
 
@@ -87,7 +93,12 @@ data class PyData (
     val voltage12: Float?){}
 
 class MainActivity : ComponentActivity() {
+
+
+
+
     private var mainRunning_: Boolean = false
+
     private var backupRunning_: Boolean? = true
 
     private var voltage12_: Float? = 0.00f
@@ -103,6 +114,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var mainPumpSilenceTime: Instant
     private lateinit var backupPumpSilenceTime:Instant
     private  var notificationManager: NotificationManager? = null
+
 //the following are for resetting notifications
     private lateinit var notificationServerErrorDeployed: Pair<Boolean, Instant> //to calculate if notification needs to be reset <if deployed, time deployed>
     private lateinit var notifactionWaterLevelSensorErrorDeployed: Pair<Boolean, Instant>
@@ -112,12 +124,20 @@ class MainActivity : ComponentActivity() {
     private lateinit var notificationMainRunWarnDeployed: Pair<Boolean, Instant>
     private lateinit var notificationBackupRan: Pair<Boolean, Instant>
     private lateinit var notificationWaterTooLow: Pair<Boolean, Instant>
+
+
+
+
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         //val binding: DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, false)
         val activity: Activity = this
+
+        //this is just initializing the ...deployed variables for use in reset notifications
         if (!this::notificationServerErrorDeployed.isInitialized) {notificationServerErrorDeployed = Pair(false, Clock.System.now())}
         if (!this::notifactionWaterLevelSensorErrorDeployed.isInitialized) {notifactionWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())}
         if (!this::notificationACPowerDeployed.isInitialized) {notificationACPowerDeployed = Pair(false, Clock.System.now())}
@@ -145,6 +165,18 @@ class MainActivity : ComponentActivity() {
         var acPowerSmallBatteryBoolean = true
 
         notificationManager = createNotifications()
+
+        val button = findViewById<Button>(R.id.buttonSettings)
+
+// Set an OnClickListener for the button
+        button.setOnClickListener {
+
+            // Create an Intent to start the new activity
+            val intent = Intent(this, Settings::class.java)
+
+            // Start the new activity
+            startActivity(intent)
+        }
 
         runBlocking {
             launch {
@@ -352,27 +384,28 @@ class MainActivity : ComponentActivity() {
     }*/
 
 
+
     private fun resetNotifications(){
         if (this::notificationServerErrorDeployed.isInitialized) {
             val (deployed, timeDeployed) = notificationServerErrorDeployed
             Log.i("resetNotifications() server", timeDeployed.toString())
             val timeDif = (Clock.System.now() - timeDeployed)
             Log.i("timeDIFf_ResetNotifications", timeDif.toString())
-            if (deployed && (Clock.System.now() - timeDeployed) > 1.days) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationServerErrorMuteDuration) {
                 notificationServerErrorDeployed = Pair(false, Clock.System.now())
             }
         }
         if (this::notifactionWaterLevelSensorErrorDeployed.isInitialized){ //this notification was never tested
             val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
             Log.i("resetNotifications() wl sensor", timeDeployed.toString())
-            if (deployed && (Clock.System.now() - timeDeployed) > 1.hours) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notifactionWaterLevelSensorErrorMuteDuration) {
                 notifactionWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())
             }
         }
         if (this::notifactionWaterLevelSensorErrorBDeployed.isInitialized){ //this notification was never tested
             val (deployed, timeDeployed) = notifactionWaterLevelSensorErrorDeployed
             Log.i("resetNotifications() wl sensor", timeDeployed.toString())
-            if (deployed && (Clock.System.now() - timeDeployed) > 1.hours) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notifactionWaterLevelSensorErrorMuteDuration) {
                 notifactionWaterLevelSensorErrorBDeployed = Pair(false, Clock.System.now())
             }
         }
@@ -380,7 +413,7 @@ class MainActivity : ComponentActivity() {
             val (deployed, timeDeployed) = notificationACPowerDeployed
             Log.i("resetNotifications() ac power", timeDeployed.toString())
             Log.i("deployed", deployed.toString())
-            if (deployed && (Clock.System.now() - timeDeployed) > 12.hours) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationACPowerMuteDuration) {
                 notificationACPowerDeployed = Pair(false, Clock.System.now())
             }
         }
@@ -388,7 +421,7 @@ class MainActivity : ComponentActivity() {
             val (deployed, timeDeployed) = notificationHighWaterDeployed
             Log.i("resetNotifications() ac power", timeDeployed.toString())
             Log.i("deployed", deployed.toString())
-            if (deployed && (Clock.System.now() - timeDeployed) > 20.minutes) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationHighWaterMuteDuration) {
                 notificationHighWaterDeployed = Pair(false, Clock.System.now())
             }
         }
@@ -397,21 +430,21 @@ class MainActivity : ComponentActivity() {
             val (deployed, timeDeployed) = notificationMainRunWarnDeployed
             Log.i("resetNotifications() ac power", timeDeployed.toString())
             Log.i("deployed", deployed.toString())
-            if (deployed && (Clock.System.now() - timeDeployed) > 30.minutes) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationMainRunWarnMuteDuration) {
                 notificationMainRunWarnDeployed = Pair(false, Clock.System.now())
             }
         }
 
         if (this::notificationBackupRan.isInitialized){
             val (deployed, timeDeployed) = notificationBackupRan
-            if (deployed && (Clock.System.now() - timeDeployed) > 30.minutes) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationBackupRanMuteDuration) {
                 notificationBackupRan = Pair(false, Clock.System.now())
             }
         }
 
         if (this::notificationWaterTooLow.isInitialized){
             val (deployed, timeDeployed) = notificationWaterTooLow
-            if (deployed && (Clock.System.now() - timeDeployed) > 30.seconds) {
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationWaterTooLowMuteDuration) {
                 notificationWaterTooLow = Pair(false, Clock.System.now())
             }
         }

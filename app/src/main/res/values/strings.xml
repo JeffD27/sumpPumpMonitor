@@ -30,5 +30,17 @@
     <string name="systemProblemsChannelDescription">E.g. server issue, sensor error</string>
     <string name="generalInfoChannel"> General Info</string>
     <string name="generalInfoChannelDescription">E.G. Main pump has run</string>
-
+    <string name="SettingsTitle">Settings</string>
+    <string-array name="noPowerNotificationSilenceTime">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+    </string-array>
+    <string name="selected_item">Selected item:</string>
+    <string name="notificationMuteTitle">If a notification is dismissed,\n how long does it stay dismissed?</string>
+    <string name="noPowerConnectedNotification">No AC Power:</string>
+    <string name="Notification">Notification</string>
+    <string name="Time">Time</string>
 </resources>
