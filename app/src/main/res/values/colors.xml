@@ -7,5 +7,6 @@
     <color name="red">#990000</color>
     <color name="darkActivityBackground">#0086b3</color>
     <color name="activityBackground">#0099cc</color>
+    <color name="darkerBlack">#202020</color>
 
 </resources>

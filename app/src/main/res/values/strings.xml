@@ -31,16 +31,77 @@
     <string name="generalInfoChannel"> General Info</string>
     <string name="generalInfoChannelDescription">E.G. Main pump has run</string>
     <string name="SettingsTitle">Settings</string>
+    <string name="ServerError">Server Error</string>
+    <string-array name="spinnerTimes">
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+        <item>48 hours</item>
+    </string-array>
     <string-array name="noPowerNotificationSilenceTime">
+        <item>30 minutes</item>
         <item>1 hour</item>
         <item>2 hours</item>
         <item>4 hours</item>
         <item>8 hours</item>
         <item>24 hours</item>
     </string-array>
+    <string-array name="serverErrorNotificationSilenceTime">
+        <item>1 hour</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+    </string-array>
+    <string-array name="highWaterNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="pumpRunTimeNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="backupRunNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="noWaterNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="sensorErrorNotificationSilenceTime">
+        <item>1 hour</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+    </string-array>
     <string name="selected_item">Selected item:</string>
     <string name="notificationMuteTitle">If a notification is dismissed,\n how long does it stay dismissed?</string>
     <string name="noPowerConnectedNotification">No AC Power:</string>
     <string name="Notification">Notification</string>
     <string name="Time">Time</string>
+    <string name="waterLevelSensorError">Water Level\n Sensor Error</string>
+    <string name="highWaterWarning" >High water\n Level Warning</string>
+    <string name="PumpRunTimeError"> Pump running\n over 10 min</string>
+    <string name="backupPumpHasRun">The backup \npump has run</string>
+    <string name="PumpRunningWithoutWater">Pump Running\nwithout water</string>
+
 </resources>
