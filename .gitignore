@@ -1,0 +1,10 @@
+wsgi.py
+pipfile.lock
+pipfile
+sp_monitor.ini
+cloudflared.deb
+__pycache__
+sp_monitor_ENV
+sumpPumpApp.sock
+testfile.txt
+urlsfortransfer.txt
