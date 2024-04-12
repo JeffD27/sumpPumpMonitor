@@ -7,6 +7,7 @@ from threadClass import *
 #import queue 
 from pumpControl import pumpControl
 from datetime import datetime
+import queue
 
 #global data_all = [relay_data, bi_data, wl_data]
 class getData():
@@ -14,7 +15,7 @@ class getData():
     pumpData = ""
     bi_data = ""
     wl_data = ""
-    lock = threading.Lock()
+    #lock = threading.Lock()
 
    
     
@@ -38,25 +39,29 @@ class getData():
         #self.pulse_hardware()
         #sleep(.5)
         '''    
-    def call_parse_data(self, queue):
+    def call_parse_data(self, queueMain, event): #event is for stopping the thread
+        parseDataQueue = queue.LifoQueue()
+
         data = parseDataFiles.parseDataFiles()
-        while True: #you need this so that python can keep track of time variable (ie pump running)
-            print("starting while loop in getdata.callparsedata")
-            data.run()
-           
-            mainRunning = data.mainRunning
-            self.pumpData = data.all_data #reading data from parsedatafiles (NOT FROM GPIO)
-            
-            
-            print(str(self.pumpData), "TTTTTTTTTTTTTTTTTTTTTTTTTTT\n\n")
-            self.pulse_hardware()
-            print(self.pumpData)
-            
-            queue.put({"time":datetime.now(), "pumpData": self.pumpData, "wl_data": self.wl_data, "bi_data": self.bi_data}) #this adds pumpdata to the queue which can be grabbed later
-            
-            print("----------------------PUTTED-------------------------")
-            print(datetime.now())
-            sleep(.2)# i think the problem is parsing data above.
+        #while True: #you need this so that python can keep track of time variable (ie pump running)
+       
+            #break
+        print("starting while loop in getdata.callparsedata")
+        data.run( parseDataQueue)
+        self.pumpData = parseDataQueue.get()
+        #mainRunning = data.mainRunning
+        #self.pumpData = data.all_data #reading data from parsedatafiles (NOT FROM GPIO)
+        
+        
+        print(str(self.pumpData), "TTTTTTTTTTTTTTTTTTTTTTTTTTT\n\n")
+        self.pulse_hardware()
+        print(self.pumpData)
+        
+        queueMain.put({"time":datetime.now(), "pumpData": self.pumpData, "wl_data": self.wl_data, "bi_data": self.bi_data}) #this adds pumpdata to the queue which can be grabbed later
+        
+        print("----------------------PUTTED-------------------------")
+        print(datetime.now())
+            #sleep(.5)
     def pulse_hardware(self):
         print("pulsing hardware")
         self.wl_data = self.getWaterLevel()
@@ -77,7 +82,7 @@ class getData():
             print("trying")
             print(queue.get(), 'queue.get')
         except Exception as e:
-            print(e)
+            print("%s in get getpumpData")
         self.pumpData = queue.get()
         print("inGETPUMPDATA<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>\n\n",self.pumpData)
             
@@ -109,17 +114,17 @@ class getData():
     
     @classmethod
     def giveData(self, queue):
-        lock = getData.lock
+        
         
         print(self.bi_data, 'bi data')
         print(self.wl_data, 'wl data')
-        with lock:
-            try:
-                data = ({"pumpData": self.pumpData, "waterLevel": self.wl_data, "batteries": self.bi_data})
-                print(data, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-                return data
-            except IndexError:
-                print("data is Null")
+        
+        try:
+            data = ({"pumpData": self.pumpData, "waterLevel": self.wl_data, "batteries": self.bi_data})
+            print(data, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+            return data
+        except IndexError:
+            print("data is Null")
 
     '''def updateData(self, relay_data, bi_data, wl_data):
             print('update data is running ^^^^^^^^^^^^^^^^^^^%^%^^^^^^^^^^^^^^^^^^^^^^^^^^^^')

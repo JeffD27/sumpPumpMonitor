@@ -1,5 +1,5 @@
 from gpiozero import MCP3008 as MCP
-
+import math
 import RPi.GPIO as GPIO
 from datetime import datetime 
 from time import sleep
@@ -7,6 +7,7 @@ from time import sleep
 
 class BatteryIndicator:
     data = ""
+
     def __init__(self):
         print("BatteryIndicator is running")
         #while True:
@@ -28,6 +29,13 @@ class BatteryIndicator:
         try:
             s = small.value
             l = large.value
+            print(l, "12v in battery indicator$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            s = (s - 0.65) * 666 #should give percentage
+            l = (l * 100)
+            if s > 100:
+                s = 100
+            
+            #s = math.trunc(s)
             
             BatteryIndicator.data = {"voltage5": s, "charging5": charge, "voltage12": l}#c needs to be replaced
             
