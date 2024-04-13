@@ -1,10 +1,10 @@
 wsgi.py
-pipfile.lock
-pipfile
+Pipfile.lock
+Pipfile
 sp_monitor.ini
 cloudflared.deb
 __pycache__
 sp_monitor_ENV
 sumpPumpApp.sock
-testfile.txt
-urlsfortransfer.txt
+testFile.txt
+urls_for_transfer.txt
