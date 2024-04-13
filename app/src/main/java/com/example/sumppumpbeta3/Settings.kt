@@ -138,11 +138,8 @@ class Settings : ComponentActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    Toast.makeText(
-                        this@Settings,
-                        getString(R.string.selected_item) + " " +
-                                "" + array[position], Toast.LENGTH_SHORT
-                    ).show()
+
+
                     Log.i("spinner", spinner.selectedItem.toString())
                     val choice = spinner.selectedItem.toString()
                     Log.i("choice", choice)

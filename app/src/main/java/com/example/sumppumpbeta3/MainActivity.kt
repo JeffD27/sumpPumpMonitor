@@ -15,7 +15,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -51,12 +50,14 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import java.lang.Thread.sleep
+import java.time.LocalDateTime
+import java.time.temporal.Temporal
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
-
+import kotlin.time.Duration.Companion.seconds
 
 var noPowerSilenceTimeGlobal:kotlin.time.Duration = 1.days
 val durationConvertDict = LinkedHashMap<String, kotlin.time.Duration>()
@@ -74,6 +75,7 @@ var notificationHighWaterMuteDuration: kotlin.time.Duration = 15.minutes
 var notificationMainRunWarnMuteDuration: kotlin.time.Duration = 30.minutes
 var notificationBackupRanMuteDuration: kotlin.time.Duration = 1.hours
 var notificationWaterTooLowMuteDuration:  kotlin.time.Duration = 10.minutes
+var notificationBattery12LowMuteDuration: kotlin.time.Duration = 1.days
 
 
 
@@ -111,12 +113,19 @@ class MainActivity : ComponentActivity() {
 
     val defaultMuteTimes = LinkedHashMap<String, Duration>()
     private var mainRunning_: Boolean = false
-
+    private  var mainRunTime_ : String = "Loading..."
+    private var backupRunTime_ : String = ""
+    private var mainTimeStartedStr : String = "Loading..."
+    private var backupTimeStartedStr: String = "Loading..."
     private var backupRunning_: Boolean? = true
 
-    private var voltage12_: Float? = 0.00f
-    private var voltage5_: Float? = 0.00f
+
+
+    private var voltage12_: Int = 0
+    private var voltage5_: Int = 0
     private var charging5_: Boolean? = false
+    @RequiresApi(Build.VERSION_CODES.O)
+    private var checkBatteryVoltsTime: Temporal? = null
 
     private var highFlooding_: Boolean? = false
     private var midFlooding_: Boolean? = false
@@ -124,6 +133,7 @@ class MainActivity : ComponentActivity() {
     private var mainPumpWarnSilence = false
     private var backupPumpWarnSilence = false
     private var generalWarnSilence = false
+    private var waterLevelWarnSilence = false
     private lateinit var mainPumpSilenceTime: Instant
     private lateinit var backupPumpSilenceTime:Instant
     private  var notificationManager: NotificationManager? = null
@@ -137,7 +147,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var notificationMainRunWarnDeployed: Pair<Boolean, Instant>
     private lateinit var notificationBackupRan: Pair<Boolean, Instant>
     private lateinit var notificationWaterTooLow: Pair<Boolean, Instant>
-
+    private lateinit var notificationBattery12Low: Pair<Boolean, Instant>
 
 
 
@@ -150,7 +160,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //val binding: DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, false)
         val activity: Activity = this
-
+        try {
+            Class.forName("dalvik.system.CloseGuard")
+                .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
+                .invoke(null, true)
+        } catch (e: ReflectiveOperationException) {
+            throw RuntimeException(e)
+        }
 
 
         Log.i("durationConvertDictKeys", durationConvertDict.keys.toString())
@@ -163,6 +179,7 @@ class MainActivity : ComponentActivity() {
         if (!this::notificationMainRunWarnDeployed.isInitialized) {notificationMainRunWarnDeployed = Pair(false, Clock.System.now())}
         if (!this::notificationBackupRan.isInitialized) {notificationBackupRan = Pair(false, Clock.System.now())}
         if (!this::notificationWaterTooLow.isInitialized) {notificationWaterTooLow = Pair(false, Clock.System.now())}
+        if (!this::notificationBattery12Low.isInitialized) {notificationBattery12Low = Pair(false, Clock.System.now())}
 
         var firstRun: Boolean = true
 
@@ -175,9 +192,12 @@ class MainActivity : ComponentActivity() {
         binding.mainRunWarnView = true
         binding.backupRunWarnView = true
         binding.generalErrorView = true
+        binding.waterLevelWarnView = true
+        binding.battery5TextBGColor = ContextCompat.getColor(this, R.color.green)
+        binding.battery12TextBGColor = ContextCompat.getColor(this, R.color.green)
 
         binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(this, R.drawable.acplug)
-        binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(this, R.drawable.noacplug)
+
         var acPowerLargeBatteryBoolean = false
         var acPowerSmallBatteryBoolean = true
 
@@ -185,11 +205,9 @@ class MainActivity : ComponentActivity() {
 
         val button = findViewById<Button>(R.id.buttonSettings)
 
-        val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater" )
+        val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12" )
 
-        for (notifiation in notificationStrings){
 
-        }
 
 
 
@@ -201,6 +219,7 @@ class MainActivity : ComponentActivity() {
         defaultMuteTimes["mainRunTime"] = 30.minutes
         defaultMuteTimes["backupRun"] = 1.hours
         defaultMuteTimes["noWater"] = 10.minutes
+        defaultMuteTimes["lowBattery12"] = 1.days
 
 
 
@@ -210,19 +229,14 @@ class MainActivity : ComponentActivity() {
         button.setOnClickListener {
 
             // Create an Intent to start the new activity
-            val intent = Intent(this, Settings()::class.java, )
+            val intent = Intent(this, Settings()::class.java)
 
 
             // Start the new activity
             startActivity(intent)
         }
 
-        runBlocking {
-            launch {
-                println("World!")
-                Log.i("mainRunning onCreate", mainRunning_.toString())
 
-                }
 
                 val intDurationDict = LinkedHashMap<Int, Duration>()
                 intDurationDict[5] = 5.minutes
@@ -243,9 +257,9 @@ class MainActivity : ComponentActivity() {
                             runBlocking {
                                     val durationInt = updateNotificationMuteTimes(string, activity)!! //initiated in settings
 
-                                    Log.i("notifyString", string)
+                                    //Log.i("notifyString", string)
 
-                                    Log.i("durationInt", durationInt.toString())
+                                   // Log.i("durationInt", durationInt.toString())
 
                                     when(string){
                                         "serverError" ->{
@@ -269,6 +283,9 @@ class MainActivity : ComponentActivity() {
                                         "noWater" ->{
                                             notificationWaterTooLowMuteDuration = intDurationDict[durationInt]!!
                                         }
+                                        "lowBattery12" ->{
+                                            notificationBattery12LowMuteDuration = intDurationDict[durationInt]!!
+                                        }
                                     }
 
 
@@ -280,30 +297,43 @@ class MainActivity : ComponentActivity() {
                                     //Log.i("muteValues", muteValues[string].toString())
                                 }
                             }
-
-
-                        if (!charging5_!! && !generalWarnSilence){
-                            binding.generalErrorView = true
-                            binding.generalErrorText = "USB disconnected\n / no power!"
-                            val (deployed, timeDeployed) = notificationACPowerDeployed
-                            Log.i("time and deploy", timeDeployed.toString())
-                            Log.i("time and deploy", deployed.toString())
-                            if (!deployed){
-                                Log.i("charging5_", "starting notification for charging 5")
-                                notificationBuilder("SumpPump RPi: No AC Power", "Usb is disconnected\nOr there is no power going to RPi","high", "22222", "11111", notificationManager!!)
-                                notificationACPowerDeployed = Pair(true, Clock.System.now())
+                        Log.i("charging5", charging5_.toString())
+                        if(!charging5_!!){
+                            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)
+                            if (!generalWarnSilence){
+                                binding.generalErrorView = true
+                                binding.generalErrorText = "USB disconnected\n / no power!"
+                                val (deployed, timeDeployed) = notificationACPowerDeployed
+                                Log.i("time and deploy", timeDeployed.toString())
+                                Log.i("time and deploy", deployed.toString())
+                                if (!deployed){
+                                    Log.i("charging5", "starting notification for charging 5")
+                                    notificationBuilder(
+                                        "SumpPump RPi: No AC Power",
+                                        "Usb is disconnected\nOr there is no power going to RPi",
+                                        "high",
+                                        "22222",
+                                        "11111",
+                                        notificationManager!!)
+                                    notificationACPowerDeployed = Pair(true, Clock.System.now())
+                                }
                             }
                         }
+
                         else{binding.generalErrorView = false
-                            binding.generalErrorText = "Message shouldn't be here!"}
+                            Log.i("charging5_", "charging 5 should be false here")
+                            binding.generalErrorText = "Message shouldn't be here!"
+                            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
+                            }
 
                         try {
                             val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
-                            Log.i("mainactivity oncreate", "calling get on jeffs-handyman")
-                            get( "jeffs-handyman.net/sumppump",  parameters, null)
+                            Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
+                            get( "https://sumppump.jeffs-handyman.net/",  parameters, null)
 
                         } catch (e: java.lang.Exception) {
-                            //e.printStackTrace()
+                            Log.i("serverError", "yep that's a server error.")
+                            e.printStackTrace()
                             binding.generalErrorText = "Error in Server.\n NO Data"
                             //Log.i("mainActivity after get", e.toString())
 
@@ -316,25 +346,37 @@ class MainActivity : ComponentActivity() {
 
 
                         }
-                        firstRun = false
+                        firstRun = true //this was false, but I don't want this variable anymore
                         Log.i("onCreate MainRunning", mainRunning_.toString())
                         if (mainRunning_ == true) {
                             binding.mainRunning = "Running"
+                            binding.mainRunTime = mainRunTime_
                             binding.mainRunningBoxColor =
                                 ContextCompat.getColor(activity, R.color.green)
                             Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
+
                         }
                         if (mainRunning_ == false) {
                             binding.mainRunning = "Pump is Off"
+
                             binding.mainRunningBoxColor =
                                 ContextCompat.getColor(activity, R.color.red)
+                            Log.i("mainTimeStartedStr", mainTimeStartedStr)
+                            binding.mainRunTime = "Last Ran On:\n$mainTimeStartedStr"
 
                             Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
                         }
+                        Log.i("mainRunTime_", mainRunTime_)
+
+
+                        Log.i("mainRunTime_Binding", binding.mainRunTime.toString())
+
+
 
 
 
                         if (backupRunning_ == true) {
+
 
                             val (deployed, timeDeployed) = notificationBackupRan
 
@@ -342,25 +384,30 @@ class MainActivity : ComponentActivity() {
                                 notificationBuilder("Check Sump Pump", "Backup Pump has run!","high", "22222", "88888", notificationManager!!)
                                 notificationBackupRan = Pair(true, Clock.System.now())
                             }
-                            binding.backupRunning = "Running"
+                            binding.backupRunTime = backupRunTime_
+                            binding.backupRunning = "Pump is Running"
+
                             binding.backupRunningBoxColor =
                                 ContextCompat.getColor(activity, R.color.green)
                             Log.i("backupRunningColor", binding.backupRunningBoxColor.toString())
+                            backupRunTime_.let{binding.backupRunTime}
+                            backupPumpWarnSilence = false
                         }
                         if (backupRunning_ == false) {
                             binding.backupRunning = "Pump is Off"
+                            binding.backupRunTime = "Last Ran on:\n $backupTimeStartedStr"
                             binding.backupRunningBoxColor =
                                 ContextCompat.getColor(activity, R.color.red)
 
                             Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
                         }
 
-                        highFlooding_ = true
-                        lowFlooding_ = false
+
                         if (highFlooding_ == true) {
                             binding.waterLevelImage =
                                 ContextCompat.getDrawable(activity, R.drawable.water_high)
                             binding.waterLevelText = "High\n(100%)"
+                             //set in applyWaterLevel
 
 
                             val (deployed, timeDeployed) = notificationHighWaterDeployed
@@ -375,26 +422,69 @@ class MainActivity : ComponentActivity() {
                                 )
                                 notificationHighWaterDeployed = Pair(true, Clock.System.now())
                             }
+                            if( midFlooding_ == false || lowFlooding_ == false  ) {
+                                binding.waterLevelWarnView = !waterLevelWarnSilence
+                            }
+                            else{binding.waterLevelWarnView=false}
                         }
                         else if (midFlooding_ == true) {
                             binding.waterLevelImage =
                                 ContextCompat.getDrawable(activity, R.drawable.water_50)
                             binding.waterLevelText = "50%"
+                            if( lowFlooding_ == false ) {
+                                binding.waterLevelWarnView = !waterLevelWarnSilence
+                            }
+                            else{binding.waterLevelWarnView=false}
                         } else if (lowFlooding_ == true) {
                             binding.waterLevelImage =
                                 ContextCompat.getDrawable(activity, R.drawable.water_10)
                             binding.waterLevelText = "10%"
+                            binding.waterLevelWarnView=false
                         } else {
                             binding.waterLevelImage =
                                 ContextCompat.getDrawable(activity, R.drawable.water_low)
                             binding.waterLevelText = "Empty"
+                            binding.waterLevelWarnView=false
                         }
 
-                        binding.battery12vText = voltage12_.toString() + "V"
-                        binding.battery5vText = voltage5_.toString() + "V"
+                        binding.battery12vText = "$voltage12_%"
+                        if (voltage12_ < 95){
+                            val (deployed, timeDeployed) = notificationBattery12Low
+                            binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.red)
+                            if(!deployed){
+                                notificationBuilder(
+                                    "Sump Pump Battery is LOW",
+                                    "12 Volt battery is low. Check AC power.",
+                                    "high",
+                                    "11111",
+                                    "11112",
+                                    notificationManager!!
+                                )
+                            }
+                            notificationBattery12Low = Pair(true, Clock.System.now())
+                        }
+                        else{
+                            binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.green)
+                        }
+                        Log.i("voltage5_", voltage5_.toString())
+                        val sleepTime = java.time.Duration.ofMinutes(1)
 
-
-
+                        val currentTime = LocalDateTime.now()
+                        checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = LocalDateTime.now() - java.time.Duration.ofMinutes(40)}
+                        Log.i("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
+                        val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime)
+                        Log.i("durationBatteryVolts", duration.toString())
+                        Log.i("sleeptime", sleepTime.toString())
+                        Log.i("sleeptimeBool", (duration > sleepTime).toString())
+                        if (duration > sleepTime || binding.battery5TextView.text == "0%" ){
+                            Log.i("durationBatteryVolts2", sleepTime.toString())
+                            binding.battery5vText = "$voltage5_%"
+                            checkBatteryVoltsTime = LocalDateTime.now()
+                            if(voltage5_ < 70){
+                                binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
+                            }
+                            else{binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)}
+                        }
 
                         val (deployed, timeDeployed) = notificationMainRunWarnDeployed
 
@@ -409,15 +499,7 @@ class MainActivity : ComponentActivity() {
                         else {binding.backupRunWarnView = false}
 
 
-                        if (acPowerLargeBatteryBoolean){
-                            binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
-                        }
-                        else{ binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)}
 
-                        if (acPowerSmallBatteryBoolean){
-                            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
-                        }
-                        else{ binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)}
 
                         if (mainRunning_|| backupRunning_ == true){
                             if (lowFlooding_ == false){
@@ -441,12 +523,12 @@ class MainActivity : ComponentActivity() {
                         Log.i("noPowerMuteTime", notificationACPowerMuteDuration.toString() )
 
                         resetNotifications()
-                        sleep(3000)
+                        sleep(1500)
                     }
                 }
                 threadServer.start()
 
-            }
+
 
             println("Hello")
         }
@@ -482,7 +564,7 @@ class MainActivity : ComponentActivity() {
 
 
     private suspend fun updateNotificationMuteTimes(notification:String, context: Context): Int? {
-        Log.i("updateNotifcationMuteTimes", notification)
+        //Log.i("updateNotifcationMuteTimes", notification)
         val durationIntDict = LinkedHashMap<Duration, Int>()
         durationIntDict[5.minutes] = 5
         durationIntDict[10.minutes] = 10
@@ -575,6 +657,12 @@ class MainActivity : ComponentActivity() {
                 notificationWaterTooLow = Pair(false, Clock.System.now())
             }
         }
+        if (this::notificationBattery12Low.isInitialized){
+            val (deployed, timeDeployed) = notificationBattery12Low
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationBattery12LowMuteDuration) {
+                notificationBattery12Low = Pair(false, Clock.System.now())
+            }
+        }
     }
 
     fun closeMainPumpNotification(view: View){
@@ -586,13 +674,19 @@ class MainActivity : ComponentActivity() {
 
 
     }
+    fun closeWaterLevelNotification(view:View){
+        Log.i("closeWaterLevelNot", waterLevelWarnSilence.toString())
+        if (!waterLevelWarnSilence){
 
+            waterLevelWarnSilence = true}
+    }
     fun closeBackupPumpNotification(view: View){
         Log.i("closebackupPumpNotification", "starting close backup pump notification")
         Log.i("closebackupPumpNotification", backupPumpWarnSilence.toString())
         if (!backupPumpWarnSilence){
             backupPumpSilenceTime = Clock.System.now()
             backupPumpWarnSilence = true}
+
 
 
     }
@@ -678,9 +772,13 @@ class MainActivity : ComponentActivity() {
 
 
 
-    fun get(url: String?, params: Map<String, String>, responseCallback: Unit?) {
+    fun get(url: String?, params: Map<String, String>? = null, responseCallback: Unit?) {
+        if (url != null) {
+            Log.i("url", url)
+        }
         val httpBuilder: HttpUrl.Builder = url!!.toHttpUrlOrNull()!!.newBuilder()
-        Log.i("in Get", params.toString())
+        Log.i("in Get","starting get")
+
         if (params != null) {
             for ((key, value) in params) {
                 if (key != null) {
@@ -692,7 +790,7 @@ class MainActivity : ComponentActivity() {
         }
         var responseString: String? = "No Response"
         val request: Request = Request.Builder().url(httpBuilder.build()).build()
-
+        Log.i("request", request.toString())
 
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
@@ -712,16 +810,22 @@ class MainActivity : ComponentActivity() {
         val mainRunningReg: Regex = "mainRunning.:\\s*(\\w+)".toRegex()
         val backupRunningReg: Regex = "backupRunning.:\\s*(\\w+)".toRegex()
         val backupRunWarnReg: Regex = "backup_run_warning.:\\s*(\\w+)".toRegex()
-        val mainTimeStartedReg: Regex = "timeStartedMain.:\\s*.(.+)".toRegex()
-        val backupTimeStartedReg: Regex = "timeStartedBackup.:\\s*.(.+)".toRegex()
+        val backupRunTimeReg: Regex = "backup_run_time\"?:\\s*\"?(\\d*):(\\d*):(\\d*)".toRegex()
+        val backupRunTimeNullReg: Regex = "backup_run_time\":\\s*\"?([\\w\\s]*)".toRegex()
+        val mainTimeStartedReg: Regex = "timeStartedMain.:\\s*.\\w{3,},\\s*(\\d{1,2}\\s\\w{3,}\\s\\d{4}\\s*\\d{1,2}:\\d{1,2}:\\d{1,2})".toRegex()
+        val mainRunTimeReg: Regex = "main_run_time\"?:\\s*\"?(\\d*):(\\d*):(\\d*)".toRegex()
+        val mainRunTimeNullReg: Regex = "main_run_time\":\\s*\"?([\\w\\s]*)".toRegex()
+        val backupTimeStartedReg: Regex = "timeStartedBackup.:\\s*.\\w{3,},\\s*(\\d{1,2}\\s\\w{3,}\\s\\d{4}\\s*\\d{1,2}:\\d{1,2}:\\d{1,2})".toRegex()
 
-        val highFloodingReg: Regex = "highFlooding.:\\s*(\\w+)".toRegex()
+
+        val highFloodingReg: Regex = "highFlooding.?:\\s*(\\w+)".toRegex()
         val midFloodingReg: Regex = "midFlooding.:\\s*(\\w+)".toRegex()
         val lowFloodingReg: Regex = "lowFlooding.:\\s*(\\w+)".toRegex()
 
-        val voltage5Reg: Regex = "'voltage5.:\\s*(\\d*\\.\\d{0,2})".toRegex()
-        val voltage12Reg: Regex = "voltage12.:\\s*(\\d*\\.\\d{0,2})".toRegex()
+        val voltage5Reg: Regex = "voltage5.:\\s*(\\d*)".toRegex()
+        val voltage12Reg: Regex = "voltage12.:\\s*(\\d*)".toRegex()
         val charging5Reg: Regex = "charging5.:\\s*(\\w+)".toRegex()
+
 
 
         var match = responseString?.let { mainRunningReg.find(it) }
@@ -742,19 +846,40 @@ class MainActivity : ComponentActivity() {
             applyBackupPumpWarn(backupRunningWarnStr)
         }
         match = responseString?.let {mainTimeStartedReg.find(it)}
-        val mainTimeStartedStr = match?.groupValues?.get(1)
+        mainTimeStartedStr = match?.groupValues?.get(1).toString()
         if (mainTimeStartedStr != null) {
             //val mainRunTime = getRunTime(mainTimeStartedStr)
             Log.i("mainRunningStr", mainTimeStartedStr)
         }
         match = responseString?.let {backupTimeStartedReg.find(it)}
-        val backupTimeStartedStr = match?.groupValues?.get(1)
+        backupTimeStartedStr = match?.groupValues?.get(1).toString()
         if (backupTimeStartedStr != null) {
             Log.i("backupTimeStartedStr", backupTimeStartedStr)
             //getRunTime(backupTimeStartedStr)
         }
+        match = responseString?.let{mainRunTimeReg.find(it)}
+        match?.let {mainRunTime_ ="Runtime:\n" + match?.groupValues?.get(1).toString() + ":" + match?.groupValues?.get(2).toString() + ":" + match?.groupValues?.get(3).toString()} ?: run { //run will run if match is null
+
+            match = responseString?.let { mainRunTimeNullReg.find(it) }
+            mainRunTime_ = match?.groupValues?.get(1).toString()
+         }
+
+        Log.i("mainRunTimeMatch", mainRunTime_)
+
+        match = responseString?.let{backupRunTimeReg.find(it)}
+        match?.let {backupRunTime_ = "Runtime:\n" + match?.groupValues?.get(1).toString() + ":" + match?.groupValues?.get(2).toString() + ": " + match?.groupValues?.get(3).toString()} ?: run { //run will run if match is null
+            match = responseString?.let{backupRunTimeNullReg.find(it)}
+            backupRunTime_ = match?.groupValues?.get(1).toString()}
+
+            //add function to get last run
+
+
+
         match = responseString?.let { highFloodingReg.find(it) }
         val highFloodingStr = match?.groupValues?.get(1)
+        if (highFloodingStr != null) {
+            Log.i("highFloodingString", highFloodingStr)
+        }
         match = responseString?.let { midFloodingReg.find(it) }
         val midFloodingStr = match?.groupValues?.get(1)
         match = responseString?.let { lowFloodingReg.find(it) }
@@ -762,6 +887,7 @@ class MainActivity : ComponentActivity() {
 
         match = responseString?.let { voltage5Reg.find(it) }
         val voltage5Str = match?.groupValues?.get(1)
+        //Log.i("voltage5Str", voltage5Str!!)
         match = responseString?.let { voltage12Reg.find(it) }
         val voltage12Str = match?.groupValues?.get(1)
         match = responseString?.let { charging5Reg.find(it) }
@@ -769,13 +895,14 @@ class MainActivity : ComponentActivity() {
 
         applyRelayData(mainRunningStr, backupRunningStr)
         applyBatteryData(
-            voltage12Str,
-            voltage5Str,
-            charging5Str
+            voltage12Str=voltage12Str,
+            voltage5Str=voltage5Str,
+            charging5Str=charging5Str
         )
         if (voltage12Str != null) {
             Log.i("voltage12", voltage12Str)
         }
+
         applyWaterLevel(
             highFloodingStr,
             midFloodingStr,
@@ -853,29 +980,32 @@ class MainActivity : ComponentActivity() {
         charging5Str: String?
 
     ) {
-        var voltage5Apply: Float? = 0.0F
-        var voltage12Apply: Float? = 0.0F
-        var charging5Apply: Boolean = false
+        var voltage5Apply: Int
+        var voltage12Apply: Int
+        var charging5Apply: Boolean
 
 
-        voltage5Apply = voltage5Str?.toFloat()
-        voltage12Apply = voltage12Str?.toFloat()
-
-        if (charging5Str == "False") {
-            charging5Apply = false
-        } else if (charging5Str == "True") {
-            charging5Apply = true
-        } else {
-            Log.i("Failure in applyBattery", charging5Apply.toString())
-        }
-        Log.i("applyBatteryData", "done with apply battery data")
-        Log.i("voltage5", voltage5Apply.toString())
-        Log.i("voltage12", voltage12Apply.toString())
-        Log.i("charging", charging5Apply.toString())
+        voltage5Apply = voltage5Str?.toInt()!!
+        voltage12Apply = voltage12Str?.toInt()!!
 
         voltage12_ = voltage12Apply
         voltage5_ = voltage5Apply
-        charging5_ = charging5Apply
+
+
+        if (charging5Str == "false") {
+            charging5_ = false
+        } else if (charging5Str == "true") {
+            charging5_ = true
+        } else {
+            charging5_ = false
+            if (charging5Str != null) {
+                Log.i("Failure in applyBattery", charging5Str)
+            }
+        }
+        Log.i("charging5inAPply", charging5_.toString())
+
+
+
 
     }
 
@@ -884,26 +1014,28 @@ class MainActivity : ComponentActivity() {
         midFloodingStr: String?,
         lowFloodingStr: String?
     ) {
-        //delete this later:
-        val highFloodingStrTest = "true"
-        val midFloodingStrTest = "true"
-        val lowFloodingStrTest ="false"
+
+        Log.i("applyingwaterlevel", "waterlevelapplying")
+
         var highFloodingApply: Boolean = false
         var midFloodingApply: Boolean = false
         var lowFloodingApply: Boolean = false
         val waterLevelWarningBox = findViewById<TextView>(R.id.waterLevelWarning)
-        val triangleWarningImageView = findViewById<ImageView>(R.id.waterLevelWarningTriangle)
-        val xToClose = findViewById<ImageView>(R.id.xToCloseWaterLevelPumpErrorImageView)
-
+        //val triangleWarningImageView = findViewById<ImageView>(R.id.waterLevelWarningTriangle)
+        //val xToClose = findViewById<ImageView>(R.id.xToCloseWaterLevelPumpErrorImageView)
+        if (highFloodingStr != null) {
+            Log.i("highFlood@", highFloodingStr)
+        }
         if (highFloodingStr == "false") {
+            Log.i("highFloodingStrApplyWater1", highFloodingStr)
             highFloodingApply = false
         }
         else if (highFloodingStr == "true") {
+            Log.i("highFloodingStrApplyWater2", highFloodingStr)
             highFloodingApply = true
             if (midFloodingStr == "false" || lowFloodingStr == "false") {
-                waterLevelWarningBox.visibility = View.VISIBLE
-                triangleWarningImageView.visibility = View.VISIBLE
-                xToClose.visibility = View.VISIBLE
+
+
                 Log.i(
                     "ERROR: Raise notification",
                     " Water Level Sensor Error:High Flooding is true, but others are false"
@@ -919,9 +1051,10 @@ class MainActivity : ComponentActivity() {
                         notificationManager!!)
                     notificationWaterLevelSensorErrorDeployed = Pair(true, Clock.System.now())
                 }
-
             }
+
         }
+
 
 
         Log.i("MIDFLOODING STRING", midFloodingStr.toString())
@@ -932,7 +1065,7 @@ class MainActivity : ComponentActivity() {
             midFloodingApply = true
             if (lowFloodingStr == "false") {
                 waterLevelWarningBox.visibility = View.VISIBLE
-                triangleWarningImageView.visibility = View.VISIBLE
+
 
                 Log.i(
                     "ERROR: Raise notification",

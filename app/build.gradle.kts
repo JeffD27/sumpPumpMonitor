@@ -38,6 +38,7 @@ android {
                 "proguard-rules.pro"
             )
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -50,12 +51,12 @@ android {
 
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.02.02")
-
+    val work_version = "2.9.0"
     implementation(composeBom)
     androidTestImplementation(composeBom)
+    implementation("androidx.work:work-runtime-ktx:$work_version")
 
 
-    // Choose one of the following:
     // Material Design 3
     //implementation ("androidx.core:core:2.2.0") //this breaks EVERYTHING
     implementation("androidx.compose.material3:material3")

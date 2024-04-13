@@ -19,7 +19,7 @@
     <string name="backupPumpTitle">Backup Pump</string>
     <string name="largeBattery">Large Battery</string>
     <string name="smallBattery">small battery</string>
-    <string name="batteryVoltsTitle">Battery Volts</string>
+    <string name="batteryVoltsTitle">Battery Levels</string>
     <string name="settingsTitle">Settings</string>
     <string name="waterLevelemptycontentdescription">An empty tank</string>
     <string name="warningsButtonText">Warnings/Notifications</string>

@@ -8,5 +8,6 @@
     <color name="darkActivityBackground">#0086b3</color>
     <color name="activityBackground">#0099cc</color>
     <color name="darkerBlack">#202020</color>
+    <color name="darkGreen">#009688</color>
 
 </resources>

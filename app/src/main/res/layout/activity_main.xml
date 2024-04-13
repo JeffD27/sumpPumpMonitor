@@ -5,8 +5,10 @@
 
     <data>
         <import type="android.view.View"/>
+        <variable name= "mainRunTime" type = "String"/>
         <variable name="mainRunning" type="String"/>
         <variable name="backupRunning" type="String"/>
+        <variable name ="backupRunTime" type="String"/>
         <variable name="mainRunningBoxColor" type="Integer"  />
         <variable name="backupRunningBoxColor" type="Integer" />
         <variable name="waterLevelImage" type="android.graphics.drawable.Drawable"/>
@@ -14,12 +16,14 @@
         <variable name="battery12vText" type="String"/>
         <variable name="battery5vText" type="String"/>
         <variable name="mainRunWarnView" type="Boolean"/>
-        <variable name="mainRunTime" type="String"/>
         <variable name="acPowerLargeBatteryImage" type="android.graphics.drawable.Drawable"/>
         <variable name="acPowerSmallBatteryImage" type="android.graphics.drawable.Drawable"/>
         <variable name="backupRunWarnView" type="Boolean"/>
         <variable name= "generalErrorText" type="String"/>
+        <variable name="waterLevelWarnView" type = "Boolean"/>
         <variable name= "generalErrorView" type = "Boolean"/>
+        <variable name= "battery12TextBGColor" type = "Integer"/>
+        <variable name= "battery5TextBGColor" type = "Integer"/>
     </data>
 
     <ScrollView
@@ -60,13 +64,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/waterLevelWarning"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
 
 
-                android:layout_marginBottom="15dp"
                 android:background="@color/white"
                 android:fontFamily="@font/kanit_bold"
                 android:paddingStart="5dp"
@@ -76,11 +80,11 @@
                 android:text="@string/waterLevelWarning"
                 android:textAlignment="center"
                 android:textColor="@color/brightRed"
-                android:visibility="invisible"
                 android:translationZ="90dp"
-                app:layout_constraintBottom_toTopOf="@+id/divider"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/divider2" />
+                app:layout_constraintStart_toEndOf="@+id/divider2"
+                app:layout_constraintTop_toTopOf="@+id/mainPumpRunWarning" />
 
             <TextView
                 android:id="@+id/generalWarning"
@@ -151,39 +155,49 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{mainRunWarnView ? View.VISIBLE : View.GONE}"
                 app:constraint_referenced_ids="mainPumpRunWarning, mainPumpRunWarningTriangleImageView, xToCloseMainPumpErrorImageView" />
+
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/backupPumpRunWarningGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="@{backupRunWarnView ? View.VISIBLE : View.GONE}"
                 app:constraint_referenced_ids="backupPumpRunWarning, backupPumpRunWarningTriangleImageView, xToCloseBackupPumpErrorImageView" />
+
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/generalWarningGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="@{generalErrorView ? View.VISIBLE : View.GONE}"
                 app:constraint_referenced_ids="generalWarning, generalWarningTriangleImageView, xToCloseGeneralErrorImageView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/WaterLevelWarningGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{waterLevelWarnView ? View.VISIBLE : View.GONE}"
+                app:constraint_referenced_ids="waterLevelWarning, waterLevelWarningTriangle, xToCloseWaterLevelPumpErrorImageView" />
+
             <TextView
                 android:id="@+id/mainPumpRunWarning"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
 
 
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/white"
                 android:fontFamily="@font/kanit_bold"
                 android:paddingStart="5dp"
-                android:paddingEnd = "5dp"
                 android:paddingTop="5dp"
+                android:paddingEnd="5dp"
                 android:text="@string/PumpRuntimeWarning"
                 android:textAlignment="center"
+
+
                 android:textColor="@color/brightRed"
-
-
-                app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintEnd_toStartOf="@+id/divider2"
                 app:layout_constraintHorizontal_bias="0.652"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
 
             <ImageView
@@ -210,7 +224,7 @@
 
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp"
-                android:text="@string/PumpRuntimeWarning"
+                android:text="@string/backupPumpHasRun"
                 android:textAlignment="center"
                 android:textColor="@color/brightRed"
                 android:visibility="visible"
@@ -238,7 +252,6 @@
                 android:layout_width="92dp"
                 android:layout_height="89dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="70dp"
                 android:contentDescription="@string/largeBattery"
                 android:src="@drawable/battery_empty"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -271,13 +284,13 @@
 
             <ImageView
                 android:id="@+id/battery5ImageView"
-                android:contentDescription="@string/smallBattery"
                 android:layout_width="99dp"
                 android:layout_height="45dp"
-                android:layout_marginStart="3dp"
                 android:layout_marginTop="12dp"
+                android:layout_marginEnd="70dp"
+                android:contentDescription="@string/smallBattery"
                 android:src="@drawable/battery5"
-                app:layout_constraintStart_toStartOf="@+id/battery12ImageView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/battery12ImageView" />
 
             <TextView
@@ -286,9 +299,12 @@
                 android:layout_height="wrap_content"
                 android:text= "@{battery12vText}"
                 android:textAlignment="center"
-                android:textSize="20sp"
-                android:textColor="@color/green"
+                android:textSize="18sp"
+                android:textColor="@color/white"
                 android:fontFamily="@font/kanit_bold"
+                android:background="@{battery12TextBGColor}"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/battery12ImageView"
                 app:layout_constraintEnd_toEndOf="@+id/battery12ImageView"
                 app:layout_constraintHorizontal_bias="0.456"
@@ -301,8 +317,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{battery5vText}"
-                android:textSize="20sp"
-                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@{battery5TextBGColor}"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:fontFamily="@font/kanit_bold"
                 app:layout_constraintBottom_toBottomOf="@+id/battery5ImageView"
                 app:layout_constraintEnd_toEndOf="@+id/battery5ImageView"
@@ -377,16 +396,18 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:text="Runtime: 3 Minutes"
-                android:textColor="@color/white"
+                android:layout_marginTop="12dp"
                 android:background="@color/darkActivityBackground"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:text="@{mainRunTime}"
+                android:textAlignment="center"
+                android:lineHeight="20dp"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/divider2"
-                app:layout_constraintHorizontal_bias="0.564"
+                app:layout_constraintHorizontal_bias="0.549"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mainRunningConstraint" />
 
@@ -397,11 +418,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="16dp"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:text="Last Run on 12/3/23 4:11am"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="@{backupRunTime}"
+                android:textAlignment="center"
+                android:lineHeight="20dp"
                 android:background="@color/darkActivityBackground"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/divider2"
@@ -528,6 +551,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/xtoclose"
                 android:contentDescription="@string/xToClose"
+                android:onClick="closeWaterLevelNotification"
                 android:translationZ="90dp"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
@@ -542,21 +566,11 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:src= "@{acPowerSmallBatteryImage}"
+                android:src="@{acPowerSmallBatteryImage}"
+                app:layout_constraintBottom_toBottomOf="@+id/battery5ImageView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acPowerLargeBattery"
-                 />
-
-            <ImageView
-                android:id="@+id/acPowerLargeBattery"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginEnd="16dp"
-                android:src= "@{acPowerLargeBatteryImage}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/batteryTitleTextView"
-                 />
+                app:layout_constraintStart_toEndOf="@+id/battery5ImageView"
+                app:layout_constraintTop_toTopOf="@+id/battery5ImageView" />
 
 
             <!--
