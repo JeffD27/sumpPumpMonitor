@@ -18,13 +18,11 @@ import subprocess as sp
 
 # create the Flask app
 app = Flask(__name__)
-event = threading.Event() #used to stop thread so multiple threads don't pile up and cause data errors...ask me how I know
-
+dataObj = ""
 print("createdApp")
 @app.route('/',methods=['GET', 'POST'])
-def __init__(first_run = True, que = queue.LifoQueue()):
+def __init__(first_run = True):
     print("flask Inititializing")
-    jsonQue = queue.LifoQueue()
     if request.method == 'GET':
         print('server get request')
         args = request.values
@@ -34,43 +32,36 @@ def __init__(first_run = True, que = queue.LifoQueue()):
             if arg_dict["firstRun"] == "true":
                 print("\nfirst run is true\n\!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n") 
                 first_run = True
-                event.set()
+                
             elif arg_dict["firstRun"] == "false":
                 print("first run is false!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!")
                 first_run = False
-                event.clear()
+                
             else:
                 print('yeah nice try')
-        
-        
-    
-        #return render_template('inputpage.html')
-        #first_run = argv[0]
-    
-        
-       # data_thread = threadClass.pumpThread(queue=que, first_run= first_run)
+  
         if first_run: #let's get this working NEXT4425
-           
-            
+          
             print("firstRun geting data")
-            getDataObj = getData()
+            dataObj = getData()
             #lock = threading.Lock()
             print("PARSE DATA LOOP WILL BE CALLED------------------------------------------------------------------------------------")
-            data_thread = threading.Thread(target = getDataObj.call_parse_data, args= (que, event))
-            event.clear()
-            data_thread.start()
-            
-            
-            
-            print("\n\nyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\n\n\n\n\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n\n")
 
-        que_handler_thread = threading.Thread(target = lambda: handleQue(que, jsonQue))
-        
-        que_handler_thread.start()
-        que_handler_thread.join()
-        jsonData = jsonQue.get()
-        return jsonData
-        
+            data = dataObj.call_parse_data()
+            print('''
+              
+
+
+                %s
+
+
+
+
+
+
+             '''%data) 
+            return jsonify(data)
+            
         
 
             
@@ -106,39 +97,6 @@ def __init__(first_run = True, que = queue.LifoQueue()):
         return(jsonify("message Received"))
     
 
-def handleQue(que, jsonQue, ):
-    try:
-        while not que.empty():
-            
-            data = que.get()
-            if 69 in data: sys.exit()
-            
-            
-            print(data)
-            print(data["pumpData"], "Pump Data in try in app^^^^^^^^^^^^^^^^^^^^^^^^^^^")
-            
-            #que.task_done()
-            print(data, "this is in try((((((((()))))))))")
-            # que.task_done()
-            jsonQue.put(data)
-            
-    except Exception as e:
-        print(e, "ERRROR IN GET DATA FROM THREAD")
-        #print(pumpData, "in server@@@@<<<<<<<<<<<<<<<>>>>>>\n\n", pumpData, "\n\<<<<<<<>>>>>>>>\n")
-        #print(data, '_)_)_)_)_)_)_)+)_')
-        jsonQue.put(json.loads("No data"))
-        
-        #print(type(data), '&&')
-        if data is None:
-            print("no data!!!!!!!!!!!!!!!!!!!")
-            return "No data found"
-        else:
-            print(data, "\n<!<!<!<!<!<!<<!<<!<>!>!>!>>!>!>$$$$$$$$$$")
-        #print("returning data", data)
-       
-    
-           
-    
     
 
 if __name__ == '__main__':

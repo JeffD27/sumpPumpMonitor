@@ -39,29 +39,28 @@ class getData():
         #self.pulse_hardware()
         #sleep(.5)
         '''    
-    def call_parse_data(self, queueMain, event): #event is for stopping the thread
+    def call_parse_data(self): #event is for stopping the thread
         parseDataQueue = queue.LifoQueue()
 
-        data = parseDataFiles.parseDataFiles()
+        parseData = parseDataFiles.parseDataFiles()
         #while True: #you need this so that python can keep track of time variable (ie pump running)
        
             #break
         print("starting while loop in getdata.callparsedata")
-        data.run( parseDataQueue)
-        self.pumpData = parseDataQueue.get()
+        self.pumpData = parseData.run()
+        
         #mainRunning = data.mainRunning
         #self.pumpData = data.all_data #reading data from parsedatafiles (NOT FROM GPIO)
         
         
-        print(str(self.pumpData), "TTTTTTTTTTTTTTTTTTTTTTTTTTT\n\n")
+        
         self.pulse_hardware()
-        print(self.pumpData)
+        print(self.pumpData["mainRunning"], "here@~~")
+        allDataDict = {"time":datetime.now(), "pumpData": self.pumpData, "wl_data": self.wl_data, "bi_data": self.bi_data}
         
-        queueMain.put({"time":datetime.now(), "pumpData": self.pumpData, "wl_data": self.wl_data, "bi_data": self.bi_data}) #this adds pumpdata to the queue which can be grabbed later
+        return  allDataDict
         
-        print("----------------------PUTTED-------------------------")
-        print(datetime.now())
-            #sleep(.5)
+        
     def pulse_hardware(self):
         print("pulsing hardware")
         self.wl_data = self.getWaterLevel()

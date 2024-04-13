@@ -7,22 +7,16 @@ import sys
 class parseDataFiles():
       
        relayData = {}
-       mainRunning = False
-       backupRunning = False
-       timeStartedMain = datetime.now()
-       timeStartedBackup = datetime.now()
+      
        prevTimeStamp = ""
        pumpRunningDict = {}
        main_date_dict = {}
        backup_date_dict = {}
        main_run_warning = False
        backup_run_warning = False
-       timeRunningMain = "Not Running"
-       timeRunningBackup = "Not Running"
-       timeRunningMainStr = "Not Running"
-       timeRunningBackupStr = "Not Running"
        
-       def run(self, queue):
+       
+       def run(self):
        #while True: #for testing...i'll want to delete this while loop later
        
               self.readDataFiles()
@@ -42,14 +36,16 @@ class parseDataFiles():
                      "backup_run_warning": self.backup_run_warning,
                      
                      }
-              queue.put(self.all_data)
+              return self.all_data
 
        def writeTimeStamp(self):
               if self.timeStartedMain is not None and self.timeStartedBackup is not None:
                      with open("timeStamps.txt", 'w') as f:
                             print("saving Time started = %s" %self.timeStartedBackup,"/n(((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
                             f.write(str({'MainRunning': self.timeStartedMain, 'BackupRunning': self.timeStartedBackup}))
-
+                     with open("previouslyRunning.txt", 'w') as f: #this is to know if the pumps were running so we can update start times
+                            print("saveing previously run")
+                            f.write(str({'MainRunning': self.mainRunning, 'BackupRunning': self.backupRunning}))
                      
        def readDataFiles(self ):
               
@@ -117,26 +113,26 @@ class parseDataFiles():
                      print(str(self.backup_date_dict), "BackupDateDict")
                      #print(mainPrevTimeStampRe.string, "re")
                      #print(backupPrevTimeStampRe.string)
-                     if not 69 in self.main_date_dict:
-                            self.timeStartedMain = datetime(
-                                   year = self.main_date_dict["Year"],
-                                   month = self.main_date_dict["Month"],
-                                   day = self.main_date_dict["Day_of_Mo"],
-                                   hour = self.main_date_dict["Hour"],
-                                   minute = self.main_date_dict["Minute"],
-                                   second = self.main_date_dict["Second"]
-                                   )
-                     else: self.timeStartedMain = 69
-                     if not 69 in self.backup_date_dict:
-                            self.timeStartedBackup = datetime(
-                                   year = self.backup_date_dict["Year"],
-                                   month = self.backup_date_dict["Month"],
-                                   day = self.backup_date_dict["Day_of_Mo"],
-                                   hour = self.backup_date_dict["Hour"],
-                                   minute = self.backup_date_dict["Minute"],
-                                   second = self.backup_date_dict["Second"]
-                                   )
-                     else: self.timeStartedBackup = 69
+                    
+                     self.timeStartedMain = datetime(
+                            year = self.main_date_dict["Year"],
+                            month = self.main_date_dict["Month"],
+                            day = self.main_date_dict["Day_of_Mo"],
+                            hour = self.main_date_dict["Hour"],
+                            minute = self.main_date_dict["Minute"],
+                            second = self.main_date_dict["Second"]
+                            )
+                   
+             
+                     self.timeStartedBackup = datetime(
+                            year = self.backup_date_dict["Year"],
+                            month = self.backup_date_dict["Month"],
+                            day = self.backup_date_dict["Day_of_Mo"],
+                            hour = self.backup_date_dict["Hour"],
+                            minute = self.backup_date_dict["Minute"],
+                            second = self.backup_date_dict["Second"]
+                            )
+                   
                      self.prevTimeStamp = [mainPrevTimeStampRe, backupPrevTimeStampRe]
                      #self.timeStartedMain = 
                      
@@ -172,37 +168,54 @@ class parseDataFiles():
                             self.mainRunning = False
                             
                      elif mainRunningStr == "True":
-                            if self.mainRunning == False:
-                                   self.timeStartedMain = datetime.now()
-                            self.mainRunning = True
+                            
+                            with open("previouslyRunning.txt", 'r') as f:
+                                   prev_running_data = f.read() #if the pump just started and this var was not updated yet
+                                   main_prev_run_reg = re.search("MainRunning..\s*(\w*)", prev_running_data)
+                                   if main_prev_run_reg.group(1) == "False":
 
+                                          self.timeStartedMain = datetime.now()
+                           
+                            self.mainRunning = True
                      
                      if backupRunningStr == "False":
                             self.backupRunning = False
                      elif backupRunningStr == "True":
-                            if self.backupRunning == False: #if the pump just started and this var was not updated yet
-                                   self.timeStartedBackup = datetime.now()
+                            
+                            with open("previouslyRunning.txt", 'r') as f:
+                                   prev_running_data = f.read() #if the pump just started and this var was not updated yet
+                                   backup_prev_run_reg = re.search("BackupRunning..\s*(\w*)", prev_running_data)
+                                   if backup_prev_run_reg.group(1) == "False":
+
+                                          self.timeStartedBackup = datetime.now()
+                           
+                                  
                             self.backupRunning = True
+                            
               
-                     print(self.mainRunning, self.backupRunning, str(self.timeStartedMain), str(self.timeStartedBackup))
+                     print(self.mainRunning, self.backupRunning, str(self.timeStartedMain), str(self.timeStartedBackup),
+                           "\n~~~~~~~~~~~~~~~~~~~~~~~IN PARSE DAT READ DATA````````````````````")
+       
+      
                      
        def checkRunTime(self):#somehow the clock is being reset...but i'm going to do this in android
               if self.mainRunning: 
                      now = datetime.now()
                      print(self.timeStartedMain, 'time started main')
                      self.timeRunningMain = now - self.timeStartedMain 
-                     print(self.timeRunningMain, "&&&&&&&&&&&&&&")
-                     if self.timeRunningMain> timedelta(minutes = 10):
+                     print(self.timeRunningMain, "&&&&&&&&&&&&&&MAIN")
+                     if self.timeRunningMain> timedelta(seconds = 30):
                             self.main_run_warning = True
                      else:
                             self.main_run_warning = False
 
                      self.timeRunningMainStr = str(self.timeRunningMain)
+              else: self.timeRunningMainStr = "Not Running"
               if self.backupRunning:
                      now = datetime.now()
                      print(self.timeStartedBackup, 'time started backup')
                      self.timeRunningBackup = now - self.timeStartedBackup 
-                     print(self.timeRunningBackup, "&&&&&&&&&&&&&&")
+                     print(self.timeRunningBackup, "&&&&&&&&&&&&&&BACKUP")
                      if self.timeRunningBackup > timedelta(seconds = 2):
                             self.backup_run_warning = True
                      else:
@@ -212,7 +225,7 @@ class parseDataFiles():
 
                      #if now - self.timeStartedMain:
       
-
+              else: self.timeRunningBackupStr = "Not Running"
       
 if __name__ == '__main__':
        r = parseDataFiles()
