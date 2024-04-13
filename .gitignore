@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.iml
 .gradle
 /local.properties
@@ -13,3 +14,15 @@
 .externalNativeBuild
 .cxx
 local.properties
+=======
+wsgi.py
+Pipfile.lock
+Pipfile
+sp_monitor.ini
+cloudflared.deb
+__pycache__
+sp_monitor_ENV
+sumpPumpApp.sock
+testFile.txt
+urls_for_transfer.txt
+>>>>>>> 7b9b20a17ffc9eab81bcdb5e970ea1825930805a
