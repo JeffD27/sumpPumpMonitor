@@ -9,5 +9,8 @@
     <color name="activityBackground">#0099cc</color>
     <color name="darkerBlack">#202020</color>
     <color name="darkGreen">#009688</color>
+    <color name="purple">#533696</color>
+    <color name="lightPurple">#6844BC</color>
+    <color name="lightestPurple">#8959F8</color>
 
 </resources>
