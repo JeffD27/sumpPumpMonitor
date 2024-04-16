@@ -1,0 +1,28 @@
+<<<<<<< HEAD
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+=======
+wsgi.py
+Pipfile.lock
+Pipfile
+sp_monitor.ini
+cloudflared.deb
+__pycache__
+sp_monitor_ENV
+sumpPumpApp.sock
+testFile.txt
+urls_for_transfer.txt
+>>>>>>> 7b9b20a17ffc9eab81bcdb5e970ea1825930805a
