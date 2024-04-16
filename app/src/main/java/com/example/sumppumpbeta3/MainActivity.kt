@@ -5,6 +5,7 @@ package com.example.sumppumpbeta3;
 //import java.time.LocalDate
 //import java.time.format.DateTimeFormatter
 import android.app.Activity
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -21,6 +22,7 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -28,6 +30,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.work.ForegroundInfo
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkRequest
+
 import com.example.sumppump3.R
 import com.example.sumppump3.databinding.ActivityMainBinding
 import com.squareup.moshi.Json
@@ -58,6 +65,9 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
+
+
+
 
 var noPowerSilenceTimeGlobal:kotlin.time.Duration = 1.days
 val durationConvertDict = LinkedHashMap<String, kotlin.time.Duration>()
@@ -110,7 +120,6 @@ data class PyData (
 class MainActivity : ComponentActivity() {
 
 
-
     val defaultMuteTimes = LinkedHashMap<String, Duration>()
     private var mainRunning_: Boolean = false
     private  var mainRunTime_ : String = "Loading..."
@@ -136,7 +145,7 @@ class MainActivity : ComponentActivity() {
     private var waterLevelWarnSilence = false
     private lateinit var mainPumpSilenceTime: Instant
     private lateinit var backupPumpSilenceTime:Instant
-    private  var notificationManager: NotificationManager? = null
+
 
 //the following are for resetting notifications
     private lateinit var notificationServerErrorDeployed: Pair<Boolean, Instant> //to calculate if notification needs to be reset <if deployed, time deployed>
@@ -158,8 +167,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    0
+            )
+        }
+        RunningApp()
+        Intent(applicationContext, RunningService::class.java).also {
+            it.action = RunningService.Actions.START.toString()
+            startService(it)
+        }
+
+
+
         //val binding: DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, false)
         val activity: Activity = this
+
+
         try {
             Class.forName("dalvik.system.CloseGuard")
                 .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
@@ -167,6 +193,7 @@ class MainActivity : ComponentActivity() {
         } catch (e: ReflectiveOperationException) {
             throw RuntimeException(e)
         }
+
 
 
         Log.i("durationConvertDictKeys", durationConvertDict.keys.toString())
@@ -201,13 +228,14 @@ class MainActivity : ComponentActivity() {
         var acPowerLargeBatteryBoolean = false
         var acPowerSmallBatteryBoolean = true
 
-        notificationManager = createNotifications()
+
 
         val button = findViewById<Button>(R.id.buttonSettings)
 
         val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12" )
 
 
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
 
@@ -307,14 +335,16 @@ class MainActivity : ComponentActivity() {
                                 Log.i("time and deploy", timeDeployed.toString())
                                 Log.i("time and deploy", deployed.toString())
                                 if (!deployed){
+                                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
                                     Log.i("charging5", "starting notification for charging 5")
                                     notificationBuilder(
                                         "SumpPump RPi: No AC Power",
                                         "Usb is disconnected\nOr there is no power going to RPi",
                                         "high",
-                                        "22222",
-                                        "11111",
-                                        notificationManager!!)
+                                        getString(R.string.systemIssuesChannelID),
+                                        getString(R.string.noACPowerNotificationID),
+                                        notificationManager)
                                     notificationACPowerDeployed = Pair(true, Clock.System.now())
                                 }
                             }
@@ -340,7 +370,8 @@ class MainActivity : ComponentActivity() {
                             val (deployed, timeDeployed) = notificationServerErrorDeployed
                             Log.i("server error deployed", deployed.toString())
                             if (!deployed){
-                                notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", "11111","44444", notificationManager!!)
+
+                                notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
                                 notificationServerErrorDeployed = Pair(true, Clock.System.now())
                             }
 
@@ -371,19 +402,17 @@ class MainActivity : ComponentActivity() {
 
                         Log.i("mainRunTime_Binding", binding.mainRunTime.toString())
 
-
-
-
-
                         if (backupRunning_ == true) {
 
 
                             val (deployed, timeDeployed) = notificationBackupRan
 
                             if (!deployed){
-                                notificationBuilder("Check Sump Pump", "Backup Pump has run!","high", "22222", "88888", notificationManager!!)
+
+
+                                notificationBuilder("Check Sump Pump", "Backup Pump has run!","high", getString(R.string.pumpProblemsChannel), getString(R.string.backupRunNotificationID), notificationManager)
                                 notificationBackupRan = Pair(true, Clock.System.now())
-                            }
+                        }
                             binding.backupRunTime = backupRunTime_
                             binding.backupRunning = "Pump is Running"
 
@@ -417,8 +446,8 @@ class MainActivity : ComponentActivity() {
                                     "The water has reached the top of the well.\nBasement flooding is imminent.",
                                     "high",
                                     "00000",
-                                    "55555",
-                                    notificationManager!!
+                                    getString(R.string.highWaterNotificationID),
+                                    notificationManager
                                 )
                                 notificationHighWaterDeployed = Pair(true, Clock.System.now())
                             }
@@ -456,9 +485,9 @@ class MainActivity : ComponentActivity() {
                                     "Sump Pump Battery is LOW",
                                     "12 Volt battery is low. Check AC power.",
                                     "high",
-                                    "11111",
-                                    "11112",
-                                    notificationManager!!
+                                    getString(R.string.pumpProblemsChannel),
+                                    getString(R.string.lowBattery12vNotificationID),
+                                    notificationManager
                                 )
                             }
                             notificationBattery12Low = Pair(true, Clock.System.now())
@@ -489,7 +518,7 @@ class MainActivity : ComponentActivity() {
                         val (deployed, timeDeployed) = notificationMainRunWarnDeployed
 
                         if (mainRunWarnVis and !deployed){
-                            notificationBuilder("Check Sump Pump", "The pump has run for 10 minutes without stopping","high", "11111", "77777", notificationManager!!)
+                            notificationBuilder("Check Sump Pump", "The pump has run for 10 minutes without stopping","high", getString(R.string.pumpProblemsChannel), getString(R.string.mainRunTimeNotificationID), notificationManager)
                             notificationMainRunWarnDeployed = Pair(true, Clock.System.now())
                         }
                         if (mainRunWarnVis && !mainPumpWarnSilence) {
@@ -510,8 +539,8 @@ class MainActivity : ComponentActivity() {
                                         "The water level seems empty, but the pump is running",
                                         "high",
                                         "00000",
-                                        "99999",
-                                        notificationManager!!)
+                                        getString(R.string.waterTooLowNotificationID),
+                                        notificationManager)
 
                                     notificationWaterTooLow = Pair(true, Clock.System.now())
                                 }
@@ -532,8 +561,6 @@ class MainActivity : ComponentActivity() {
 
             println("Hello")
         }
-
-
 
 
     /*private fun sendFirstRun(firstRun:Boolean){
@@ -561,6 +588,38 @@ class MainActivity : ComponentActivity() {
 
 
     }*/
+
+    /*
+    private fun createForegroundInfo(progress: String): ForegroundInfo {
+        // ...
+
+        val notification: Notification = ExpeditedWorker()::class.java
+        return ForegroundInfo(R.string.persistentWorkerNotificationID, ,
+            FOREGROUND_SERVICE_TYPE_LOCATION or
+                    FOREGROUND_SERVICE_TYPE_MICROPHONE) }
+    */
+
+    private fun notificationBuilder(title:String, content:String, priority: String, channelid: String, notifid:String, notificationManager: NotificationManager  ){ //priority: high default low
+        Log.i("notificationBuilder()", "starting notification builder")
+        val builder = NotificationCompat.Builder(this, channelid)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        builder.setContentTitle(title)
+        builder.setContentText(content)
+        builder.setContentIntent(pendingIntent)
+
+        Log.i("notificationBuilder", title )
+        Log.i("notificationBuilder", content )
+        builder.setSmallIcon(R.drawable.flood_house_svg)
+        if (priority == "high"){
+            builder.priority = NotificationCompat.PRIORITY_HIGH}
+        else if(priority=="default"){
+            builder.priority = NotificationCompat.PRIORITY_DEFAULT}
+        else if(priority == "low"){
+            builder.priority = NotificationCompat.PRIORITY_LOW
+        }
+
+        notificationManager.notify(notifid.toInt(), builder.build())
+    }
 
 
     private suspend fun updateNotificationMuteTimes(notification:String, context: Context): Int? {
@@ -1016,6 +1075,7 @@ class MainActivity : ComponentActivity() {
     ) {
 
         Log.i("applyingwaterlevel", "waterlevelapplying")
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         var highFloodingApply: Boolean = false
         var midFloodingApply: Boolean = false
@@ -1046,9 +1106,9 @@ class MainActivity : ComponentActivity() {
                         "SumpPump WaterLevel Sensor Error",
                         "Error In water level sensor\nhigh=true mid/low = false",
                         "high",
-                        "22222",
-                        "11111",
-                        notificationManager!!)
+                        getString(R.string.systemIssuesChannelID),
+                        getString(R.string.waterLevelSensorErrorNotificationID),
+                        notificationManager)
                     notificationWaterLevelSensorErrorDeployed = Pair(true, Clock.System.now())
                 }
             }
@@ -1071,15 +1131,16 @@ class MainActivity : ComponentActivity() {
                     "ERROR: Raise notification",
                     "Water Level Sensor Error:Mid Sensor is true, but Low  is false"
                 )
+                val intent = Intent(this, MainActivity::class.java)
                 val (deployed, timeDeployed) = notificationWaterLevelSensorErrorBDeployed
                 if (!deployed) {
                     notificationBuilder(
                         "SumpPump WaterLevel Sensor Error",
                         "Error In water level sensor\nmid=true low = false",
                         "high",
-                        "22222",
-                        "22222",
-                        notificationManager!!)
+                        getString(R.string.systemIssuesChannelID),
+                        getString(R.string.waterLevelSensorErrorNotificationID),
+                        notificationManager)
                     notificationWaterLevelSensorErrorBDeployed = Pair(true, Clock.System.now())
                 }
             } }
@@ -1136,61 +1197,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun notificationBuilder(title:String, content:String, priority: String, channelid: String, notifid:String, notificationManager: NotificationManager  ){ //priority: high default low
-        Log.i("notificationBuilder()", "starting notification builder")
-        val builder = NotificationCompat.Builder(this, channelid)
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        builder.setContentTitle(title)
-        builder.setContentText(content)
-        builder.setContentIntent(pendingIntent)
-
-        Log.i("notificationBuilder", title )
-        Log.i("notificationBuilder", content )
-        builder.setSmallIcon(R.drawable.flood_house_svg)
-        if (priority == "high"){
-            builder.priority = NotificationCompat.PRIORITY_HIGH}
-        else if(priority=="default"){
-            builder.priority = NotificationCompat.PRIORITY_DEFAULT}
-        else if(priority == "low"){
-            builder.priority = NotificationCompat.PRIORITY_LOW
-        }
-
-        notificationManager.notify(notifid.toInt(), builder.build())
 
 
 
-
-    }
-
-    private fun createNotifications (): NotificationManager? {
-        Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel.
-            Log.i("createNotifications", "software requirements met!")
-            val mChannelAA = NotificationChannel("00000", "Most Urgent Warnings", NotificationManager.IMPORTANCE_HIGH)
-            mChannelAA.description = "e.g. \"Pump is running on no water\" or \"flooding in basement\""
-
-            val mChannelA = NotificationChannel("11111", getString(R.string.pumpProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
-
-            mChannelA.description =  getString(R.string.pumpProblemsChannelDescription)
-            val mChannelB = NotificationChannel("22222", getString(R.string.systemProblemsChannel), NotificationManager.IMPORTANCE_HIGH)
-            mChannelB.description =  getString(R.string.systemProblemsChannelDescription)
-            val mChannelC = NotificationChannel("33333", getString(R.string.generalInfoChannel), NotificationManager.IMPORTANCE_DEFAULT)
-            mChannelC.description =  getString(R.string.generalInfoChannelDescription)
-
-
-            // Register the channel with the system. You can't change the importance
-            // or other notification behaviors after this.
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(mChannelAA)
-            notificationManager.createNotificationChannel(mChannelA)
-            notificationManager.createNotificationChannel(mChannelB)
-            notificationManager.createNotificationChannel(mChannelC)
-            return notificationManager
-        }
-        return null
-    }
 
 
 }

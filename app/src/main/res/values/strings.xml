@@ -103,5 +103,30 @@
     <string name="PumpRunTimeError"> Pump running\n over 10 min</string>
     <string name="backupPumpHasRun">The backup \npump has run</string>
     <string name="PumpRunningWithoutWater">Pump Running\nwithout water</string>
+    <string name="workerNotification">Sump Pump Monitor Is\nRunning In The Background</string>
+    <string name="mostUrgentWarningsName">Most Urgent Warnings</string>
+    <string name="persistentNotificationTitle">Sump Pump Monitor</string>
+    <string name="cancelDownload">Cancel Download</string>
+
+    <!--channelIDs-->
+    <string name="mostUrgentWarningsChannelID">00000</string>
+    <string name="pumpProblemsChannelID">11111</string>
+    <string name="systemIssuesChannelID">22222</string>
+    <string name="GeneralInfoChannelID">33333</string>
+    <string name="workerNotificationChannelID">11113</string>
+
+    <!--NotificationIDS-->
+    <string name = "noACPowerNotificationID">11112</string>
+    <string name="waterLevelSensorErrorNotificationID">11111</string>
+    <string name ="lowBattery12vNotificationID">22222</string>
+    <string name="serverErrorNotificationID">44444</string>
+    <string name="highWaterNotificationID">55555</string>
+    <string name="mainRunTimeNotificationID">66666</string>
+    <string name ="backupRunNotificationID">77777</string>
+    <string name="waterTooLowNotificationID">88888</string>
+    <string name="persistentWorkerNotificationID">99999</string>
+    <string name="high">high</string>
+
+
 
 </resources>
