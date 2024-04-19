@@ -126,6 +126,9 @@
     <string name="waterTooLowNotificationID">88888</string>
     <string name="persistentWorkerNotificationID">99999</string>
     <string name="high">high</string>
+    <string name="low12vBattery">12v Battery\n is Low</string>
+    <string name="restoreDefault">Reset to\nDefault</string>
+    <string name="ok">OK</string>
 
 
 

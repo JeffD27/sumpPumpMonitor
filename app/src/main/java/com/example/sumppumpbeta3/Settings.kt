@@ -2,11 +2,16 @@ package com.example.sumppumpbeta3
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Contacts.Intents.UI
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,8 +22,14 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import com.example.sumppump3.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -26,11 +37,14 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.DurationUnit
 
 
-class Settings : ComponentActivity() {
+val mainScope = MainScope()
 
+
+class Settings : ComponentActivity() {
+    private val context = this
     private val durationConvertDict =  LinkedHashMap<String, kotlin.time.Duration>()
     override fun onCreate(savedInstanceState: Bundle?) {
-        val context = this
+
 
         runBlocking {
                 launch {
@@ -62,54 +76,114 @@ class Settings : ComponentActivity() {
 
                     val spinnerServerErrorString = "spinnerServerError"
 
-                        //add values to dictionary
-                        val spinnerServerError = findViewById<Spinner>(R.id.spinnerServerError)
-                        spinnerDurationDict[spinnerServerError] = notificationServerErrorMuteDuration
-                        spinnerStringDict[spinnerServerError] = "serverError"
-                        val spinnerNoPower = findViewById<Spinner>(R.id.spinnerNoPowerSilenceTime)
-                        spinnerDurationDict[spinnerNoPower] = notificationACPowerMuteDuration
-                        spinnerStringDict[spinnerNoPower] = "noPower"
-                        val spinnerHighWater = findViewById<Spinner>(R.id.spinnerHighWater)
-                        spinnerDurationDict[spinnerHighWater] = notificationHighWaterMuteDuration
-                        spinnerStringDict[spinnerHighWater] = "highWater"
-                        val spinnerMainRunWarn = findViewById<Spinner>(R.id.spinnerMainRun)
-                        spinnerDurationDict[spinnerMainRunWarn] = notificationMainRunWarnMuteDuration
-                        spinnerStringDict[spinnerMainRunWarn] = "mainRunTime"
-                        val spinnerBackupPump = findViewById<Spinner>(R.id.spinnerBackupRun)
-                        spinnerDurationDict[spinnerBackupPump] = notificationBackupRanMuteDuration
-                        spinnerStringDict[spinnerBackupPump] = "backupRun"
-                        val spinnerNoWater = findViewById<Spinner>(R.id.spinnerPumpRunNoWater)
-                        spinnerDurationDict[spinnerNoWater] = notificationWaterTooLowMuteDuration
-                        spinnerStringDict[spinnerNoWater] = "noWater"
-                        val spinnerSensorError = findViewById<Spinner>(R.id.spinnerWaterLevelSensorError)
-                        spinnerDurationDict[spinnerSensorError] =
-                            notificationWaterLevelSensorErrorMuteDuration
-                        spinnerStringDict[spinnerSensorError] = "sensorError"
-                        Log.i("settingsDataEnd", "settings Data Ran")
+                    val buttonOK = findViewById<Button>(R.id.buttonOK)
+
+                    buttonOK.setOnClickListener(){
+
+                        // Create an Intent to start the new activity
+                        val intent = Intent(context, MainActivity()::class.java)
 
 
+                        // Start the new activity
+                        startActivity(intent)
+                    }
+                    val buttonRestore = findViewById<Button>(R.id.buttonRestoreDefault)
 
+                    buttonRestore.setOnClickListener(){
+                        restoreDefaults()
 
-
-
-                        val array = resources.getStringArray(R.array.spinnerTimes)
-                        // access the spinner
-                        for (spinner in spinnerDurationDict.keys){
-                            val duration = spinnerDurationDict[spinner]
-                            val position = durationPositionInt[duration]!!
-                            createSpinner(spinner, context, array, position)
-                        }
-
-
-
-
-                        }
                     }
 
+
+                    //add values to dictionary
+                    val spinnerServerError = findViewById<Spinner>(R.id.spinnerServerError)
+                    spinnerDurationDict[spinnerServerError] = notificationServerErrorMuteDuration
+                    spinnerStringDict[spinnerServerError] = "serverError"
+                    val spinnerNoPower = findViewById<Spinner>(R.id.spinnerNoPowerSilenceTime)
+                    spinnerDurationDict[spinnerNoPower] = notificationACPowerMuteDuration
+                    spinnerStringDict[spinnerNoPower] = "noPower"
+                    val spinnerHighWater = findViewById<Spinner>(R.id.spinnerHighWater)
+                    spinnerDurationDict[spinnerHighWater] = notificationHighWaterMuteDuration
+                    spinnerStringDict[spinnerHighWater] = "highWater"
+                    val spinnerMainRunWarn = findViewById<Spinner>(R.id.spinnerMainRun)
+                    spinnerDurationDict[spinnerMainRunWarn] = notificationMainRunWarnMuteDuration
+                    spinnerStringDict[spinnerMainRunWarn] = "mainRunTime"
+                    val spinnerBackupPump = findViewById<Spinner>(R.id.spinnerBackupRun)
+                    spinnerDurationDict[spinnerBackupPump] = notificationBackupRanMuteDuration
+                    spinnerStringDict[spinnerBackupPump] = "backupRun"
+                    val spinnerNoWater = findViewById<Spinner>(R.id.spinnerPumpRunNoWater)
+                    spinnerDurationDict[spinnerNoWater] = notificationWaterTooLowMuteDuration
+                    spinnerStringDict[spinnerNoWater] = "noWater"
+                    val spinnerSensorError = findViewById<Spinner>(R.id.spinnerWaterLevelSensorError)
+                    spinnerDurationDict[spinnerSensorError] = notificationWaterLevelSensorErrorMuteDuration
+                    spinnerStringDict[spinnerSensorError] = "sensorError"
+                    val spinnerLowPower12v = findViewById<Spinner>(R.id.spinnerLow12v)
+                    spinnerDurationDict[spinnerLowPower12v] = notificationBattery12LowMuteDuration
+                    spinnerStringDict[spinnerLowPower12v] = "lowPower12"
+                    Log.i("settingsDataEnd", "settings Data Ran")
+
+                    val array = resources.getStringArray(R.array.spinnerTimes)
+                    // access the spinner
+
+                    for (spinner in spinnerDurationDict.keys){
+                        val duration = spinnerDurationDict[spinner]
+                        val position = durationPositionInt[duration]!!
+
+                        createSpinner(spinner, context, array, position)
+                    }
+
+
+
+
+                }
+            }
+    }
+
+
+
+
+     fun restoreDefaults(): View.OnClickListener? {
+        Log.i("restoreDefaults", "restore Defualts starting")
+        val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12" )
+
+        for (string in notificationStrings){
+            Log.i("String in Restore", string)
+            Log.i("spinnerStringDict_restore", spinnerStringDict.keys.toString())
+            val stringSpinnerDict = spinnerStringDict.entries.associate{ (k,v)-> v to k} //reverses stringSpinnerDict
+            Log.i("stringSpinner", stringSpinnerDict.keys.toString())
+
+            val spinner = stringSpinnerDict[string]
+            Log.i("spinnner in Restore", spinner.toString())
+
+            if (spinner != null) {
+                if (defaultMuteTimes.isEmpty()){
+                    defaultMuteTimes["serverError"] = 1.days
+                    defaultMuteTimes["sensorError"] = 1.days
+                    defaultMuteTimes["noPower"] = 1.hours
+                    defaultMuteTimes["highWater"] = 15.minutes
+                    defaultMuteTimes["mainRunTime"] = 10.minutes
+                    defaultMuteTimes["backupRun"] = 10.minutes
+                    defaultMuteTimes["noWater"] = 10.minutes
+                    defaultMuteTimes["lowBattery12"] = 1.days
+
+                }
+                val duration = defaultMuteTimes[string]
+                val position = durationPositionInt[duration]!!
+                runBlocking {writeData(string, duration!!)}
+                spinner.post(Runnable() {
+                    run() {
+                        spinner.setSelection(position);
+                    }
+                })
+                spinner.setSelection(position, true)
+                Log.i("positionW", position.toString())
+            }
+            else{Log.i("elseINRestoreDefaults", "problem in restore defualts")}
+
+
         }
-
-
-
+         return null
+     }
     private fun createSpinner(spinner: Spinner, context: Context, array: Array<String>, positionInt: Int) {
         if (spinner != null) {
 
@@ -123,13 +197,15 @@ class Settings : ComponentActivity() {
 
 
 
+
             spinner.setPopupBackgroundDrawable(
                 AppCompatResources.getDrawable(
                     context,
                     R.drawable.darkbackground
                 )
             );
-            spinner.setSelection(positionInt)
+            spinner.setSelection(positionInt, )
+
             spinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -186,9 +262,7 @@ class Settings : ComponentActivity() {
 
 
 
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
+
+
 
     }
-}

@@ -116,11 +116,12 @@ data class PyData (
     val voltage5: Float?,
     val charging5: Boolean?,
     val voltage12: Float?){}
+    val defaultMuteTimes = LinkedHashMap<String, Duration>()
 
 class MainActivity : ComponentActivity() {
 
 
-    val defaultMuteTimes = LinkedHashMap<String, Duration>()
+
     private var mainRunning_: Boolean = false
     private  var mainRunTime_ : String = "Loading..."
     private var backupRunTime_ : String = ""
@@ -148,7 +149,7 @@ class MainActivity : ComponentActivity() {
 
 
 //the following are for resetting notifications
-    private lateinit var notificationServerErrorDeployed: Pair<Boolean, Instant> //to calculate if notification needs to be reset <if deployed, time deployed>
+    lateinit var notificationServerErrorDeployed: Pair<Boolean, Instant> //to calculate if notification needs to be reset <if deployed, time deployed>
     private lateinit var notificationWaterLevelSensorErrorDeployed: Pair<Boolean, Instant>
     private lateinit var notificationWaterLevelSensorErrorBDeployed: Pair<Boolean, Instant>
     private lateinit var notificationACPowerDeployed: Pair<Boolean, Instant>
@@ -174,7 +175,7 @@ class MainActivity : ComponentActivity() {
                     0
             )
         }
-        RunningApp()
+
         Intent(applicationContext, RunningService::class.java).also {
             it.action = RunningService.Actions.START.toString()
             startService(it)
@@ -208,7 +209,7 @@ class MainActivity : ComponentActivity() {
         if (!this::notificationWaterTooLow.isInitialized) {notificationWaterTooLow = Pair(false, Clock.System.now())}
         if (!this::notificationBattery12Low.isInitialized) {notificationBattery12Low = Pair(false, Clock.System.now())}
 
-        var firstRun: Boolean = true
+
 
 
         val binding: ActivityMainBinding =
@@ -225,17 +226,12 @@ class MainActivity : ComponentActivity() {
 
         binding.acPowerLargeBatteryImage = ContextCompat.getDrawable(this, R.drawable.acplug)
 
-        var acPowerLargeBatteryBoolean = false
-        var acPowerSmallBatteryBoolean = true
 
 
 
         val button = findViewById<Button>(R.id.buttonSettings)
 
-        val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12" )
 
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
 
@@ -244,8 +240,8 @@ class MainActivity : ComponentActivity() {
         defaultMuteTimes["sensorError"] = 1.days
         defaultMuteTimes["noPower"] = 1.hours
         defaultMuteTimes["highWater"] = 15.minutes
-        defaultMuteTimes["mainRunTime"] = 30.minutes
-        defaultMuteTimes["backupRun"] = 1.hours
+        defaultMuteTimes["mainRunTime"] = 10.minutes
+        defaultMuteTimes["backupRun"] = 10.minutes
         defaultMuteTimes["noWater"] = 10.minutes
         defaultMuteTimes["lowBattery12"] = 1.days
 
@@ -264,303 +260,382 @@ class MainActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        callServer(activity, binding)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun callServer(activity: Activity?, binding: ActivityMainBinding?){
 
 
-                val intDurationDict = LinkedHashMap<Int, Duration>()
-                intDurationDict[5] = 5.minutes
-                intDurationDict[10] = 10.minutes
-                intDurationDict[15] = 15.minutes
-                intDurationDict[30] = 30.minutes
-                intDurationDict[1] = 1.hours
-                intDurationDict[2] = 2.hours
-                intDurationDict[4] = 4.hours
-                intDurationDict[8] = 8.hours
-                intDurationDict[12] = 12.hours
-                intDurationDict[24] = 24.hours
-                intDurationDict[48] = 48.hours
-                val threadServer = Thread {
-                    while (true) {
+                    var firstRun: Boolean = true
 
-                        for(string in notificationStrings){
-                            runBlocking {
-                                    val durationInt = updateNotificationMuteTimes(string, activity)!! //initiated in settings
+                    val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12" )
 
-                                    //Log.i("notifyString", string)
 
-                                   // Log.i("durationInt", durationInt.toString())
+                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                                    when(string){
-                                        "serverError" ->{
-                                            notificationServerErrorMuteDuration = intDurationDict[durationInt]!!
+                    val intDurationDict = LinkedHashMap<Int, Duration>()
+                    intDurationDict[5] = 5.minutes
+                    intDurationDict[10] = 10.minutes
+                    intDurationDict[15] = 15.minutes
+                    intDurationDict[30] = 30.minutes
+                    intDurationDict[1] = 1.hours
+                    intDurationDict[2] = 2.hours
+                    intDurationDict[4] = 4.hours
+                    intDurationDict[8] = 8.hours
+                    intDurationDict[12] = 12.hours
+                    intDurationDict[24] = 24.hours
+                    intDurationDict[48] = 48.hours
+                    val threadServer = Thread {
+                        while (true) {
+
+                            for(string in notificationStrings){
+                                runBlocking {
+                                        val durationInt = updateNotificationMuteTimes(string)!! //initiated in settings
+
+                                        //Log.i("notifyString", string)
+
+                                       // Log.i("durationInt", durationInt.toString())
+
+                                        when(string){
+                                            "serverError" ->{
+                                                notificationServerErrorMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "sensorError" ->{
+                                                notificationWaterLevelSensorErrorMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "noPower" ->{
+                                                notificationACPowerMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "highWater" ->{
+                                                notificationHighWaterMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "mainRunTime" ->{
+                                                notificationMainRunWarnMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "backupRun" ->{
+                                                notificationBackupRanMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "noWater" ->{
+                                                notificationWaterTooLowMuteDuration = intDurationDict[durationInt]!!
+                                            }
+                                            "lowBattery12" ->{
+                                                notificationBattery12LowMuteDuration = intDurationDict[durationInt]!!
+                                            }
                                         }
-                                        "sensorError" ->{
-                                            notificationWaterLevelSensorErrorMuteDuration = intDurationDict[durationInt]!!
+
+
+
+                                        //val spinner = stringSpinnerDict[string]!!
+                                       // Log.i("spinner@", spinner.toString())
+                                       // spinnerDurationDict[spinner] = intDurationDict[durationInt]!!
+                                        //Log.i("muteValues", muteValues[string].toString())
+                                    }
+                                }
+                            Log.i("charging5", charging5_.toString())
+                            if(!charging5_!!){
+                                if (binding != null){
+                                    if (binding != null && activity != null) {
+                                        binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)
+                                    }
+                                }
+                                if (!generalWarnSilence){
+                                    if (binding != null) {
+                                        if (binding != null) {
+                                            binding.generalErrorView = true
                                         }
-                                        "noPower" ->{
-                                            notificationACPowerMuteDuration = intDurationDict[durationInt]!!
+
+                                        if (binding != null) {
+                                            binding.generalErrorText = "USB disconnected\n / no power!"
                                         }
-                                        "highWater" ->{
-                                            notificationHighWaterMuteDuration = intDurationDict[durationInt]!!
-                                        }
-                                        "mainRunTime" ->{
-                                            notificationMainRunWarnMuteDuration = intDurationDict[durationInt]!!
-                                        }
-                                        "backupRun" ->{
-                                            notificationBackupRanMuteDuration = intDurationDict[durationInt]!!
-                                        }
-                                        "noWater" ->{
-                                            notificationWaterTooLowMuteDuration = intDurationDict[durationInt]!!
-                                        }
-                                        "lowBattery12" ->{
-                                            notificationBattery12LowMuteDuration = intDurationDict[durationInt]!!
-                                        }
+                                    }
+                                    val (deployed, timeDeployed) = notificationACPowerDeployed
+                                    Log.i("time and deploy", timeDeployed.toString())
+                                    Log.i("time and deploy", deployed.toString())
+                                    if (!deployed){
+                                        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+                                        Log.i("charging5", "starting notification for charging 5")
+                                        notificationBuilder(
+                                            "SumpPump RPi: No AC Power",
+                                            "Usb is disconnected\nOr there is no power going to RPi",
+                                            "high",
+                                            getString(R.string.systemIssuesChannelID),
+                                            getString(R.string.noACPowerNotificationID),
+                                            notificationManager)
+                                        notificationACPowerDeployed = Pair(true, Clock.System.now())
+                                    }
+                                }
+                            }
+
+                            else{
+                                if (binding != null){
+                                    if (binding != null && activity != null) {
+                                        binding.generalErrorView = false
+
+                                        Log.i("charging5_", "charging 5 should be false here")
+
+                                        binding.generalErrorText = "Message shouldn't be here!"
+
+
+                                        binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
+                                    }
+                                }
+                            }
+
+                            try {
+                                val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
+                                Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
+                                get( "https://sumppump.jeffs-handyman.net/",  parameters, null)
+
+                            } catch (e: java.lang.Exception) {
+                                Log.i("serverError", "yep that's a server error.")
+                                e.printStackTrace()
+                                if (binding != null){
+                                    if (binding != null) {
+                                        binding.generalErrorText = "Error in Server.\n NO Data"
+                                    }
+                                }
+                                //Log.i("mainActivity after get", e.toString())
+
+                                val (deployed, timeDeployed) = notificationServerErrorDeployed
+                                Log.i("server error deployed", deployed.toString())
+                                if (!deployed){
+
+                                    notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
+                                    notificationServerErrorDeployed = Pair(true, Clock.System.now())
+                                }
+
+
+                            }
+                            firstRun = true //this was false, but I don't want this variable anymore
+                            Log.i("onCreate MainRunning", mainRunning_.toString())
+                            if (mainRunning_ == true) {
+                                if (binding != null){
+                                    if (binding != null && activity != null) {
+                                        binding.mainRunning = "Running"
+
+                                        binding.mainRunTime = mainRunTime_
+                                        binding.mainRunningBoxColor =
+                                            ContextCompat.getColor(activity, R.color.green)
+                                    }
+                                    Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
+                                }
+
+                            }
+                            if (mainRunning_ == false) {
+                                if (binding != null && activity != null) {
+                                    binding.mainRunning = "Pump is Off"
+                                    binding.mainRunningBoxColor =
+                                        ContextCompat.getColor(activity, R.color.red)
+                                    Log.i("mainTimeStartedStr", mainTimeStartedStr)
+                                    binding.mainRunTime = "Last Ran On:\n$mainTimeStartedStr"
+                                    Log.i(
+                                        "mainRunningColor",
+                                        binding.mainRunningBoxColor.toString()
+                                    )
+                                }
+                            }
+                            Log.i("mainRunTime_", mainRunTime_)
+
+
+
+                            if (backupRunning_ == true) {
+
+
+                                val (deployed, timeDeployed) = notificationBackupRan
+
+                                if (!deployed){
+
+
+                                    notificationBuilder("Check Sump Pump", "Backup Pump has run!","high", getString(R.string.pumpProblemsChannel), getString(R.string.backupRunNotificationID), notificationManager)
+                                    notificationBackupRan = Pair(true, Clock.System.now())
+                            }
+                                if (binding != null && activity != null){
+                                    binding.backupRunTime = backupRunTime_
+                                    binding.backupRunning = "Pump is Running"
+
+                                    binding.backupRunningBoxColor =
+                                        ContextCompat.getColor(activity, R.color.green)
+                                    Log.i("backupRunningColor", binding.backupRunningBoxColor.toString())
+                                    backupRunTime_.let{binding.backupRunTime}}
+                                backupPumpWarnSilence = false
+                            }
+                            if (backupRunning_ == false) {
+                                if (binding != null && activity != null){
+                                    binding.backupRunning = "Pump is Off"
+                                    binding.backupRunTime = "Last Ran on:\n $backupTimeStartedStr"
+                                    binding.backupRunningBoxColor =
+                                        ContextCompat.getColor(activity, R.color.red)
+
+                                    Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
+                                }
+                            }
+
+
+                            if (highFlooding_ == true) {
+                                if (binding != null && activity != null) {
+                                    binding.waterLevelImage =
+                                        ContextCompat.getDrawable(activity, R.drawable.water_high)
+                                    binding.waterLevelText = "High\n(100%)"
+                                }
+                                 //set in applyWaterLevel
+
+
+                                val (deployed, timeDeployed) = notificationHighWaterDeployed
+                                if (!deployed){
+                                    notificationBuilder(
+                                        "WARNING: HIGH Water in Sump Well",
+                                        "The water has reached the top of the well.\nBasement flooding is imminent.",
+                                        "high",
+                                        "00000",
+                                        getString(R.string.highWaterNotificationID),
+                                        notificationManager
+                                    )
+                                    notificationHighWaterDeployed = Pair(true, Clock.System.now())
+                                }
+                                if( midFlooding_ == false || lowFlooding_ == false  ) {
+                                    if (binding != null){
+                                        binding.waterLevelWarnView = !waterLevelWarnSilence
+                                    }
+                                }
+                                else{
+                                    if (binding != null){binding.waterLevelWarnView=false}
+                                }
+                            }
+                            else if (midFlooding_ == true) {
+                                    if (binding != null && activity != null){
+                                        binding.waterLevelImage =
+                                            ContextCompat.getDrawable(activity, R.drawable.water_50)
+                                        binding.waterLevelText = "50%"
+                                    }
+
+                                if( lowFlooding_ == false ) {
+                                    if (binding != null){
+                                        binding.waterLevelWarnView = !waterLevelWarnSilence
+                                    }
+                                }
+
+                                else{
+                                    if (binding != null){binding.waterLevelWarnView=false}}
+                                }
+                                else if (lowFlooding_ == true) {
+                                    if (binding != null && activity != null){
+                                        binding.waterLevelImage =
+                                            ContextCompat.getDrawable(activity, R.drawable.water_10)
+                                        binding.waterLevelText = "10%"
+                                        binding.waterLevelWarnView=false
+                                    }
+                            } else {
+                                if (binding != null && activity != null) {
+                                    binding.waterLevelImage =
+                                        ContextCompat.getDrawable(activity, R.drawable.water_low)
+                                    binding.waterLevelText = "Empty"
+                                    binding.waterLevelWarnView = false
+                                }
+                            }
+
+                            if (binding != null) { binding.battery12vText = "$voltage12_%"}
+                            if (voltage12_ < 95){
+                                val (deployed, timeDeployed) = notificationBattery12Low
+                                if (binding != null && activity != null){binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.red)}
+                                if(!deployed){
+                                    notificationBuilder(
+                                        "Sump Pump Battery is LOW",
+                                        "12 Volt battery is low. Check AC power.",
+                                        "high",
+                                        getString(R.string.pumpProblemsChannel),
+                                        getString(R.string.lowBattery12vNotificationID),
+                                        notificationManager
+                                    )
+                                }
+                                notificationBattery12Low = Pair(true, Clock.System.now())
+                            }
+                            else{
+                                if (binding != null && activity != null){
+                                    binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.green)
+                                }
+                            }
+                            Log.i("voltage5_", voltage5_.toString())
+                            val sleepTime = java.time.Duration.ofMinutes(1)
+
+                            val currentTime = LocalDateTime.now()
+                            checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = LocalDateTime.now() - java.time.Duration.ofMinutes(40)}
+                            Log.i("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
+                            val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime)
+                            Log.i("durationBatteryVolts", duration.toString())
+                            Log.i("sleeptime", sleepTime.toString())
+                            Log.i("sleeptimeBool", (duration > sleepTime).toString())
+                            if (binding != null && activity != null){
+                                if (duration > sleepTime || binding.battery5TextView.text == "0%" ){
+                                    Log.i("durationBatteryVolts2", sleepTime.toString())
+                                    if (binding != null){binding.battery5vText = "$voltage5_%"}
+                                    checkBatteryVoltsTime = LocalDateTime.now()
+
+                                    if(voltage5_ < 70){
+
+                                            binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
+
+                                    }
+                                    else {
+
+                                            binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)
+
+                                    }
+                                }
+                            }
+
+                            val (deployed, timeDeployed) = notificationMainRunWarnDeployed
+
+                            if (mainRunWarnVis and !deployed){
+                                notificationBuilder("Check Sump Pump", "The pump has run for 10 minutes without stopping","high", getString(R.string.pumpProblemsChannel), getString(R.string.mainRunTimeNotificationID), notificationManager)
+                                notificationMainRunWarnDeployed = Pair(true, Clock.System.now())
+                            }
+                            if (binding != null){
+                                if (mainRunWarnVis && !mainPumpWarnSilence) {
+                                    binding.mainRunWarnView = true}
+                                else {binding.mainRunWarnView = false}
+                                if (backupRunWarnVis && !backupPumpWarnSilence) {binding.backupRunWarnView = true}
+                                else {binding.backupRunWarnView = false}
+                            }
+
+
+
+
+                            if (mainRunning_|| backupRunning_ == true){
+                                if (lowFlooding_ == false){
+                                    val (deployed, timeDeployed) = notificationWaterTooLow
+                                    if (!deployed){
+                                        notificationBuilder(
+                                            "URGENT: Check Pump",
+                                            "The water level seems empty, but the pump is running",
+                                            "high",
+                                            "00000",
+                                            getString(R.string.waterTooLowNotificationID),
+                                            notificationManager)
+
+                                        notificationWaterTooLow = Pair(true, Clock.System.now())
                                     }
 
 
-                                    val stringSpinnerDict = spinnerStringDict.entries.associate{ (k,v)-> v to k} //reverses stringSpinnerDict
-
-                                    //val spinner = stringSpinnerDict[string]!!
-                                   // Log.i("spinner@", spinner.toString())
-                                   // spinnerDurationDict[spinner] = intDurationDict[durationInt]!!
-                                    //Log.i("muteValues", muteValues[string].toString())
-                                }
-                            }
-                        Log.i("charging5", charging5_.toString())
-                        if(!charging5_!!){
-                            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)
-                            if (!generalWarnSilence){
-                                binding.generalErrorView = true
-                                binding.generalErrorText = "USB disconnected\n / no power!"
-                                val (deployed, timeDeployed) = notificationACPowerDeployed
-                                Log.i("time and deploy", timeDeployed.toString())
-                                Log.i("time and deploy", deployed.toString())
-                                if (!deployed){
-                                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-                                    Log.i("charging5", "starting notification for charging 5")
-                                    notificationBuilder(
-                                        "SumpPump RPi: No AC Power",
-                                        "Usb is disconnected\nOr there is no power going to RPi",
-                                        "high",
-                                        getString(R.string.systemIssuesChannelID),
-                                        getString(R.string.noACPowerNotificationID),
-                                        notificationManager)
-                                    notificationACPowerDeployed = Pair(true, Clock.System.now())
-                                }
-                            }
-                        }
-
-                        else{binding.generalErrorView = false
-                            Log.i("charging5_", "charging 5 should be false here")
-                            binding.generalErrorText = "Message shouldn't be here!"
-                            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
-                            }
-
-                        try {
-                            val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
-                            Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
-                            get( "https://sumppump.jeffs-handyman.net/",  parameters, null)
-
-                        } catch (e: java.lang.Exception) {
-                            Log.i("serverError", "yep that's a server error.")
-                            e.printStackTrace()
-                            binding.generalErrorText = "Error in Server.\n NO Data"
-                            //Log.i("mainActivity after get", e.toString())
-
-                            val (deployed, timeDeployed) = notificationServerErrorDeployed
-                            Log.i("server error deployed", deployed.toString())
-                            if (!deployed){
-
-                                notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
-                                notificationServerErrorDeployed = Pair(true, Clock.System.now())
-                            }
-
-
-                        }
-                        firstRun = true //this was false, but I don't want this variable anymore
-                        Log.i("onCreate MainRunning", mainRunning_.toString())
-                        if (mainRunning_ == true) {
-                            binding.mainRunning = "Running"
-                            binding.mainRunTime = mainRunTime_
-                            binding.mainRunningBoxColor =
-                                ContextCompat.getColor(activity, R.color.green)
-                            Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
-
-                        }
-                        if (mainRunning_ == false) {
-                            binding.mainRunning = "Pump is Off"
-
-                            binding.mainRunningBoxColor =
-                                ContextCompat.getColor(activity, R.color.red)
-                            Log.i("mainTimeStartedStr", mainTimeStartedStr)
-                            binding.mainRunTime = "Last Ran On:\n$mainTimeStartedStr"
-
-                            Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
-                        }
-                        Log.i("mainRunTime_", mainRunTime_)
-
-
-                        Log.i("mainRunTime_Binding", binding.mainRunTime.toString())
-
-                        if (backupRunning_ == true) {
-
-
-                            val (deployed, timeDeployed) = notificationBackupRan
-
-                            if (!deployed){
-
-
-                                notificationBuilder("Check Sump Pump", "Backup Pump has run!","high", getString(R.string.pumpProblemsChannel), getString(R.string.backupRunNotificationID), notificationManager)
-                                notificationBackupRan = Pair(true, Clock.System.now())
-                        }
-                            binding.backupRunTime = backupRunTime_
-                            binding.backupRunning = "Pump is Running"
-
-                            binding.backupRunningBoxColor =
-                                ContextCompat.getColor(activity, R.color.green)
-                            Log.i("backupRunningColor", binding.backupRunningBoxColor.toString())
-                            backupRunTime_.let{binding.backupRunTime}
-                            backupPumpWarnSilence = false
-                        }
-                        if (backupRunning_ == false) {
-                            binding.backupRunning = "Pump is Off"
-                            binding.backupRunTime = "Last Ran on:\n $backupTimeStartedStr"
-                            binding.backupRunningBoxColor =
-                                ContextCompat.getColor(activity, R.color.red)
-
-                            Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
-                        }
-
-
-                        if (highFlooding_ == true) {
-                            binding.waterLevelImage =
-                                ContextCompat.getDrawable(activity, R.drawable.water_high)
-                            binding.waterLevelText = "High\n(100%)"
-                             //set in applyWaterLevel
-
-
-                            val (deployed, timeDeployed) = notificationHighWaterDeployed
-                            if (!deployed){
-                                notificationBuilder(
-                                    "WARNING: HIGH Water in Sump Well",
-                                    "The water has reached the top of the well.\nBasement flooding is imminent.",
-                                    "high",
-                                    "00000",
-                                    getString(R.string.highWaterNotificationID),
-                                    notificationManager
-                                )
-                                notificationHighWaterDeployed = Pair(true, Clock.System.now())
-                            }
-                            if( midFlooding_ == false || lowFlooding_ == false  ) {
-                                binding.waterLevelWarnView = !waterLevelWarnSilence
-                            }
-                            else{binding.waterLevelWarnView=false}
-                        }
-                        else if (midFlooding_ == true) {
-                            binding.waterLevelImage =
-                                ContextCompat.getDrawable(activity, R.drawable.water_50)
-                            binding.waterLevelText = "50%"
-                            if( lowFlooding_ == false ) {
-                                binding.waterLevelWarnView = !waterLevelWarnSilence
-                            }
-                            else{binding.waterLevelWarnView=false}
-                        } else if (lowFlooding_ == true) {
-                            binding.waterLevelImage =
-                                ContextCompat.getDrawable(activity, R.drawable.water_10)
-                            binding.waterLevelText = "10%"
-                            binding.waterLevelWarnView=false
-                        } else {
-                            binding.waterLevelImage =
-                                ContextCompat.getDrawable(activity, R.drawable.water_low)
-                            binding.waterLevelText = "Empty"
-                            binding.waterLevelWarnView=false
-                        }
-
-                        binding.battery12vText = "$voltage12_%"
-                        if (voltage12_ < 95){
-                            val (deployed, timeDeployed) = notificationBattery12Low
-                            binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.red)
-                            if(!deployed){
-                                notificationBuilder(
-                                    "Sump Pump Battery is LOW",
-                                    "12 Volt battery is low. Check AC power.",
-                                    "high",
-                                    getString(R.string.pumpProblemsChannel),
-                                    getString(R.string.lowBattery12vNotificationID),
-                                    notificationManager
-                                )
-                            }
-                            notificationBattery12Low = Pair(true, Clock.System.now())
-                        }
-                        else{
-                            binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.green)
-                        }
-                        Log.i("voltage5_", voltage5_.toString())
-                        val sleepTime = java.time.Duration.ofMinutes(1)
-
-                        val currentTime = LocalDateTime.now()
-                        checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = LocalDateTime.now() - java.time.Duration.ofMinutes(40)}
-                        Log.i("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
-                        val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime)
-                        Log.i("durationBatteryVolts", duration.toString())
-                        Log.i("sleeptime", sleepTime.toString())
-                        Log.i("sleeptimeBool", (duration > sleepTime).toString())
-                        if (duration > sleepTime || binding.battery5TextView.text == "0%" ){
-                            Log.i("durationBatteryVolts2", sleepTime.toString())
-                            binding.battery5vText = "$voltage5_%"
-                            checkBatteryVoltsTime = LocalDateTime.now()
-                            if(voltage5_ < 70){
-                                binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
-                            }
-                            else{binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)}
-                        }
-
-                        val (deployed, timeDeployed) = notificationMainRunWarnDeployed
-
-                        if (mainRunWarnVis and !deployed){
-                            notificationBuilder("Check Sump Pump", "The pump has run for 10 minutes without stopping","high", getString(R.string.pumpProblemsChannel), getString(R.string.mainRunTimeNotificationID), notificationManager)
-                            notificationMainRunWarnDeployed = Pair(true, Clock.System.now())
-                        }
-                        if (mainRunWarnVis && !mainPumpWarnSilence) {
-                            binding.mainRunWarnView = true}
-                        else {binding.mainRunWarnView = false}
-                        if (backupRunWarnVis && !backupPumpWarnSilence) {binding.backupRunWarnView = true}
-                        else {binding.backupRunWarnView = false}
-
-
-
-
-                        if (mainRunning_|| backupRunning_ == true){
-                            if (lowFlooding_ == false){
-                                val (deployed, timeDeployed) = notificationWaterTooLow
-                                if (!deployed){
-                                    notificationBuilder(
-                                        "URGENT: Check Pump",
-                                        "The water level seems empty, but the pump is running",
-                                        "high",
-                                        "00000",
-                                        getString(R.string.waterTooLowNotificationID),
-                                        notificationManager)
-
-                                    notificationWaterTooLow = Pair(true, Clock.System.now())
                                 }
 
-
                             }
+                            Log.i("noPowerMuteTime", notificationACPowerMuteDuration.toString() )
 
+                            if (activity != null) {
+                                resetNotifications(activity)
+                            }
+                            sleep(1500)
                         }
-                        Log.i("noPowerMuteTime", notificationACPowerMuteDuration.toString() )
-
-                        resetNotifications()
-                        sleep(1500)
                     }
-                }
-                threadServer.start()
+                    threadServer.start()
 
 
 
             println("Hello")
-        }
+            }
+
 
 
     /*private fun sendFirstRun(firstRun:Boolean){
@@ -622,7 +697,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private suspend fun updateNotificationMuteTimes(notification:String, context: Context): Int? {
+    suspend fun updateNotificationMuteTimes(notification:String): Int? {
         //Log.i("updateNotifcationMuteTimes", notification)
         val durationIntDict = LinkedHashMap<Duration, Int>()
         durationIntDict[5.minutes] = 5
@@ -637,11 +712,24 @@ class MainActivity : ComponentActivity() {
         durationIntDict[24.hours] = 24
         durationIntDict[48.hours] = 24
 
+        if (defaultMuteTimes.isEmpty()) {
+
+            defaultMuteTimes["serverError"] = 1.days
+            defaultMuteTimes["sensorError"] = 1.days
+            defaultMuteTimes["noPower"] = 1.hours
+            defaultMuteTimes["highWater"] = 15.minutes
+            defaultMuteTimes["mainRunTime"] = 10.minutes
+            defaultMuteTimes["backupRun"] = 10.minutes
+            defaultMuteTimes["noWater"] = 10.minutes
+            defaultMuteTimes["lowBattery12"] = 1.days
+        }
         val defaultMuteTime = defaultMuteTimes[notification]
+
         Log.i("defaultMuteTime", defaultMuteTime.toString())
         val defaultMuteInt = durationIntDict[defaultMuteTime]!!
         val prefKey = intPreferencesKey(notification)
-        val exampleCounterFlow: Flow<Int> = context.dataStore.data
+
+        val exampleCounterFlow: Flow<Int> = this.dataStore.data
               .map { settings ->
                   // No type safety.
                   settings[prefKey] ?: defaultMuteInt   //this sets the value to zero (in exampleCounterFlow not datastore) if null
@@ -653,7 +741,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun resetNotifications(){
+    private fun resetNotifications(activity: Activity){
         if (this::notificationServerErrorDeployed.isInitialized) {
             val (deployed, timeDeployed) = notificationServerErrorDeployed
             Log.i("resetNotifications() server", timeDeployed.toString())
