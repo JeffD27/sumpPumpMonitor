@@ -12,5 +12,9 @@
     <color name="purple">#533696</color>
     <color name="lightPurple">#6844BC</color>
     <color name="lightestPurple">#8959F8</color>
+    <color name="beige1">#EEECC5</color>
+    <color name="actualWhite">#FFFFFF</color>
+    <color name="regularRed">#940b01</color>
+    <color name="beige2">#fffceb</color>
 
 </resources>

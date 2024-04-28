@@ -276,7 +276,7 @@
                 android:layout_height="400dp"
                 android:layout_marginTop="30dp"
                 android:background="?android:attr/listDivider"
-                android:backgroundTint="@color/black"
+                
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -440,6 +440,7 @@
                 android:background="@drawable/button_selector"
                 android:text="@string/warningsButtonText"
                 android:textSize="20sp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"

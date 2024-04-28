@@ -244,7 +244,7 @@ class Settings : ComponentActivity() {
         val minutes = listOf(5.minutes, 10.minutes, 15.minutes, 30.minutes)
         val hours = listOf(1.hours, 2.hours, 4.hours, 8.hours, 12.hours, 24.hours, 48.hours)
         Log.i("WriteData", "initializing")
-        this.dataStore.edit { settings ->
+        this.dataStore.edit { settings -> //write data to saved data store
             if (data in minutes ){
                 settings[key] = data.toInt(DurationUnit.MINUTES)
                 Log.i("minutes", settings[key].toString())
