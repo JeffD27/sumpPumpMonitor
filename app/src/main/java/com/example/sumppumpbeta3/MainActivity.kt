@@ -132,7 +132,7 @@ class MainActivity : ComponentActivity() {
     private var charging5_: Boolean? = true
     @RequiresApi(Build.VERSION_CODES.O)
     private var checkBatteryVoltsTime: Temporal? = null
-
+    private var pumpControlActive = false
     private var highFlooding_: Boolean? = false
     private var midFlooding_: Boolean? = false
     private var lowFlooding_: Boolean? = false
@@ -434,9 +434,10 @@ class MainActivity : ComponentActivity() {
                             }
 
                             try {
+
                                 val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
                                 Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
-                                getFromServer( "https://sumppump.jeffs-handyman.net/",  parameters, null)
+                                getFromServer( "https://sumppump.jeffs-handyman.net/",  parameters, null, binding)
 
 
                             } catch (e: java.lang.Exception) {
@@ -1028,7 +1029,8 @@ class MainActivity : ComponentActivity() {
         fun getFromServer(
             url: String?,
             params: Map<String, String>? = null,
-            responseCallback: Unit?
+            responseCallback: Unit?,
+            binding: ActivityMainBinding?
         ) {
             if (url != null) {
                 Log.i("url", url)
@@ -1144,7 +1146,14 @@ class MainActivity : ComponentActivity() {
             //add function to get last run
 
             match = responseString?.let { timeStampCheckPumpControReg.find(it) }
-            match?.let { checkPumpControlRunning(it) }
+            if (match?.let { checkPumpControlRunning(it) } == false) {
+                if (binding != null){
+                    binding.generalErrorView = true
+                    binding.generalErrorText = "No Pump Control!\n The pumps will not run!"
+
+                }
+            }
+
 
 
 
@@ -1292,7 +1301,7 @@ class MainActivity : ComponentActivity() {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        private fun checkPumpControlRunning(dateTimeMatch: MatchResult) {
+        private fun checkPumpControlRunning(dateTimeMatch: MatchResult): Boolean {
             Log.i("checkingPumpControl", dateTimeMatch.toString())
             val year = dateTimeMatch?.groupValues?.get(1)!!.toInt()
             val month = dateTimeMatch?.groupValues?.get(2)!!.toInt()
@@ -1314,6 +1323,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Log.i("noPumpControl!", "Pump Control is not running")
                 warningVisibilities["noPumpControlWarning"] = Pair(1, LocalDateTime.now())
+
                 val notificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 val (deployed, timeDeployed) = notificationNoPumpCotnrol
@@ -1327,10 +1337,13 @@ class MainActivity : ComponentActivity() {
                         notificationManager
                     )
                     notificationNoPumpCotnrol = Pair(true, Clock.System.now())
+
                 }
+            return false
 
 
             }
+            else    {return  true}
         }
 
         @RequiresApi(Build.VERSION_CODES.O)

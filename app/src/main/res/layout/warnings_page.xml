@@ -38,7 +38,7 @@
 
 
                     <TextView
-                        android:id="@+id/title"
+                        android:id="@+id/warningPageTitleInWarnings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
@@ -56,7 +56,7 @@
                         app:layout_constraintTop_toTopOf="parent" /> <!--title for page-->
 
 
-                     <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cardHighWater"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                     android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title">
+                    app:layout_constraintTop_toBottomOf="@+id/warningPageTitleInWarnings">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -182,7 +182,7 @@
                         app:layout_constraintStart_toStartOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/noPowerCard"
+                        android:id="@+id/noPowerCardinWarnings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -814,108 +814,110 @@
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout><!--seventhCard/constraintLowBattery -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/eighthCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/seventhCard">
+
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/noPumpControlCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@id/seventhCard"
-                        android:id="@+id/eighthCard">
+                        android:background="@color/beige1"
+                        android:padding="8dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/noPumpControlCard"
+                        <TextView
+                            android:id="@+id/cardTitlePumpControl"
+                            style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/beige1"
-                            android:padding="8dp"
-                            android:visibility="visible"
+                            android:layout_height="41dp"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/frame"
+                            android:lineSpacingMultiplier="1.0"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="No Pump Control!"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/activityBackground"
+                            android:textColorHint="@color/darkActivityBackground"
+                            android:textColorLink="?android:attr/textColorLink"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/cardTitlePumpControl"
-                                style="@style/TextAppearance.MaterialComponents.Headline5"
-                                android:layout_width="match_parent"
-                                android:layout_height="41dp"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:lineSpacingMultiplier="1.0"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="No Pump Control!"
-                                android:textColor="@color/black"
-                                android:textColorHighlight="@color/activityBackground"
-                                android:textColorHint="@color/darkActivityBackground"
-                                android:textColorLink="?android:attr/textColorLink"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                            <TextView
-                                android:id="@+id/subheadPumpControl"
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="@{noPumpControlTimeStamp}"
-                                android:textColor="@color/black"
-                                android:textFontWeight="800"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/cardTitlePumpControl" />
+                        <TextView
+                            android:id="@+id/subheadPumpControl"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/frame"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="@{noPumpControlTimeStamp}"
+                            android:textColor="@color/black"
+                            android:textFontWeight="800"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardTitlePumpControl" />
 
-                            <TextView
-                                android:id="@+id/bodyPumpControl"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="The pumps will not work\nuntil this is fixed!"
-                                android:textColor="@color/black"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/subheadPumpControl" />
+                        <TextView
+                            android:id="@+id/bodyPumpControl"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/frame"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="The pumps will not work\nuntil this is fixed!"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/subheadPumpControl" />
 
-                            <ImageView
-                                android:id="@+id/TrianglePumpControl"
-                                android:layout_width="58dp"
-                                android:layout_height="34dp"
-                                android:layout_marginStart="215dp"
-                                android:src="@drawable/triangle_warning"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
-                                app:layout_constraintStart_toStartOf="@+id/cardTitlePumpControl"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
+                        <ImageView
+                            android:id="@+id/TrianglePumpControl"
+                            android:layout_width="58dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="215dp"
+                            android:src="@drawable/triangle_warning"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
+                            app:layout_constraintStart_toStartOf="@+id/cardTitlePumpControl"
+                            app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
 
-                            <ImageView
-                                android:id="@+id/xToClosePumpControl"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="15dp"
-                                android:onClick="closeNoPumpControl"
-                                android:src="@android:drawable/btn_dialog"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
-                                app:layout_constraintEnd_toEndOf="@+id/cardTitlePumpControl"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
+                        <ImageView
+                            android:id="@+id/xToClosePumpControl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:onClick="closeNoPumpControl"
+                            android:src="@android:drawable/btn_dialog"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
+                            app:layout_constraintEnd_toEndOf="@+id/cardTitlePumpControl"
+                            app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout> <!--eighthCard/noPumpControlCard -->
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout> <!--eighthCard/noPumpControlCard -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/ninethCard"
+                        android:id="@+id/ninthCard"
                         android:layout_marginTop="25dp"
                         app:layout_constraintTop_toBottomOf="@id/eighthCard"
                         app:layout_constraintStart_toStartOf="parent"
@@ -929,6 +931,7 @@
                             android:background="@color/beige1"
                             android:padding="8dp"
                             android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -1020,7 +1023,7 @@
                                 app:layout_constraintTop_toTopOf="@+id/cardTitleServerError" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout> <!--ninethCard/ServerError -->
+                    </androidx.constraintlayout.widget.ConstraintLayout> <!--ninthCard/ServerError -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cardAllGood"
                         android:layout_width="match_parent"
@@ -1028,7 +1031,7 @@
 
                         android:layout_marginTop="50dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ninethCard"
+                        app:layout_constraintTop_toBottomOf="@id/ninthCard"
                         >
 
                         <TextView

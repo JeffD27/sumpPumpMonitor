@@ -132,7 +132,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/divider2"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toBottomOf="@+id/warningPageTitle" />
 
             <TextView
 
@@ -146,7 +146,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toBottomOf="@+id/warningPageTitle" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/mainPumpRunWarningGroup"
@@ -276,10 +276,10 @@
                 android:layout_height="400dp"
                 android:layout_marginTop="30dp"
                 android:background="?android:attr/listDivider"
-                
+                android:backgroundTint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                app:layout_constraintTop_toBottomOf="@+id/warningPageTitle" />
 
             <ImageView
                 android:id="@+id/battery5ImageView"
@@ -380,7 +380,7 @@
                 app:layout_constraintTop_toTopOf="@+id/waterLevelImageView" />
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/warningPageTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
