@@ -53,7 +53,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
             .setContentTitle(title)
             .setTicker(title)
             .setContentText(progress)
-            .setSmallIcon(R.drawable.flood_house_svg)
+            .setSmallIcon(R.drawable.floodedhouse)
             .setOngoing(true)
             // Add the cancel action to the notification which can
             // be used to cancel the worker

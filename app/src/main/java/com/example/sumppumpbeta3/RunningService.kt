@@ -35,7 +35,7 @@ class RunningService: Service() {
         Log.i("RunningService","instart in Running Service")
 
         val notification = NotificationCompat.Builder(this, getString(R.string.generalInfoChannel))
-            .setSmallIcon(R.drawable.flood_house_svg)
+            .setSmallIcon(R.drawable.floodedhouse)
             .setContentTitle("Sump Pump Monitor is Monitoring")
             .setContentText("The service is monitoring.")
             .build()

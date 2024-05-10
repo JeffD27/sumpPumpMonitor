@@ -421,16 +421,17 @@ class MainActivity : ComponentActivity() {
                                 //warningVisibilities["noPowerWarning"] = false   you don't want to do this. make it false after x amount of time so it continues to display on warnings page
                                 if (binding != null){
                                     if (binding != null && activity != null) {
-                                        binding.generalErrorView = false
 
                                         Log.i("charging5_", "charging 5 should be false here")
-
-                                        binding.generalErrorText = "Message shouldn't be here!"
+                                        if (!pumpControlActive){
+                                            binding.generalErrorView = false
+                                        }
 
 
                                         binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
                                     }
                                 }
+
                             }
 
                             try {
@@ -482,7 +483,7 @@ class MainActivity : ComponentActivity() {
                             }
                             if (mainRunning_ == false) {
                                 if (binding != null && activity != null) {
-                                    binding.mainRunning = "Pump is Off"
+                                    binding.mainRunning = "Pump Is Not Running"
                                     binding.mainRunningBoxColor =
                                         ContextCompat.getColor(activity, R.color.red)
                                     Log.i("mainTimeStartedStr", mainTimeStartedStr)
@@ -520,7 +521,7 @@ class MainActivity : ComponentActivity() {
                             }
                             if (backupRunning_ == false) {
                                 if (binding != null && activity != null){
-                                    binding.backupRunning = "Pump is Off"
+                                    binding.backupRunning = "Pump Is Not Running"
                                     binding.backupRunTime = "Last Ran on:\n $backupTimeStartedStr"
                                     binding.backupRunningBoxColor =
                                         ContextCompat.getColor(activity, R.color.red)
@@ -780,7 +781,7 @@ class MainActivity : ComponentActivity() {
 
         Log.i("notificationBuilder", title )
         Log.i("notificationBuilder", content )
-        builder.setSmallIcon(R.drawable.flood_house_svg)
+        builder.setSmallIcon(R.drawable.floodedhouse)
         if (priority == "high"){
             builder.priority = NotificationCompat.PRIORITY_HIGH}
         else if(priority=="default"){
@@ -1147,11 +1148,21 @@ class MainActivity : ComponentActivity() {
 
             match = responseString?.let { timeStampCheckPumpControReg.find(it) }
             if (match?.let { checkPumpControlRunning(it) } == false) {
-                if (binding != null){
-                    binding.generalErrorView = true
-                    binding.generalErrorText = "No Pump Control!\n The pumps will not run!"
+                if(!generalWarnSilence){
+                    if (binding != null) {
+                        binding.generalErrorView = true
+                        binding.generalErrorText = "No Pump Control Software!\n The pumps will not run!"
+                    }
 
-                }
+                    else{
+                        if(charging5_!! && warningVisibilities["serverErrorWarning"]!!.first == 0){
+                            if (binding != null) {
+                                binding.generalErrorView = false
+                            }
+
+                        }
+                    }
+            }
             }
 
 
