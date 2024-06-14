@@ -61,8 +61,7 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-
-var noPowerSilenceTimeGlobal:kotlin.time.Duration = 1.days
+var preServerError: Pair<Boolean, LocalDateTime> = Pair(false, LocalDateTime.now())
 val durationConvertDict = LinkedHashMap<String, kotlin.time.Duration>()
 val spinnerStringDict = LinkedHashMap<Spinner, String>()
 val spinnerDurationDict = LinkedHashMap<Spinner, kotlin.time.Duration>()
@@ -81,7 +80,8 @@ var notificationWaterTooLowMuteDuration:  kotlin.time.Duration = 10.minutes
 var notificationBattery12LowMuteDuration: kotlin.time.Duration = 1.days
 var notificationNoPumpControlMuteDuration: kotlin.time.Duration = 12.hours
 
-
+@RequiresApi(Build.VERSION_CODES.O)
+var serverError: Pair<Boolean, LocalDateTime> = Pair(false, LocalDateTime.now())
 
 //@JsonClass(generateAdapter = true)
 data class PyDataLayout (
@@ -132,7 +132,7 @@ class MainActivity : ComponentActivity() {
     private var charging5_: Boolean? = true
     @RequiresApi(Build.VERSION_CODES.O)
     private var checkBatteryVoltsTime: Temporal? = null
-    private var pumpControlActive = false
+    private var pumpControlActive = false // false means we do no have pump control
     private var highFlooding_: Boolean? = false
     private var midFlooding_: Boolean? = false
     private var lowFlooding_: Boolean? = false
@@ -216,7 +216,7 @@ class MainActivity : ComponentActivity() {
         binding.waterLevelImage = ContextCompat.getDrawable(this, R.drawable.water_low)
         binding.mainRunWarnView = true
         binding.backupRunWarnView = true
-        binding.generalErrorView = true
+        binding.generalErrorView = false
         binding.waterLevelWarnView = true
         binding.battery5TextBGColor = ContextCompat.getColor(this, R.color.green)
         binding.battery12TextBGColor = ContextCompat.getColor(this, R.color.green)
@@ -379,6 +379,8 @@ class MainActivity : ComponentActivity() {
 
                             Log.i("charging5", charging5_.toString())
                             if(!charging5_!!){
+                                Log.i("generalWarnCharging5", generalWarnSilence.toString())
+
                                 warningVisibilities["noPowerWarning"] = Pair(1, LocalDateTime.now())
                                 if (binding != null){
                                     if (binding != null && activity != null) {
@@ -420,46 +422,40 @@ class MainActivity : ComponentActivity() {
                             else{
                                 //warningVisibilities["noPowerWarning"] = false   you don't want to do this. make it false after x amount of time so it continues to display on warnings page
                                 if (binding != null){
-                                    if (binding != null && activity != null) {
-
-                                        Log.i("charging5_", "charging 5 should be false here")
-                                        if (!pumpControlActive){
+                                    if (warningVisibilities["serverErrorWarning"]!!.first == 0 && pumpControlActive){
+                                        if( warningVisibilities["noWaterWarning"]!!.first == 0){
                                             binding.generalErrorView = false
                                         }
-
-
-                                        binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.acplug)
                                     }
+                                    binding.acPowerSmallBatteryImage =
+                                        activity?.let { ContextCompat.getDrawable(it, R.drawable.acplug) }
                                 }
-
                             }
+
+
+
 
                             try {
 
                                 val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
                                 Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
                                 getFromServer( "https://sumppump.jeffs-handyman.net/",  parameters, null, binding)
-
+                                //serverError = Pair(false, LocalDateTime.now())
+                                preServerError = Pair(false, LocalDateTime.now())
 
                             } catch (e: java.lang.Exception) {
                                 Log.i("serverError@#$*", LocalDateTime.now().toString())
                                 warningVisibilities["serverErrorWarning"] = Pair(1, LocalDateTime.now())
                                 Log.i("serverError", "yep that's a server error.")
                                 e.printStackTrace()
-                                if (binding != null){
-                                    if (binding != null) {
-                                        binding.generalErrorText = "Error in Server.\n NO Data"
-                                    }
+                                if (!serverError.first){
+                                    serverError = Pair(true, LocalDateTime.now())
                                 }
+
+
                                 //Log.i("mainActivity after get", e.toString())
 
-                                val (deployed, timeDeployed) = notificationServerErrorDeployed
-                                Log.i("server error deployed", deployed.toString())
-                                if (!deployed){
 
-                                    notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
-                                    notificationServerErrorDeployed = Pair(true, Clock.System.now())
-                                }
 
 
                             }
@@ -471,7 +467,7 @@ class MainActivity : ComponentActivity() {
 
                                 if (binding != null){
                                     if (binding != null && activity != null) {
-                                        binding.mainRunning = "Running"
+                                        binding.mainRunning = "Pump is Running"
 
                                         binding.mainRunTime = mainRunTime_
                                         binding.mainRunningBoxColor =
@@ -665,7 +661,13 @@ class MainActivity : ComponentActivity() {
                             if (mainRunning_|| backupRunning_ == true){
                                 if (lowFlooding_ == false){
                                     warningVisibilities["noWaterWarning"] = Pair(1, LocalDateTime.now())
-                                    val (deployed, timeDeployed) = notificationWaterTooLow
+                                    if (binding != null) {
+                                        if( mainRunning_){
+                                            binding.generalErrorView= true
+                                            binding.generalErrorText = "Pump running dry,\n Please Check!"
+                                        }
+                                    }
+                                        val (deployed, timeDeployed) = notificationWaterTooLow
                                     if (!deployed){
                                         notificationBuilder(
                                             "URGENT: Check Pump",
@@ -682,8 +684,13 @@ class MainActivity : ComponentActivity() {
                                 }
 
                             }
+                            if (binding != null) {
+                                if (!mainRunning_ && binding.generalErrorText == "Pump running dry,\n Please Check!"){
+                                    binding.generalErrorView = false
+                                }
+                            }
                             Log.i("noPowerMuteTime", notificationACPowerMuteDuration.toString() )
-
+                            checkServerError(binding, notificationManager)
                             if (activity != null) {
                                 resetNotifications(activity)
                             }
@@ -697,7 +704,7 @@ class MainActivity : ComponentActivity() {
                                         val warnStart = warnVis.value.second
                                         Log.i("warnvis", warnVis.key)
                                         val timeStampKey = warnVis.key + "Time"
-                                        settings[stringPreferencesKey(timeStampKey)] =warnStart.toString()
+                                        settings[stringPreferencesKey(timeStampKey)] = warnStart.toString()
                                         Log.i("duration", java.time.Duration.between(LocalDateTime.now(), warnVis.value.second).toString())
                                         val visibility = getVisibility(warnVis.value.second)
                                         settings[intPreferencesKey(warnVis.key)] = visibility
@@ -706,6 +713,7 @@ class MainActivity : ComponentActivity() {
 
                                         }
                                     }
+
                                 }
 
 
@@ -792,6 +800,7 @@ class MainActivity : ComponentActivity() {
 
         notificationManager.notify(notifid.toInt(), builder.build())
     }
+
 
 
     suspend fun updateNotificationMuteTimes(notification:String): Int? {
@@ -1129,7 +1138,7 @@ class MainActivity : ComponentActivity() {
             } ?: run { //run will run if match is null
 
                 match = responseString?.let { mainRunTimeNullReg.find(it) }
-                mainRunTime_ = match?.groupValues?.get(1).toString()
+                mainRunTime_ = "Runtime: \n" + match?.groupValues?.get(1).toString()
             }
 
             Log.i("mainRunTimeMatch", mainRunTime_)
@@ -1141,29 +1150,43 @@ class MainActivity : ComponentActivity() {
                     .toString() + ": " + match?.groupValues?.get(3).toString()
             } ?: run { //run will run if match is null
                 match = responseString?.let { backupRunTimeNullReg.find(it) }
-                backupRunTime_ = match?.groupValues?.get(1).toString()
+                backupRunTime_ = "Runtime:\n" + match?.groupValues?.get(1).toString()
             }
 
             //add function to get last run
 
             match = responseString?.let { timeStampCheckPumpControReg.find(it) }
-            if (match?.let { checkPumpControlRunning(it) } == false) {
+            if (match?.let { checkPumpControlRunning(it) } == false) { //if pumpcontrol is not running
+                pumpControlActive = false
+                Log.i("generalWarnSilence", generalWarnSilence.toString())
                 if(!generalWarnSilence){
                     if (binding != null) {
                         binding.generalErrorView = true
                         binding.generalErrorText = "No Pump Control Software!\n The pumps will not run!"
                     }
 
-                    else{
-                        if(charging5_!! && warningVisibilities["serverErrorWarning"]!!.first == 0){
-                            if (binding != null) {
-                                binding.generalErrorView = false
+                else{
+                    if(charging5_!! && warningVisibilities["serverErrorWarning"]!!.first == 0){
+                        if (warningVisibilities["noWaterWarning"]?.first == 1){
+                            if (binding != null && mainRunning_) {
+                                binding.generalErrorView= true
+
+                                 binding.generalErrorText = "Pump running dry,\n Please Check!"
                             }
+
+
+                        }
+                        else if (binding != null) {
+                            binding.generalErrorView = false
+                        }
 
                         }
                     }
+
+
             }
             }
+            else{pumpControlActive = true}
 
 
 
@@ -1322,6 +1345,7 @@ class MainActivity : ComponentActivity() {
             val second = dateTimeMatch?.groupValues?.get(6)!!.toInt()
 
             val timeStamp = LocalDateTime.of(year, month, day, hour, minute, second)
+            Log.i("timestampCheckPump", timeStamp.toString())
             Log.i(
                 "checkPUmpControl",
                 java.time.Duration.between(timeStamp, LocalDateTime.now()).toString()
@@ -1488,8 +1512,30 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
+        private fun checkServerError(binding: ActivityMainBinding?, notificationManager: NotificationManager){
+            if (serverError.first){
 
+                if (java.time.Duration.between(serverError.second, LocalDateTime.now()) > java.time.Duration.ofMinutes(5)){
+                    Log.i("generalWarnSilence", generalWarnSilence.toString())
+                    val (deployed, timeDeployed) = notificationServerErrorDeployed
+                    Log.i("server error deployed", deployed.toString())
+                    if (!deployed){
+
+                        notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
+                        notificationServerErrorDeployed = Pair(true, Clock.System.now())
+                    }
+                    if(!generalWarnSilence){
+                        if (binding != null) {
+                            binding.generalErrorView = true
+                            binding.generalErrorText = "Error in Server.\n NO Data"
+                        }
+                    }
+
+                }
+            }
     }
+}
 
 
 @Preview(showBackground = true)
