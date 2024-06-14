@@ -1,1 +1,1 @@
-{'MainRunning': True, 'BackupRunning': False}
+{'MainRunning': False, 'BackupRunning': False}

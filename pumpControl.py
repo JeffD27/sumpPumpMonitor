@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 import RPi.GPIO as GPIO 
 from time import sleep 
@@ -9,6 +10,7 @@ class pumpControl():
     main_pump_running = "No Data"
     backup_pump_running = "No data"                  
     def __init__(self):
+        sleep(5)
         print("relay started")
         print("\n Pump Control is running. This should not be on the server! \n<<<<<<<<<>>>>>>>>>\nIf you are seeing this message on the server, please spend 30 hours troubleshooting!")
         GPIO.setwarnings(False) 
@@ -54,8 +56,8 @@ class pumpControl():
            
         
     def writeToDataFile(self):
-        with open("pumpData.txt","w") as f:
-            relayData = {"mainRunning": self.main_pump_running, "backupRunning": self.backup_pump_running}
+        with open("/home/sp_server_beta/sp_monitor_beta4/pumpData.txt","w") as f:
+            relayData = {"mainRunning": self.main_pump_running, "backupRunning": self.backup_pump_running, "Time!:": datetime.now()}
             f.write(str(relayData))
 
 
