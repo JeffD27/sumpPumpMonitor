@@ -117,7 +117,7 @@ data class PyData (
 class MainActivity : ComponentActivity() {
 
 
-
+    private var bootRun: Boolean = true
     private var mainRunning_: Boolean = false
     private  var mainRunTime_ : String = "Loading..."
     private var backupRunTime_ : String = ""
@@ -719,7 +719,8 @@ class MainActivity : ComponentActivity() {
 
 
 
-                            sleep(1500)
+                            sleep(2000)
+                            bootRun = false
                         }
                     }
                     threadServer.start()
@@ -728,6 +729,7 @@ class MainActivity : ComponentActivity() {
 
 
             println("Hello")
+
             }
 
 
@@ -1514,27 +1516,29 @@ class MainActivity : ComponentActivity() {
 
         @RequiresApi(Build.VERSION_CODES.O)
         private fun checkServerError(binding: ActivityMainBinding?, notificationManager: NotificationManager){
-            if (serverError.first){
+            if (!bootRun){
+                if (serverError.first){
 
-                if (java.time.Duration.between(serverError.second, LocalDateTime.now()) > java.time.Duration.ofMinutes(5)){
-                    Log.i("generalWarnSilence", generalWarnSilence.toString())
-                    val (deployed, timeDeployed) = notificationServerErrorDeployed
-                    Log.i("server error deployed", deployed.toString())
-                    if (!deployed){
+                    if (java.time.Duration.between(serverError.second, LocalDateTime.now()) > java.time.Duration.ofMinutes(5)){
+                        Log.i("generalWarnSilence", generalWarnSilence.toString())
+                        val (deployed, timeDeployed) = notificationServerErrorDeployed
+                        Log.i("server error deployed", deployed.toString())
+                        if (!deployed){
 
-                        notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
-                        notificationServerErrorDeployed = Pair(true, Clock.System.now())
-                    }
-                    if(!generalWarnSilence){
-                        if (binding != null) {
-                            binding.generalErrorView = true
-                            binding.generalErrorText = "Error in Server.\n NO Data"
+                            notificationBuilder("Server Error", "Error In Server\nNo Data is being received","high", getString(R.string.systemIssuesChannelID),getString(R.string.serverErrorNotificationID), notificationManager)
+                            notificationServerErrorDeployed = Pair(true, Clock.System.now())
                         }
-                    }
+                        if(!generalWarnSilence){
+                            if (binding != null) {
+                                binding.generalErrorView = true
+                                binding.generalErrorText = "Error in Server.\n NO Data"
+                            }
+                        }
 
+                    }
                 }
-            }
     }
+}
 }
 
 
