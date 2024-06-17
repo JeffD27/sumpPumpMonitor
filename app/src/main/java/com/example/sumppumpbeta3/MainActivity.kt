@@ -543,7 +543,7 @@ class MainActivity : ComponentActivity() {
                                         "WARNING: HIGH Water in Sump Well",
                                         "The water has reached the top of the well.\nBasement flooding is imminent.",
                                         "high",
-                                        "00000",
+                                        "Pump Errors/Warnings",
                                         getString(R.string.highWaterNotificationID),
                                         notificationManager
                                     )
@@ -673,7 +673,7 @@ class MainActivity : ComponentActivity() {
                                             "URGENT: Check Pump",
                                             "The water level seems empty, but the pump is running",
                                             "high",
-                                            "00000",
+                                            "Pump Errors/Warnings",
                                             getString(R.string.waterTooLowNotificationID),
                                             notificationManager)
 

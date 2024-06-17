@@ -1,19 +1,21 @@
-import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.example.sumppump3.R
 
+
 class DownloadWorker(context: Context, parameters: WorkerParameters) :
     CoroutineWorker(context, parameters) {
 
-    private val notificationManager =
+    private var notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as
                 NotificationManager
 
@@ -46,7 +48,14 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
 
         // Create a Notification channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel()
+            val channel = NotificationChannel(
+                "Foreground",
+                "ForegroundNotification",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            channel.description = "channel for foreground service notification"
+
+            notificationManager.createNotificationChannel(channel)
         }
 
         val notification = NotificationCompat.Builder(applicationContext, id)
@@ -64,9 +73,7 @@ class DownloadWorker(context: Context, parameters: WorkerParameters) :
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createChannel() {
-        // Create a Notification channel
-    }
+
 
     companion object {
         const val KEY_INPUT_URL = "KEY_INPUT_URL"

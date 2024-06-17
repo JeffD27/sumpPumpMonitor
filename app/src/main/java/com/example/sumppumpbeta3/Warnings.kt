@@ -1,5 +1,6 @@
 package com.example.sumppumpbeta3
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
@@ -46,7 +49,18 @@ class Warnings: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.sumppump3.R.layout.warnings_page)
+        val back = this.onBackPressedDispatcher
+        val context = this
+        back.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
 
+
+                val intent = Intent(context, MainActivity()::class.java)
+
+                // Start the new activity
+                startActivity(intent)
+            }
+        })
         val binding: WarningsPageBinding =
             DataBindingUtil.setContentView(this, com.example.sumppump3.R.layout.warnings_page)
 
@@ -147,6 +161,7 @@ class Warnings: ComponentActivity() {
         runBlocking {
             Log.i("warning2", warning)
             val prefKey = stringPreferencesKey(warning + "Time")
+
 
             val exampleCounterFlow: Flow<String> =
                 dataStore.data //read data in saved data store

@@ -1,8 +1,13 @@
 package com.example.sumppumpbeta3
 
 
-import android.app.Activity
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_HIGH
+import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
@@ -33,14 +38,53 @@ class RunningService: Service() {
     //this space is an activity area...just without viewing. you can override oncreate and other functions
     private fun start(){
         Log.i("RunningService","instart in Running Service")
+        val channel = NotificationChannel(
+            "11113",
+            "Foreground",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        channel.description = "PennSkanvTic channel for foreground service notification"
 
-        val notification = NotificationCompat.Builder(this, getString(R.string.generalInfoChannel))
-            .setSmallIcon(R.drawable.floodedhouse)
-            .setContentTitle("Sump Pump Monitor is Monitoring")
-            .setContentText("The service is monitoring.")
-            .build()
-        startForeground(11113, notification)
+
+
+        val foregroundNotificationChannel: NotificationChannel = NotificationChannel("11113","foreground", IMPORTANCE_HIGH )
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+        val notification =  notificationBuilder("Sump Pump Monitor", "Sump Pump Monitor is Monitoring", "High", "11113", "11114", notificationManager )
+
+        startForeground(11114, notification)
     }
+    private fun notificationBuilder(
+        title: String,
+        content: String,
+        priority: String,
+        channelid: String,
+        notifid: String,
+        notificationManager: NotificationManager
+    ): Notification { //priority: high default low
+        Log.i("notificationBuilder()", "starting notification builder")
+        val builder = NotificationCompat.Builder(this, channelid)
+        val intent = Intent(this, RunningService::class.java)
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        builder.setContentTitle(title)
+        builder.setContentText(content)
+        builder.setContentIntent(pendingIntent)
+        builder.setSmallIcon(R.drawable.floodedhouse)
+        Log.i("notificationBuilder", title)
+        Log.i("notificationBuilder", content)
+        builder.setSmallIcon(R.drawable.floodedhouse)
+        if (priority == "high") {
+            builder.priority = NotificationCompat.PRIORITY_HIGH
+        } else if (priority == "default") {
+            builder.priority = NotificationCompat.PRIORITY_DEFAULT
+        } else if (priority == "low") {
+            builder.priority = NotificationCompat.PRIORITY_LOW
+        }
+        return builder.build()
+    }
+
 
     enum class Actions{
         START, STOP, CALLSERVER
