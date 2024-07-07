@@ -43,14 +43,29 @@ class Warnings: ComponentActivity() {
     private val warningStringToCard = LinkedHashMap<String, ConstraintLayout>()
     private val warningStringToTimeStampBinding = LinkedHashMap<String, ConstraintLayout>()
     private val warningStringToTimeStamp = LinkedHashMap<String, LocalDateTime>()
-
+    private val context = this
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.sumppump3.R.layout.warnings_page)
+
+        val buttonHome = findViewById<Button>(R.id.buttonHome)
+
+        buttonHome.setOnClickListener(){
+
+            // Create an Intent to start the new activity
+            val intent = Intent(context, MainActivity()::class.java)
+
+
+            // Start the new activity
+            startActivity(intent)
+        }
+
+
         val back = this.onBackPressedDispatcher
         val context = this
+        /*
         back.addCallback(this, object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
 
@@ -59,8 +74,9 @@ class Warnings: ComponentActivity() {
 
                 // Start the new activity
                 startActivity(intent)
+
             }
-        })
+        })*/
         val binding: WarningsPageBinding =
             DataBindingUtil.setContentView(this, com.example.sumppump3.R.layout.warnings_page)
 
