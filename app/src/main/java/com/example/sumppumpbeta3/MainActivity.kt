@@ -61,6 +61,7 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
+@RequiresApi(Build.VERSION_CODES.O)
 var preServerError: Pair<Boolean, LocalDateTime> = Pair(false, LocalDateTime.now())
 val durationConvertDict = LinkedHashMap<String, kotlin.time.Duration>()
 val spinnerStringDict = LinkedHashMap<Spinner, String>()
@@ -312,7 +313,7 @@ class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun callServer(activity: Activity?, binding: ActivityMainBinding?){
-
+                    Log.i("callServer", "calling Server")
 
                     var firstRun: Boolean = true
 

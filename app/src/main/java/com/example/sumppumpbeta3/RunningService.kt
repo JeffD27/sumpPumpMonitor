@@ -1,6 +1,7 @@
 package com.example.sumppumpbeta3
 
 
+import android.app.MissingForegroundServiceTypeException
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.os.StrictMode
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -25,6 +27,8 @@ class RunningService: Service() {
     //this gets triggered whenever an android component sends an intent to the running service
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        StrictMode.enableDefaults();
+
         Log.i("RunningService","onStartCommand in Running Service")
 
         when(intent?.action){
@@ -36,6 +40,7 @@ class RunningService: Service() {
         return super.onStartCommand(intent, flags, startId)
     }
     //this space is an activity area...just without viewing. you can override oncreate and other functions
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun start(){
         Log.i("RunningService","instart in Running Service")
         val channel = NotificationChannel(
@@ -82,6 +87,7 @@ class RunningService: Service() {
         } else if (priority == "low") {
             builder.priority = NotificationCompat.PRIORITY_LOW
         }
+        Log.i("runningService", "complete")
         return builder.build()
     }
 
