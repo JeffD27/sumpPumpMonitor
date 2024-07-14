@@ -52,7 +52,8 @@
 
             </intent-filter>
         </receiver>
-        <service android:name="com.example.sumppumpbeta3.RunningService"/>
+        <service android:name="com.example.sumppumpbeta3.RunningService"
+                 android:foregroundServiceType="dataSync"/>
     </application>
 
 </manifest>

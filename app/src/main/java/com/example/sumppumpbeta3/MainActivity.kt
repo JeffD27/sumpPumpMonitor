@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.toJavaInstant
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.HttpUrl
@@ -53,7 +54,6 @@ import java.io.FileReader
 import java.io.IOException
 import java.lang.Thread.sleep
 import java.time.LocalDateTime
-import java.time.chrono.ChronoLocalDateTime
 import java.time.temporal.Temporal
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
@@ -62,7 +62,7 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 @RequiresApi(Build.VERSION_CODES.O)
-var preServerError: Pair<Boolean, LocalDateTime> = Pair(false, LocalDateTime.now())
+var preServerError: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
 val durationConvertDict = LinkedHashMap<String, kotlin.time.Duration>()
 val spinnerStringDict = LinkedHashMap<Spinner, String>()
 val spinnerDurationDict = LinkedHashMap<Spinner, kotlin.time.Duration>()
@@ -82,7 +82,7 @@ var notificationBattery12LowMuteDuration: kotlin.time.Duration = 1.days
 var notificationNoPumpControlMuteDuration: kotlin.time.Duration = 12.hours
 
 @RequiresApi(Build.VERSION_CODES.O)
-var serverError: Pair<Boolean, LocalDateTime> = Pair(false, LocalDateTime.now())
+var serverError: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
 
 //@JsonClass(generateAdapter = true)
 data class PyDataLayout (
@@ -112,7 +112,7 @@ data class PyData (
     val voltage12: Float?){}
     val defaultMuteTimes = LinkedHashMap<String, Duration>()
 
-    val warningVisibilities = LinkedHashMap<String, Pair<Int, LocalDateTime>>()
+    val warningVisibilities = LinkedHashMap<String, Pair<Int, Instant>>()
 
 
 class MainActivity : ComponentActivity() {
@@ -262,15 +262,26 @@ class MainActivity : ComponentActivity() {
                 val timeString = data.second
                 val regex = Regex("(\\d{4}).(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})")
                 val match = regex.find(timeString)!!
-                val year = match.groupValues[1].toInt()
-                val month = match.groupValues[2].toInt()
-                val day = match.groupValues[3].toInt()
-                val hour = match.groupValues[4].toInt()
-                val minute  = match.groupValues[5].toInt()
+                val year = match.groupValues[1]
+                val month = match.groupValues[2]
+                val day = match.groupValues[3]
+                val hour = match.groupValues[4]
+                val minute  = match.groupValues[5]
+                Log.i("timeString!", timeString)
+                Log.i("timeString!", year)
+                Log.i("timeString!", month)
+                Log.i("timeString!", day)
+                Log.i("timeString!", hour)
+                Log.i("timeString!", minute)
 
 
-                val timeStamp = LocalDateTime.of(year, month, day, hour, minute)
+
+                val restOfTimeString = ":00.99Z"
+                val timeStringParsed = String.format("%s-%s-%sT%s:%s" + "%s", year, month, day, hour, minute, restOfTimeString)
+                Log.i("timeStringParsed", timeStringParsed)
+                val timeStamp = Instant.parse( timeStringParsed)
                 val visibility = getVisibility(timeStamp)
+
                 warningVisibilities[warning] = Pair(visibility,timeStamp)
                 Log.i("timeString", timeString)
             }
@@ -382,7 +393,7 @@ class MainActivity : ComponentActivity() {
                             if(!charging5_!!){
                                 Log.i("generalWarnCharging5", generalWarnSilence.toString())
 
-                                warningVisibilities["noPowerWarning"] = Pair(1, LocalDateTime.now())
+                                warningVisibilities["noPowerWarning"] = Pair(1, Clock.System.now())
                                 if (binding != null){
                                     if (binding != null && activity != null) {
                                         binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)
@@ -441,16 +452,16 @@ class MainActivity : ComponentActivity() {
                                 val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
                                 Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
                                 getFromServer( "https://sumppump.jeffs-handyman.net/",  parameters, null, binding)
-                                //serverError = Pair(false, LocalDateTime.now())
-                                preServerError = Pair(false, LocalDateTime.now())
+
+                                preServerError = Pair(false, Clock.System.now())
 
                             } catch (e: java.lang.Exception) {
-                                Log.i("serverError@#$*", LocalDateTime.now().toString())
-                                warningVisibilities["serverErrorWarning"] = Pair(1, LocalDateTime.now())
+                                Log.i("serverError@#$*", Clock.System.now().toString())
+                                warningVisibilities["serverErrorWarning"] = Pair(1, Clock.System.now())
                                 Log.i("serverError", "yep that's a server error.")
                                 e.printStackTrace()
                                 if (!serverError.first){
-                                    serverError = Pair(true, LocalDateTime.now())
+                                    serverError = Pair(true, Clock.System.now())
                                 }
 
 
@@ -497,7 +508,7 @@ class MainActivity : ComponentActivity() {
 
                             if (backupRunning_ == true) {
 
-                                warningVisibilities["backupRunWarning"] = Pair(1, LocalDateTime.now())
+                                warningVisibilities["backupRunWarning"] = Pair(1, Clock.System.now())
                                 val (deployed, timeDeployed) = notificationBackupRan
 
                                 if (!deployed){
@@ -529,7 +540,7 @@ class MainActivity : ComponentActivity() {
 
 
                             if (highFlooding_ == true) {
-                                warningVisibilities["highWaterWarning"] = Pair(1, LocalDateTime.now())
+                                warningVisibilities["highWaterWarning"] = Pair(1, Clock.System.now())
                                 if (binding != null && activity != null) {
                                     binding.waterLevelImage =
                                         ContextCompat.getDrawable(activity, R.drawable.water_high)
@@ -593,7 +604,7 @@ class MainActivity : ComponentActivity() {
 
                             if (binding != null) { binding.battery12vText = "$voltage12_%"}
                             if (voltage12_ < 95){
-                                warningVisibilities["lowBattery12Warning"] = Pair(1, LocalDateTime.now())
+                                warningVisibilities["lowBattery12Warning"] = Pair(1, Clock.System.now())
                                 val (deployed, timeDeployed) = notificationBattery12Low
                                 if (binding != null && activity != null){binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.red)}
                                 if(!deployed){
@@ -616,10 +627,10 @@ class MainActivity : ComponentActivity() {
                             Log.i("voltage5_", voltage5_.toString())
                             val sleepTime = java.time.Duration.ofMinutes(1)
 
-                            val currentTime = LocalDateTime.now()
-                            checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = LocalDateTime.now() - java.time.Duration.ofMinutes(40)}
+                            val currentTime = Clock.System.now().toJavaInstant()
+                            checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = currentTime - java.time.Duration.ofMinutes(40)} // if checkBatteryVoltsTime doesn't exist, create it and make it equal to 40 minutes ago so that way it is almost certiantly greater than sleeptime and we check the battery voltage
                             Log.i("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
-                            val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime)
+                            val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime) // how long has it been since we check the battery voltage. we only want to check every sleeptime
                             Log.i("durationBatteryVolts", duration.toString())
                             Log.i("sleeptime", sleepTime.toString())
                             Log.i("sleeptimeBool", (duration > sleepTime).toString())
@@ -627,7 +638,7 @@ class MainActivity : ComponentActivity() {
                                 if (duration > sleepTime || binding.battery5TextView.text == "0%" ){
                                     Log.i("durationBatteryVolts2", sleepTime.toString())
                                     if (binding != null){binding.battery5vText = "$voltage5_%"}
-                                    checkBatteryVoltsTime = LocalDateTime.now()
+                                    checkBatteryVoltsTime = Clock.System.now().toJavaInstant()
 
                                     if(voltage5_ < 70){
 
@@ -661,7 +672,7 @@ class MainActivity : ComponentActivity() {
 
                             if (mainRunning_|| backupRunning_ == true){
                                 if (lowFlooding_ == false){
-                                    warningVisibilities["noWaterWarning"] = Pair(1, LocalDateTime.now())
+                                    warningVisibilities["noWaterWarning"] = Pair(1, Clock.System.now())
                                     if (binding != null) {
                                         if( mainRunning_){
                                             binding.generalErrorView= true
@@ -706,7 +717,7 @@ class MainActivity : ComponentActivity() {
                                         Log.i("warnvis", warnVis.key)
                                         val timeStampKey = warnVis.key + "Time"
                                         settings[stringPreferencesKey(timeStampKey)] = warnStart.toString()
-                                        Log.i("duration", java.time.Duration.between(LocalDateTime.now(), warnVis.value.second).toString())
+                                        Log.i("duration", java.time.Duration.between(Clock.System.now().toJavaInstant(), warnVis.value.second.toJavaInstant()).toString())
                                         val visibility = getVisibility(warnVis.value.second)
                                         settings[intPreferencesKey(warnVis.key)] = visibility
 
@@ -772,8 +783,8 @@ class MainActivity : ComponentActivity() {
     */
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getVisibility(timeStamp:LocalDateTime): Int {
-        if (java.time.Duration.between(timeStamp, LocalDateTime.now()) < java.time.Duration.ofDays(5) ) {
+    private fun getVisibility(timeStamp: Instant): Int {
+        if (java.time.Duration.between(timeStamp.toJavaInstant(), Clock.System.now().toJavaInstant()) < java.time.Duration.ofDays(5) ) {
            return 1
 
         } else {
@@ -1249,7 +1260,7 @@ class MainActivity : ComponentActivity() {
             Log.i("applyMainPumpWarn", mainPumpWarnSilence.toString())
             if (mainRunWarnStr == "true") {
                 mainRunWarnVis = true
-                warningVisibilities["mainRunTimeWarning"] = Pair(1, LocalDateTime.now())
+                warningVisibilities["mainRunTimeWarning"] = Pair(1, Clock.System.now())
             } else {
                 mainRunWarnVis = false
             }
@@ -1351,16 +1362,16 @@ class MainActivity : ComponentActivity() {
             Log.i("timestampCheckPump", timeStamp.toString())
             Log.i(
                 "checkPUmpControl",
-                java.time.Duration.between(timeStamp, LocalDateTime.now()).toString()
+                java.time.Duration.between(timeStamp, Clock.System.now().toJavaInstant()).toString()
             )
 
             if (java.time.Duration.between(
                     timeStamp,
-                    LocalDateTime.now()
+                    Clock.System.now().toJavaInstant()
                 ) > java.time.Duration.ofMinutes(1)
             ) {
                 Log.i("noPumpControl!", "Pump Control is not running")
-                warningVisibilities["noPumpControlWarning"] = Pair(1, LocalDateTime.now())
+                warningVisibilities["noPumpControlWarning"] = Pair(1, Clock.System.now())
 
                 val notificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -1412,7 +1423,7 @@ class MainActivity : ComponentActivity() {
                 highFloodingApply = true
                 if (midFloodingStr == "false" || lowFloodingStr == "false") {
 
-                    warningVisibilities["sensorErrorWarning"] = Pair(1, LocalDateTime.now())
+                    warningVisibilities["sensorErrorWarning"] = Pair(1, Clock.System.now())
                     Log.i(
                         "ERROR: Raise notification",
                         " Water Level Sensor Error:High Flooding is true, but others are false"
@@ -1443,7 +1454,7 @@ class MainActivity : ComponentActivity() {
                 midFloodingApply = true
                 if (lowFloodingStr == "false") {
                     waterLevelWarningBox.visibility = View.VISIBLE
-                    warningVisibilities["sensorErrorWarning"] = Pair(1, LocalDateTime.now())
+                    warningVisibilities["sensorErrorWarning"] = Pair(1, Clock.System.now())
 
 
                     Log.i(
@@ -1520,7 +1531,7 @@ class MainActivity : ComponentActivity() {
             if (!bootRun){
                 if (serverError.first){
 
-                    if (java.time.Duration.between(serverError.second, LocalDateTime.now()) > java.time.Duration.ofMinutes(5)){
+                    if (java.time.Duration.between(serverError.second.toJavaInstant(), Clock.System.now().toJavaInstant()) > java.time.Duration.ofMinutes(5)){
                         Log.i("generalWarnSilence", generalWarnSilence.toString())
                         val (deployed, timeDeployed) = notificationServerErrorDeployed
                         Log.i("server error deployed", deployed.toString())
