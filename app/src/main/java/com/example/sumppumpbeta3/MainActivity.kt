@@ -25,13 +25,22 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 
 import com.example.sumppump3.R
 import com.example.sumppump3.databinding.ActivityMainBinding
 import com.squareup.moshi.Json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -42,6 +51,8 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 var preServerError: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
@@ -98,9 +109,13 @@ data class PyData (
     val voltage5: Float?,
     val charging5: Boolean?,
     val voltage12: Float?){}
-    val defaultMuteTimes = LinkedHashMap<String, Duration>()
 
-    val warningVisibilities = LinkedHashMap<String, Pair<Int, Instant>>()
+val defaultMuteTimes = LinkedHashMap<String, Duration>()
+
+val warningVisibilities = LinkedHashMap<String, Pair<Int, Instant>>()
+
+private lateinit var job: Job
+private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
 
 var bootRun: Boolean = true
@@ -159,7 +174,6 @@ open class MainActivity : ComponentActivity() {
         val activity: Activity = this
 
 
-
         try {
             Class.forName("dalvik.system.CloseGuard")
                 .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
@@ -205,6 +219,7 @@ open class MainActivity : ComponentActivity() {
         defaultMuteTimes["noPumpControl"] = 12.hours
 
         initiateWarningVisibilities()//also applies saved data
+
         //set an initial datetime way in the past
         /*
         warningVisibilities["sensorErrorWarning"] = LocalDateTime.of(2000, 1,1, 12,0)
@@ -241,15 +256,9 @@ open class MainActivity : ComponentActivity() {
             // Start the new activity
             startActivity(intent)
         }
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        checkNoWaterPumpRunning(activity, binding)
-        checkServerError(activity, binding)
-        checkPumpRuntimeBackupRun(activity, binding)
-        checkGeneralErrors(activity, binding)
-        checkVoltages(activity, binding)
-        checkPumpsRunning(activity, binding)
-        checkWaterLevel(activity, binding)
+        startRepeatingServerCalls(activity, binding)
+
+
         //callServer(activity, binding, notificationManager)
 
 
@@ -312,6 +321,31 @@ open class MainActivity : ComponentActivity() {
 
         }
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun startRepeatingServerCalls(activity: Activity, binding: ActivityMainBinding) {
+        job = coroutineScope.launch {
+            while (isActive) {  // While the job is active
+
+                val callServerWorkerOnce: WorkRequest = OneTimeWorkRequest.Builder(CallServerWorker::class.java)
+                    .build()
+
+                // Enqueue the work request
+                WorkManager.getInstance(applicationContext).enqueue(callServerWorkerOnce) //this only provides a snapshot
+                checkNoWaterPumpRunning(activity, binding)
+                checkServerError(activity, binding)
+                checkPumpRuntimeBackupRun(activity, binding)
+                checkGeneralErrors(activity, binding)
+                checkVoltages(activity, binding)
+                checkPumpsRunning(activity, binding)
+                checkWaterLevel(activity, binding)
+
+
+
+                delay(3000) // Delay for 3 seconds before the next call
+            }
+        }
     }
 
 

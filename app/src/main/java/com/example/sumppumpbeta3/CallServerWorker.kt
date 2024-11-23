@@ -129,40 +129,42 @@ class CallServerWorker(context: Context, workerParameter: WorkerParameters): Cor
         var firstRun: Boolean = true
         var responseString:String? = null
 
-        val threadServer = Thread {
-            //THIS USED TO BE IN A WHILE LOOP...MAYBE IT SHOULD BE?
-            Log.i("callServer", "thread starting")
 
-            //val notifications = NotificationsSettings()
+        //THIS USED TO BE IN A WHILE LOOP...MAYBE IT SHOULD BE?
+        Log.i("callServer", "thread starting")
 
-            try {
-                Log.i("callServer", "trying")
-                val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
-                Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
-                //important note that getFromServer also applies data. So mainRunning_ will be be altered (if req) for example
-                responseString = getFromServer("https://sumppump.jeffs-handyman.net/", parameters, null)
+        //val notifications = NotificationsSettings()
+
+        try {
+            Log.i("callServer", "trying")
+            val parameters = mapOf<String, String>("firstRun" to firstRun.toString())
+            Log.i("mainactivity oncreate", "calling get on sumppump.jeffs-handyman.net")
+            //important note that getFromServer also applies data. So mainRunning_ will be be altered (if req) for example
+            responseString = getFromServer("https://sumppump.jeffs-handyman.net/", parameters, null)
 
 
-                preServerError = Pair(false, Clock.System.now())
+            preServerError = Pair(false, Clock.System.now())
 
-            } catch (e: java.lang.Exception) {
-                Log.i("serverError@#$*", Clock.System.now().toString())
-                warningVisibilities["serverErrorWarning"] = Pair(1, Clock.System.now())
-                Log.i("serverError", "yep that's a server error.")
-                e.printStackTrace()
-                if (!serverError.first) {
-                    serverError = Pair(true, Clock.System.now())
-                }
-
-            //now in evaluateResp. we need to kick back data to here in order to run a notificatin
-
+        } catch (e: java.lang.Exception) {
+            Log.i("serverError@#$*", Clock.System.now().toString())
+            warningVisibilities["serverErrorWarning"] = Pair(1, Clock.System.now())
+            Log.i("serverError", "yep that's a server error.")
+            e.printStackTrace()
+            if (!serverError.first) {
+                serverError = Pair(true, Clock.System.now())
             }
-            if (responseString == null){Log.i("callserverworker", "ResponseString is null!!!")}
-            else{Log.i("responseString(())", responseString!!)
-                Log.i("callserverWorker", "responseString is not null")
-                EvaluateResponse().onCreate(responseString!!, activity = null )} //Can't create handler inside thread Thread[Thread-4,5,main] that has not called Looper.prepare()
+
+        //now in evaluateResp. we need to kick back data to here in order to run a notificatin
+
         }
-        threadServer.start()
+        if (responseString == null){Log.i("callserverworker", "ResponseString is null!!!")
+        }
+        else{Log.i("responseString(())", responseString!!)
+            Log.i("callserverWorker", "responseString is not null")
+            EvaluateResponse().onCreate(responseString!!, activity = null )
+        }
+
+
 
 
 
