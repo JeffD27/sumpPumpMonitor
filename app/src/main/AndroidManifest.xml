@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:name="com.example.sumppumpbeta3.RunningApp"
@@ -18,13 +19,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SumpPumpBeta3"
 
+
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
+
+        <service android:name="com.example.sumppumpbeta3.RunningApp"
+            android:foregroundServiceType="dataSync"/>
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"
             tools:node="merge" />
         <activity
+
             android:name="com.example.sumppumpbeta3.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -38,22 +44,23 @@
             android:exported="false">
 
         </activity>
+
         <activity
             android:name="com.example.sumppumpbeta3.Warnings"
             android:exported="false">
 
         </activity>
-        <receiver android:name="com.example.sumppumpbeta3.BootCompletedReceiver"
-                  android:exported="false"
-                  android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.QUICKBOOT_POWERON"    />
+            <receiver android:name="com.example.sumppumpbeta3.BootCompletedReceiver"
+                      android:exported="false"
+                      android:enabled="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                    <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                    <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
 
-            </intent-filter>
-        </receiver>
-        <service android:name="com.example.sumppumpbeta3.RunningService"
-                 android:foregroundServiceType="dataSync"/>
+                </intent-filter>
+            </receiver>
+
     </application>
 
 </manifest>

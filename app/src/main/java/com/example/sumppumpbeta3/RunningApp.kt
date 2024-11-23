@@ -9,14 +9,19 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import com.example.sumppump3.R
 import java.security.AccessController.getContext
 
 class RunningApp: Application() {
-    var notifiManager: NotificationManager? = null
     override fun onCreate() {
         super.onCreate()
-
+        Log.i("RunningApp","RunningApp.kt...About to run")
+       // WorkManager.initialize(this, Configuration.Builder().build())
+        createNotificationChannels()
+    }
+    fun createNotificationChannels(){
 
         Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

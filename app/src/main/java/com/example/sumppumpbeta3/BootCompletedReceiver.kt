@@ -8,28 +8,43 @@ import android.os.StrictMode
 import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.ContextCompat.startForegroundService
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import java.util.concurrent.TimeUnit
 
 
 class BootCompletedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        StrictMode.enableDefaults();
-        Log.i("onReceive", "Hello World...boot is complete")
-        val pkgName = context!!.packageName
-        if (Intent.ACTION_BOOT_COMPLETED == intent!!.action) {
 
-            //val i = Intent().setClassName(pkgName, "RunningService")
-            /*
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context!!.startService(i)
-            */
-            Intent(context, RunningService::class.java).also {
-                it.action = RunningService.Actions.START.toString()
-                context.startService(it)
+        Log.i("bootCompletedReceiver", "Hello World...boot is complete")
+        if (intent != null && context != null) {
+            if (intent.action == Intent.ACTION_BOOT_COMPLETED || intent.action == Intent.ACTION_MY_PACKAGE_REPLACED) {
+                Log.i("bootCompletedReceiver", "about to startPeriodicWork")
+
+                //val i = Intent().setClassName(pkgName, "RunningService")
+                /*
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context!!.startService(i)
+                */
+                startPeriodicWork(context)
+
             }
-            Log.i("onReceive", "starting service")
         }
     }
+
+    private fun startPeriodicWork(context: Context){
+        // Create the periodic work request
+        Log.i("startPeriodicWork", "Starting")
+        val periodicWorkRequest = PeriodicWorkRequestBuilder<CallServerWorker>(15, TimeUnit.MINUTES)
+            .setInitialDelay(5, TimeUnit.SECONDS)  // Optional initial delay
+            .build()
+
+        // Enqueue the periodic work request
+        WorkManager.getInstance(context).enqueue(periodicWorkRequest)
+        Log.i("startPeriodicWork", "enqued")
+    }
 }
+
 /*
 class BootCompletedReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

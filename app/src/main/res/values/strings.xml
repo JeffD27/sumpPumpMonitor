@@ -117,7 +117,7 @@
 
     <!--NotificationIDS-->
     <string name = "noACPowerNotificationID">11112</string>
-    <string name="noPumpCotnrolNotificationID">11113</string>
+    <string name="noPumpControlNotificationID">11113</string>
     <string name="waterLevelSensorErrorNotificationID">11111</string>
     <string name ="lowBattery12vNotificationID">22222</string>
     <string name="serverErrorNotificationID">44444</string>
