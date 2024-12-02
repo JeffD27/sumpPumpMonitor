@@ -36,9 +36,8 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
 
     override fun doWork(): Result {
+        initiateDeployedVariables()
 
-
-        Log.i("NotificationsSettings", "onCreate")
         notificationStringToDeployed["serverError"] = notificationServerErrorDeployed
         notificationStringToDeployed["sensorError"] = notificationWaterLevelSensorErrorDeployed
         notificationStringToDeployed["noPower"] = notificationACPowerDeployed
@@ -48,6 +47,10 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         notificationStringToDeployed["noWater"] = notificationWaterTooLow
         notificationStringToDeployed["lowBattery12"] = notificationBattery12Low
         notificationStringToDeployed["noPumpControl"] = notificationNoPumpControl
+
+
+        Log.i("NotificationsSettings", "onCreate")
+
         // Get the string input from WorkManager
         val title = inputData.getString("title") ?: "Sump Pump Monitor"
         val message = inputData.getString("message") ?: "No message provided"
@@ -58,8 +61,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        setupChannels(notificationManager)
-        initiateDeployedVariables()
+        //setupChannels(notificationManager)
 
 
 
@@ -102,7 +104,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
             notificationNoPumpControl = Pair(false, Clock.System.now())
         }
     }
-
+    /*
     private fun setupChannels(notificationManager: NotificationManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel.
@@ -136,7 +138,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
 
         }
-    }
+    }*/
 
     private fun notificationBuilder(
         context: Context,
@@ -180,10 +182,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
     ) {
 
         Log.i("notifstring in depl", notificationString)
-        Log.i(
-            "notifstring in depl",
-            Clock.System.now().toString()
-        )
+        Log.i("notifstring in depl",Clock.System.now().toString())
 
         val deployedPair =
             notificationStringToDeployed[notificationString]!! //returns a pair //causes null pointer exception
@@ -226,134 +225,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
     }
 
 
-    fun setNotificationMuteTimes(){
-        val intDurationDict = LinkedHashMap<Int, kotlin.time.Duration>()
-        intDurationDict[5] = 5.minutes
-        intDurationDict[10] = 10.minutes
-        intDurationDict[15] = 15.minutes
-        intDurationDict[30] = 30.minutes
-        intDurationDict[1] = 1.hours
-        intDurationDict[2] = 2.hours
-        intDurationDict[4] = 4.hours
-        intDurationDict[8] = 8.hours
-        intDurationDict[12] = 12.hours
-        intDurationDict[24] = 24.hours
-        intDurationDict[48] = 48.hours
 
-
-        runBlocking {
-            for (string in notificationStrings) {
-
-
-                val durationInt = updateNotificationMuteTimes(string)!! //initiated in settings
-
-                //Log.i("notifyString", string)
-
-                // Log.i("durationInt", durationInt.toString())
-
-                when (string) {
-                    "serverError" -> {
-                        notificationServerErrorMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "sensorError" -> {
-                        notificationWaterLevelSensorErrorMuteDuration =
-                            intDurationDict[durationInt]!!
-                    }
-
-                    "noPower" -> {
-                        notificationACPowerMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "highWater" -> {
-                        notificationHighWaterMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "mainRunTime" -> {
-                        notificationMainRunWarnMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "backupRun" -> {
-                        notificationBackupRanMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "noWater" -> {
-                        notificationWaterTooLowMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "lowBattery12" -> {
-                        notificationBattery12LowMuteDuration = intDurationDict[durationInt]!!
-                    }
-
-                    "noPumpControl" -> {
-                        notificationNoPumpControlMuteDuration = intDurationDict[durationInt]!!
-
-                    }
-
-
-                }
-            }
-        }
-    }
-    suspend fun updateNotificationMuteTimes(notification:String): Int? {
-        Log.i("updateNotifcationMuteTimes", notification)
-
-        val durationIntDict = LinkedHashMap<kotlin.time.Duration, Int>()
-        durationIntDict[5.minutes] = 5
-        durationIntDict[10.minutes] = 10
-        durationIntDict[15.minutes] = 15
-        durationIntDict[30.minutes] = 30
-        durationIntDict[1.hours] = 1
-        durationIntDict[2.hours] = 2
-        durationIntDict[4.hours] = 4
-        durationIntDict[8.hours] = 8
-        durationIntDict[12.hours] = 12
-        durationIntDict[24.hours] = 24
-        durationIntDict[48.hours] = 24
-        durationIntDict[1.days] = 24
-        durationIntDict[2.days] = 48
-
-        if (defaultMuteTimes.isEmpty()) {
-
-            defaultMuteTimes["serverError"] = 1.days
-            defaultMuteTimes["sensorError"] = 1.days
-            defaultMuteTimes["noPower"] = 1.hours
-            defaultMuteTimes["highWater"] = 15.minutes
-            defaultMuteTimes["mainRunTime"] = 10.minutes
-            defaultMuteTimes["backupRun"] = 10.minutes
-            defaultMuteTimes["noWater"] = 10.minutes
-            defaultMuteTimes["lowBattery12"] = 1.days
-            defaultMuteTimes["noPumpControl"] = 12.hours
-        }
-        val defaultMuteTime = defaultMuteTimes[notification]
-
-        Log.i("defaultMuteTime", defaultMuteTime.toString())
-
-        val defaultMuteInt = durationIntDict[defaultMuteTime]!!
-        val prefKey = intPreferencesKey(notification)
-        /*
-       val constraints = Constraints.Builder()
-           //.setRequiredNetworkType(NetworkType.UNMETERED) //for example you can have the service run if network is unmetered
-           //.setRequiresCharging(true)
-           .build()
-
-      val myWorkRequest: WorkRequest =
-           OneTimeWorkRequestBuilder<MyWork>()
-               .setConstraints(constraints)
-               .build()*/
-
-        val apContext = applicationContext
-//problem is here
-        val notificationSettingsFlow: Flow<Int> = apContext.dataStore.data //read data in saved data store
-            .map { settings: Preferences  ->
-                // No type safety.
-                settings[prefKey] ?: defaultMuteInt   //this sets the value (in exampleCounterFlow not datastore) if null
-            }
-
-        //Log.i("readDurationData", exampleCounterFlow.first().toString())
-        Log.i("valueinRead", notificationSettingsFlow.first().toString())
-        return notificationSettingsFlow.first()
-    }
 
 }
 

@@ -22,7 +22,7 @@
     <string name="batteryVoltsTitle">Battery Levels</string>
     <string name="settingsTitle">Settings</string>
     <string name="waterLevelemptycontentdescription">An empty tank</string>
-    <string name="warningsButtonText">Warnings/Notifications</string>
+    <string name="warningsButtonText">Warnings Log</string>
     <string name="xToClose">\"X\" to close</string>
     <string name="pumpProblemsChannel">Pump Errors/Warnings</string>
     <string name="pumpProblemsChannelDescription">E.g. pump has run too long</string>

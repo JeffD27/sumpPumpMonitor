@@ -1,26 +1,24 @@
 package com.example.sumppumpbeta3
 
 import android.app.Activity
-import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getString
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import androidx.work.WorkRequest
-import com.example.sumppump3.R
-import com.example.sumppump3.databinding.ActivityMainBinding
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.*
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
 
 
 class EvaluateResponse() {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun onCreate(responseString: String, activity: MainActivity?) {
+    fun onCreate(context: Context, responseString: String, activity: Activity?) {
         Log.i("evalResp", "is this running???")
         Log.i("responseString",responseString)
         val activityNull = activity == null //this is just for the log below...
@@ -53,6 +51,7 @@ class EvaluateResponse() {
             "timeStampCheckRunning\":\\[\\[{0,1}\"(\\d{4}),\\s(\\d{1,2}),\\s(\\d{1,2}),\\s(\\d{1,2}),\\s(\\d{1,2}),\\s(\\d{1,2})".toRegex()
 
 
+
         var match = responseString?.let { mainRunningReg.find(it) }
         val mainRunningStr = match?.groupValues?.get(1)
         if (mainRunningStr != null) {
@@ -62,6 +61,7 @@ class EvaluateResponse() {
         val backupRunningStr = match?.groupValues?.get(1)
         match = responseString?.let { mainRunWarnReg.find(it) }
         val mainRunningWarnStr = match?.groupValues?.get(1)
+        Log.i("mainRunningWarnStr", mainRunningWarnStr.toString())
         if (mainRunningWarnStr != null) {
             applyMainPumpWarn(mainRunningWarnStr)
         }
@@ -108,7 +108,9 @@ class EvaluateResponse() {
         //add function to get last run
 
         match = responseString?.let { timeStampCheckPumpControReg.find(it) }
-        if (match?.let { checkPumpControlRunning(it) } == false) { //if pumpcontrol is not running
+        Log.i("timePumpControl", match.toString())
+        if (match?.let { checkPumpControlRunning(context, it) } == false) {
+            //if pumpcontrol is not running
             pumpControlActive = false
             Log.i("generalWarnSilence", generalWarnSilence.toString())
 
@@ -130,7 +132,7 @@ class EvaluateResponse() {
 
         match = responseString?.let { voltage5Reg.find(it) }
         val voltage5Str = match?.groupValues?.get(1)
-        //Log.i("voltage5Str", voltage5Str!!)
+
         match = responseString?.let { voltage12Reg.find(it) }
         val voltage12Str = match?.groupValues?.get(1)
         match = responseString?.let { charging5Reg.find(it) }
@@ -141,59 +143,67 @@ class EvaluateResponse() {
         // val isPumpControlRunning = PumpControlRunningCheck()
 
         applyRelayData(mainRunningStr, backupRunningStr)
-        applyBatteryData(
-            voltage12Str = voltage12Str,
-            voltage5Str = voltage5Str,
-            charging5Str = charging5Str
-        )
-        if (voltage12Str != null) {
-            Log.i("voltage12", voltage12Str)
+        if (voltage5Str != null) {
+            if (voltage12Str != null) {
+                if (charging5Str != null) {
+                    applyBatteryData( voltage5Str, voltage12Str, charging5Str )
+                }
+            }
         }
 
-        applyWaterLevel(
-            highFloodingStr,
-            midFloodingStr,
-            lowFloodingStr,
-            activity
-        )
-        checkNoWaterPumpRunningNotify()
-        checkMainPumpRuntime()
-        checkVotagesNotify()
-        checkServerError()
+
+        applyWaterLevel(context, highFloodingStr, midFloodingStr,lowFloodingStr, activity)
+        checkNoWaterPumpRunningNotify(context)
+        checkMainPumpRuntime(context)
+        checkVoltagesNotify(context)
+        checkServerError(context)
+        checkWaterLevelForNotify(context)
+        Log.i("backupRun_777", backupRunning_.toString())
+        checkBackupRunNotify(context)
     }
 
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun checkPumpControlRunning(dateTimeMatch: MatchResult): Boolean { //this takes a time stamp from the server that gets updated every 200ms. if that timestamp is more than 1 minute ago...we know pumpcontrol.py is not running
+    fun checkPumpControlRunning(context: Context, dateTimeMatch: MatchResult): Boolean { //this takes a time stamp from the server that gets updated every 200ms. if that timestamp is more than 1 minute ago...we know pumpcontrol.py is not running
         Log.i("checkingPumpControl", dateTimeMatch.toString())
         var year = dateTimeMatch?.groupValues?.get(1)!!.toString()
         var month = dateTimeMatch?.groupValues?.get(2)!!.toString()
         if (month.length == 1){month = "0" + month}
         var day = dateTimeMatch?.groupValues?.get(3)!!.toString()
-        if (day.length == 1){day = "0" + month}
+        if (day.length == 1){day = "0" + day}
         var hour = dateTimeMatch?.groupValues?.get(4)!!.toString()
         if (hour.length == 1){hour = "0" + hour}
         var minute = dateTimeMatch?.groupValues?.get(5)!!.toString()
         if (minute.length == 1){minute = "0" + minute}
         var second = dateTimeMatch?.groupValues?.get(6)!!.toString()
         if (second.length == 1){second = "0" + second}
-        var timeToParse = String.format("%s-%s-%sT%s:%s:%s.00Z", year, month, day, hour, minute, second)
-        var timeStamp = Instant.parse(timeToParse)
-        Log.i("timestampCheckPump", timeStamp.toString())
-        Log.i("checkPUmpControl",java.time.Duration.between(timeStamp.toJavaInstant(), Clock.System.now().toJavaInstant()).toString())
 
+        var timeToParse = String.format("%s-%s-%sT%s:%s:%s.000-05:00", year, month, day, hour, minute, second)
+        Log.i("timeTOPARSE", timeToParse.toString())
+        //          2016-09-18T12:17:21:000Z
+        //          2024-12-012T11:23:52.000-05:00
+        var timeStamp = Instant.parse(timeToParse).toJavaInstant()
+        val zonedTimeStamp = ZonedDateTime.ofInstant(timeStamp, ZoneId.of("America/New_York"))
+        Log.i("timestampCheckPump", timeStamp.toString())
+        val zonedDateTime = ZonedDateTime.now(ZoneId.of("America/New_York"))
+        val duration = java.time.Duration.between(
+            zonedTimeStamp,
+            zonedDateTime)
+        Log.i("zonedDateTime", zonedDateTime.toString())
+        Log.i("duration&^%", duration.toString())
         if (java.time.Duration.between(
-                timeStamp.toJavaInstant(),
-                Clock.System.now().toJavaInstant()
+                zonedTimeStamp,
+                zonedDateTime
             ) > java.time.Duration.ofMinutes(1)
         ) {
             Log.i("noPumpControl!", "Pump Control is not running")
             warningVisibilities["noPumpControlWarning"] = Pair(1, Clock.System.now())
-
+            pumpControlActive = false
 
 
             callDeployNotification(
+                context,
                 "noPumpControl",
                 "Warning: No Pump Control!",
                 "Pump Control is not running. The pumps will not work until this is fixed!",
@@ -201,13 +211,19 @@ class EvaluateResponse() {
                 "Pump Errors/Warnings",
                 "11112",
             )
-
-
             return false
 
 
+
+
+
         }
-        else    {return  true}
+        else    {
+            Log.i("evaluateResp", "we have ELSE")
+            warningVisibilities["noPumpControlWarning"] = Pair(0, Clock.System.now())
+            pumpControlActive = true
+            return true
+            }
     }
     private fun applyMainPumpWarn(mainRunWarnStr: String) { //if pump has run > 10 min gets eval in python server side as boolean. boolean is applied here
         Log.i("applymainpumpwarn", "starting apply main pump warn")
@@ -219,9 +235,11 @@ class EvaluateResponse() {
         }
         Log.i("applyMainPumpWarn", mainPumpWarnSilence.toString())
         if (mainRunWarnStr == "true") {
+            Log.i("applyMainPumpWarn", mainRunWarnStr)
             mainPumpRuntimeOver10 = true
             warningVisibilities["mainRunTimeWarning"] = Pair(1, Clock.System.now())
         } else {
+            Log.i("applyMainPumpWarn", mainRunWarnStr)
             mainPumpRuntimeOver10 = false
         }
     }
@@ -246,8 +264,11 @@ class EvaluateResponse() {
 
         if (backupRunningStr == "false") {
             backupRunningApply = false
+            Log.i("EvalResp","backupRunningApply is false")
+
         } else if (backupRunningStr == "true") {
             backupRunningApply = true
+            Log.i("EvalResp","backupRunningApply is true")
         } else {
             Log.i("Failure in applyRelayData", "failure in applyRelayData")
         }
@@ -259,23 +280,28 @@ class EvaluateResponse() {
 
     }
 
-    private fun applyBatteryData(
-        voltage5Str: String?,
-        voltage12Str: String?,
-        charging5Str: String?
+    private fun applyBatteryData( voltage5Str: String, voltage12Str: String, charging5Str: String) {
+        if (voltage5Str != null) {
+            Log.i("voltage5Eval", voltage5Str)
+        }
+        if (voltage12Str != null) {
+            Log.i("voltage12Eval", voltage12Str)
+        }
 
-    ) {
-        var voltage5Apply: Int
-        var voltage12Apply: Int
+
         var charging5Apply: Boolean
 
 
-        voltage5Apply = voltage5Str?.toInt()!!
-        voltage12Apply = voltage12Str?.toInt()!!
+        var voltage5Apply: Int = voltage5Str?.toInt()!!
+        var voltage12Apply: Int = voltage12Str?.toInt()!!
 
         voltage12_ = voltage12Apply
         voltage5_ = voltage5Apply
+        if (voltage5_ < 10 || voltage12_ < 10){
+            Log.i("lowVoltaging", voltage5_.toString())
+            Log.i("lowVoltaging", voltage12_.toString())
 
+        }
 
         if (charging5Str == "false") {
             charging5_ = false
@@ -307,9 +333,10 @@ class EvaluateResponse() {
         }
     }
 
-    private fun checkBackupRunNotify(){
+    private fun checkBackupRunNotify(context: Context){
         if (backupRunning_ == true){
             callDeployNotification(
+                context,
                 "backupRun",
                 "Check Sump Pump",
                 "Backup Pump has run!",
@@ -320,7 +347,9 @@ class EvaluateResponse() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun applyWaterLevel(highFloodingStr: String?, midFloodingStr: String?,lowFloodingStr: String?, activity: MainActivity?) {
+    private fun applyWaterLevel(context: Context, highFloodingStr: String?, midFloodingStr: String?,
+                                lowFloodingStr: String?, activity: Activity?
+    ) {
 
         Log.i("applyingwaterlevel", "waterlevelapplying")
 
@@ -342,6 +371,7 @@ class EvaluateResponse() {
                 warningVisibilities["sensorErrorWarning"] = Pair(1, Clock.System.now())
 
                 callDeployNotification(
+                    context,
                     "sensorError",
                     "SumpPump WaterLevel Sensor Error",
                     "Error In water level sensor\nhigh=true mid/low = false",
@@ -368,6 +398,7 @@ class EvaluateResponse() {
                 )
                 //val intent = Intent(this, MainActivity::class.java)
                callDeployNotification(
+                    context,
                     "sensorError",
                     "SumpPump WaterLevel Sensor Error",
                     "Error In water level sensor\nmid=true low = false",
@@ -403,9 +434,10 @@ class EvaluateResponse() {
 
 
 
-    fun checkWaterLevelForNotify(activity: Activity, binding: ActivityMainBinding){ //make sure this gets called
+    private fun checkWaterLevelForNotify(context: Context){ //make sure this gets called
         if (sensorError_ == true){
             callDeployNotification(
+                context,
                 "sensorError",
                 "Sensor Error",
                 "Error detected in water level sensors!",
@@ -420,6 +452,7 @@ class EvaluateResponse() {
 
 
             callDeployNotification(
+                context,
                 "highWater",
                 "WARNING: HIGH Water in Sump Well",
                 "The water has reached the top of the well.\nBasement flooding is imminent.",
@@ -433,7 +466,7 @@ class EvaluateResponse() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkServerError(){
+    private fun checkServerError(context: Context){
 
         if (serverError.first){
 
@@ -442,6 +475,7 @@ class EvaluateResponse() {
                 persistentServerError = true
 
                 callDeployNotification(
+                    context,
                     "serverError",
                     "Server Error",
                     "Error In Server\nNo Data is being received",
@@ -456,9 +490,10 @@ class EvaluateResponse() {
 
 
 
-    private fun checkVotagesNotify(){
+    private fun checkVoltagesNotify(context: Context){
         if (!charging5_!!) {
             callDeployNotification(
+                context,
                 "noPower",
                 "SumpPump RPi: No AC Power",
                 "Usb is disconnected\nOr there is no power going to RPi",
@@ -470,6 +505,7 @@ class EvaluateResponse() {
         if (voltage12_ < 95){
 
             callDeployNotification(
+                context,
                 "lowBattery12",
                 "Sump Pump Battery is LOW",
                 "12 Volt battery is low. Check AC power.",
@@ -480,9 +516,11 @@ class EvaluateResponse() {
         }
     }
 
-    private fun checkMainPumpRuntime(){
+    private fun checkMainPumpRuntime(context: Context){
         if (mainPumpRuntimeOver10) {
-            callDeployNotification("mainRunTime",
+            callDeployNotification(
+                context,
+                "mainRunTime",
                 "Check Sump Pump",
                 "The pump has run for 10 minutes without stopping",
                 "high", "Pump Errors/Warnings",
@@ -490,10 +528,11 @@ class EvaluateResponse() {
         }
     }
 
-    private fun checkNoWaterPumpRunningNotify() {
+    private fun checkNoWaterPumpRunningNotify(context: Context) {
         if (mainRunning_ || backupRunning_ == true) {
             if (lowFlooding_ == false) {
                 callDeployNotification(
+                    context,
                     "noWater",
                     "URGENT: Check Sump Pump",
                     "Pump may be running dry! Reporting no water, but pump is running.",
@@ -505,8 +544,8 @@ class EvaluateResponse() {
     }
 
 
-    private fun callDeployNotification(notificationString: String, title: String, message: String, priority: String, channelID: String, notifid: String){
-
+    private fun callDeployNotification(context: Context, notificationString: String, title: String, message: String, priority: String, channelID: String, notifid: String){
+        Log.i("callingDeployNot", message)
         // Create input data for the WorkRequest
         val inputData = Data.Builder()
             .putString("title", title)
@@ -523,6 +562,7 @@ class EvaluateResponse() {
             .build()
 
         // Enqueue the work request
+        WorkManager.getInstance(context).enqueue(workRequest)
     }
 }
 

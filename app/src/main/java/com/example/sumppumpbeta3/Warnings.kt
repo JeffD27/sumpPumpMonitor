@@ -482,6 +482,18 @@ class Warnings: ComponentActivity() {
         container.removeView(`object` as View?)
     }
 
+    fun returnHome(view: View?){
+
+
+        // Create an Intent to start the new activity
+        val intent = Intent(context, MainActivity()::class.java)
+
+
+        // Start the new activity
+        startActivity(intent)
+
+    }
+
     private var visData:Int = 0
     private fun getVisData(warning: String, timeData: String):Int {
 

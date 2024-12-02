@@ -12,16 +12,20 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -44,7 +48,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.toLocalDateTime
 
 import java.time.temporal.Temporal
 import kotlin.time.Duration
@@ -125,7 +131,7 @@ var backupRunTime_ : String = ""
 var mainTimeStartedStr : String = "Loading..."
 var backupTimeStartedStr: String = "Loading..."
 var backupRunning_: Boolean? = true
-
+var runningDry: Boolean? = false
 
 lateinit var settingsCounterFlowView: Flow<Int>
 
@@ -256,6 +262,7 @@ open class MainActivity : ComponentActivity() {
             // Start the new activity
             startActivity(intent)
         }
+        Log.i("callStartRepeating", "calling startrepeatingServer...")
         startRepeatingServerCalls(activity, binding)
 
 
@@ -312,7 +319,7 @@ open class MainActivity : ComponentActivity() {
         if (java.time.Duration.between(
                 timeStamp.toJavaInstant(),
                 Clock.System.now().toJavaInstant()
-            ) < java.time.Duration.ofDays(5)
+            ) < java.time.Duration.ofMinutes(60)
         ) {
             return 1
 
@@ -325,14 +332,24 @@ open class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startRepeatingServerCalls(activity: Activity, binding: ActivityMainBinding) {
+        Log.i("startRepeatingServerCalls", "starting Repeated Server calls")
+        val context = this
         job = coroutineScope.launch {
-            while (isActive) {  // While the job is active
 
-                val callServerWorkerOnce: WorkRequest = OneTimeWorkRequest.Builder(CallServerWorker::class.java)
-                    .build()
+
+            while (isActive) {  // While the job is active
+                Log.i("startingLoop", "loop is starting in mainActivity")
+
 
                 // Enqueue the work request
-                WorkManager.getInstance(applicationContext).enqueue(callServerWorkerOnce) //this only provides a snapshot
+
+                //WorkManager.getInstance(applicationContext).enqueue(callServerWorkerOnce) //this needs to a periodic work request...not in a loop
+                LoopHandler().run(context)
+                val response = CallServer().run()
+                if (response != null) {
+                    EvaluateResponse().onCreate(context, response, activity)
+                }
+                applyWarningVisibilities()
                 checkNoWaterPumpRunning(activity, binding)
                 checkServerError(activity, binding)
                 checkPumpRuntimeBackupRun(activity, binding)
@@ -340,10 +357,10 @@ open class MainActivity : ComponentActivity() {
                 checkVoltages(activity, binding)
                 checkPumpsRunning(activity, binding)
                 checkWaterLevel(activity, binding)
+                assessViewWarnings()
+                Log.i("delaying", "delay coming")
 
-
-
-                delay(3000) // Delay for 3 seconds before the next call
+                delay(1000) // Delay for 1 seconds before the next call
             }
         }
     }
@@ -447,10 +464,13 @@ open class MainActivity : ComponentActivity() {
 
     private fun checkWaterLevel(activity: Activity, binding: ActivityMainBinding){
         val waterLevelWarningBox = findViewById<TextView>(R.id.waterLevelWarning)
+        Log.i("checkWaterLevel", "initiating check water level")
         if (sensorError_ == true){
+            Log.i("checkWaterLevel", "sensor Error True")
             waterLevelWarningBox.visibility = View.VISIBLE
             warningVisibilities["sensorErrorWarning"] = Pair(1, Clock.System.now())
         }
+        else{warningVisibilities["sensorErrorWarning"] = Pair(0, Clock.System.now())}
         if (highFlooding_ == true) {
             warningVisibilities["highWaterWarning"] = Pair(1, Clock.System.now())
             if (binding != null && activity != null) {
@@ -461,7 +481,8 @@ open class MainActivity : ComponentActivity() {
             if( midFlooding_ == false || lowFlooding_ == false  ) {
                     binding.waterLevelWarnView = !waterLevelWarnSilence}
         else{
-            binding.waterLevelWarnView=false}
+            binding.waterLevelWarnView=false
+            warningVisibilities["highWaterWarning"] = Pair(0, Clock.System.now())}
         }
 
         else if (midFlooding_ == true) {
@@ -493,6 +514,7 @@ open class MainActivity : ComponentActivity() {
                     ContextCompat.getDrawable(activity, R.drawable.water_low)
                 binding.waterLevelText = "Empty"
                 binding.waterLevelWarnView = false
+
             }
         }
     }
@@ -534,8 +556,7 @@ open class MainActivity : ComponentActivity() {
             warningVisibilities["backupRunWarning"] = Pair(1, Clock.System.now())
 
 
-        }
-        if (binding != null && activity != null){
+
             binding.backupRunTime = backupRunTime_
             binding.backupRunning = "Pump is Running"
 
@@ -543,173 +564,211 @@ open class MainActivity : ComponentActivity() {
                 ContextCompat.getColor(activity, R.color.green)
             Log.i("backupRunningColor", binding.backupRunningBoxColor.toString())
             backupRunTime_.let{binding.backupRunTime}
-            backupPumpWarnSilence = false
-        }
-        if (backupRunning_ == false) {
-            if (binding != null && activity != null){
-                binding.backupRunning = "Pump Is Not Running"
-                binding.backupRunTime = "Last Ran on:\n $backupTimeStartedStr"
-                binding.backupRunningBoxColor =
-                    ContextCompat.getColor(activity, R.color.red)
+            backupPumpWarnSilence = false}
 
-                Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
-            }
+        if (backupRunning_ == false) {
+            binding.backupRunning = "Pump Is Not Running"
+            binding.backupRunTime = "Last Ran on:\n $backupTimeStartedStr"
+            binding.backupRunningBoxColor =
+                ContextCompat.getColor(activity, R.color.red)
+
+            Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
         }
 
 
     }
-
+    var runThrough = 0
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkVoltages(activity: Activity, binding: ActivityMainBinding){
         if(!charging5_!!){
             Log.i("generalWarnCharging5", generalWarnSilence.toString())
 
             warningVisibilities["noPowerWarning"] = Pair(1, Clock.System.now())
-            if (binding != null){
-                if (binding != null && activity != null) {
-                    binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug)
-                }
-            }
+
+            binding.acPowerSmallBatteryImage = ContextCompat.getDrawable(activity, R.drawable.noacplug) //draw no plug
+
+
             if (!generalWarnSilence){
-                if (binding != null) {
-                    if (binding != null) {
-                        binding.generalErrorView = true
-                    }
+                binding.generalErrorView = true
 
-                    if (binding != null) {
-                        binding.generalErrorText = "USB disconnected\n / no power!"
-                    }
-                }
+                binding.generalErrorText = "USB disconnected\n / no power!"
             }
-            if (binding != null) { binding.battery12vText = "$voltage12_%"}
-
         }
+        else{binding.acPowerSmallBatteryImage =
+            activity.let { ContextCompat.getDrawable(it, R.drawable.acplug) }//if charger is connect draw plug
+            warningVisibilities["noPowerWarning"] = Pair(0, Clock.System.now())
+        }
+        Log.i("checkVoltages12", voltage12_.toString())
+        binding.battery12vText = "$voltage12_%"
+
+
 
         if (voltage12_ < 95){
-        warningVisibilities["lowBattery12Warning"] = Pair(1, Clock.System.now())
+            warningVisibilities["lowBattery12Warning"] = Pair(1, Clock.System.now())
+            binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.red)
 
 
+            Log.i("checkVoltages()", "low voltage12")
         }
 
         else{
-            if (binding != null && activity != null){
-                binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.green)
-            }
+            binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.green)
         }
-        binding.acPowerSmallBatteryImage =
-            activity?.let { ContextCompat.getDrawable(it, R.drawable.acplug) }
+
 
         Log.i("voltage5_", voltage5_.toString())
-        val sleepTime = java.time.Duration.ofMinutes(1)
+        //val sleepTime = java.time.Duration.ofMinutes(1)
 
         val currentTime = Clock.System.now().toJavaInstant()
+        Log.i("current_herewegoagain", currentTime.toString())
+       // Log.i("sleeptime", sleepTime.toString() )
         checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = currentTime - java.time.Duration.ofMinutes(40)} // if checkBatteryVoltsTime doesn't exist, create it and make it equal to 40 minutes ago so that way it is almost certiantly greater than sleeptime and we check the battery voltage
         Log.i("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
-        val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime) // how long has it been since we check the battery voltage. we only want to check every sleeptime
+        val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime) // how long has it been since we check the battery voltage. we only want to check every sleeptime or it jumps like crazy
         Log.i("durationBatteryVolts", duration.toString())
-        Log.i("sleeptime", sleepTime.toString())
-        Log.i("sleeptimeBool", (duration > sleepTime).toString())
-        if (binding != null && activity != null){
-            if (duration > sleepTime || binding.battery5TextView.text == "0%" ){
-                Log.i("durationBatteryVolts2", sleepTime.toString())
-                if (binding != null){binding.battery5vText = "$voltage5_%"}
-                checkBatteryVoltsTime = Clock.System.now().toJavaInstant()
+        Log.i("duration", duration.toString())
+       // Log.i("sleeptimeBool", (duration > sleepTime).toString())
+        //if (duration > sleepTime || binding.battery5TextView.text == "0%" || runThrough < 6){
+            runThrough += 1
+            //Log.i("durationBatteryVolts2", sleepTime.toString())
+            binding.battery5vText = "$voltage5_%"
+            Log.i("votage5er", voltage5_.toString())
+            checkBatteryVoltsTime = Clock.System.now().toJavaInstant()
 
-                if(voltage5_ < 70){
+            if(voltage5_ < 70){
 
-                    binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
+                binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
 
-                }
-                else {
-
-                    binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)
-
-                }
             }
-        }
+            else {
+
+                binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)
+
+            }
+
     }
 
     private fun checkGeneralErrors(activity: Activity, binding: ActivityMainBinding){
+        Log.i("pumpControlCheckGen", pumpControlActive.toString())
         if (!pumpControlActive){ //gets set in evaluateResponse
             if(!generalWarnSilence){
-                if (binding != null) {
-                    binding.generalErrorView = true
-                    binding.generalErrorText = "No Pump Control Software!\n The pumps will not run!"
-                }
-
-                else{
-                    if(charging5_!! && warningVisibilities["serverErrorWarning"]!!.first == 0){
-                        if (warningVisibilities["noWaterWarning"]?.first == 1){
-                            if (binding != null && mainRunning_) {
-                                binding.generalErrorView= true
-
-                                binding.generalErrorText = "Pump running dry,\n Please Check!"
-                            }
-
-
-                        }
-                        else if (binding != null) {
-                            binding.generalErrorView = false
-                        }
-
-                    }
-                    else{
-                        if (warningVisibilities["serverErrorWarning"]!!.first == 0 && pumpControlActive) {
-                            if (warningVisibilities["noWaterWarning"]!!.first == 0) {
-                                binding.generalErrorView = false
-                            }
-                        }
-                    }
-                }
+                binding.generalErrorView = true
+                binding.generalErrorText = "No Pump Control Software!"
             }
-
-
         }
+        else if (warningVisibilities["noPowerWarning"]?.first == 0){
+            if (warningVisibilities["serverError"]?.first == 0){
+                closeGeneralWarn(null)
+            }
+        }
+
     }
 
-    private fun checkPumpRuntimeBackupRun(activity: Activity, binding: ActivityMainBinding){
-
+    private fun checkPumpRuntimeBackupRun(activity: Activity, binding: ActivityMainBinding) {
+        Log.i("mainPumpRuntimeOver10", mainPumpRuntimeOver10.toString())
         if (mainPumpRuntimeOver10) { //this gets updated in applyMainPumpWarn...if pump has run > 10 min gets eval in python server side as boolean. boolean is applied in applyMainPumpWarn
             if (!mainPumpWarnSilence) {
                 binding.mainRunWarnView = true
-            } else {
-                binding.mainRunWarnView = false
-            }
-            if (backupRunWarnVis && !backupPumpWarnSilence) {
-                binding.backupRunWarnView = true
-            } else {
-                binding.backupRunWarnView = false
+                warningVisibilities["mainRunTimeWarning"] = Pair(1, Clock.System.now())
             }
         }
-
+        else {
+            binding.mainRunWarnView = false
+            warningVisibilities["mainRunTimeWarning"] = Pair(0, Clock.System.now())
+        }
+        if (backupRunWarnVis && !backupPumpWarnSilence) {
+            binding.backupRunWarnView = true
+        } else {
+            binding.backupRunWarnView = false
+        }
     }
+
     private fun checkServerError(activity: Activity, binding: ActivityMainBinding){
 
         if (persistentServerError){
             if(!generalWarnSilence){
-                if (binding != null) {
-                    binding.generalErrorView = true
-                    binding.generalErrorText = "Error in Server.\n NO Data"
-                }
+                binding.generalErrorView = true
+                binding.generalErrorText = "Error in Server.\n NO Data"
+                warningVisibilities["serverError"] = Pair(1, Clock.System.now()
+                )
             }
         }
+        else{
+            warningVisibilities["serverError"] = Pair(0, Clock.System.now())
+        }
+
 
     }
     private fun checkNoWaterPumpRunning(activity: Activity, binding: ActivityMainBinding){
         if (mainRunning_|| backupRunning_ == true){
             if (lowFlooding_ == false){
                 warningVisibilities["noWaterWarning"] = Pair(1, Clock.System.now())
-                if (binding != null) {
-                    if( mainRunning_){
-                        binding.generalErrorView= true
-                        binding.generalErrorText = "Pump running dry,\n Please Check!"
-                    }
-                    if (!mainRunning_ && binding.generalErrorText == "Pump running dry,\n Please Check!"){
-                        binding.generalErrorView = false
-                    }
-                }
+                binding.generalErrorView= true
+                binding.generalErrorText = "Pump running dry,\n Please Check!"
             }
         }
+        if (!mainRunning_ && binding.generalErrorText == "Pump running dry,\n Please Check!") {
+            binding.generalErrorView = false
+            warningVisibilities["noWaterWarning"] = Pair(0, Clock.System.now())
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun applyWarningVisibilities(){
+        runBlocking {
+            //set warnings page data
+
+            dataStore.edit { settings -> //write data to saved data store
+                for(warnVis in warningVisibilities) {
+                    val warnStart = warnVis.value.second
+                    Log.i("warnvis", warnVis.key)
+                    val timeStampKey = warnVis.key + "Time"
+                    settings[stringPreferencesKey(timeStampKey)] = warnStart.toString()
+                    Log.i("duration", java.time.Duration.between(Clock.System.now().toJavaInstant(), warnVis.value.second.toJavaInstant()).toString())
+                    val visibility = getVisibility(warnVis.value.second)
+                    settings[intPreferencesKey(warnVis.key)] = visibility
+
+
+
+                }
+            }
+
+        }
+    }
+    private fun
+
+            assessViewWarnings(){
+        if ( warningVisibilities["mainRunTimeWarning"]?.first == 0){
+            closeMainPumpWarn(null)
+        }
+
+        if (warningVisibilities["highWaterWarning"]?.first  == 0){
+            if (warningVisibilities["sensorErrorWarning"]?.first == 0){
+                closeWaterLevelWarn(null)
+            }
+        }
+
+        if (warningVisibilities["backupRunWarning"]?.first == 0){
+            closeBackupPumpWarn(null)
+        }
+    }
+    fun closeGeneralWarn(view: View?) {
+        val view = findViewById<Group>(R.id.generalWarningGroup)
+        view.visibility = GONE
+    }
+
+    fun closeBackupPumpWarn(view: View?){
+        val view = findViewById<Group>(R.id.backupPumpRunWarningGroup)
+        view.visibility = GONE
+    }
+
+    fun closeMainPumpWarn(view: View?){
+        val view = findViewById<Group>(R.id.mainPumpRunWarningGroup)
+        view.visibility = GONE
+    }
+    fun closeWaterLevelWarn(view: View?){
+        val view = findViewById<Group>(R.id.WaterLevelWarningGroup)
+        view.visibility = GONE
     }
 }
 

@@ -19,9 +19,10 @@ class RunningApp: Application() {
         super.onCreate()
         Log.i("RunningApp","RunningApp.kt...About to run")
        // WorkManager.initialize(this, Configuration.Builder().build())
+        LateClass()
         createNotificationChannels()
     }
-    fun createNotificationChannels(){
+    private fun createNotificationChannels(){
 
         Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
