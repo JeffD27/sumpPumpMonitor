@@ -88,19 +88,19 @@
                 android:id="@+id/generalWarning"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/white"
                 android:fontFamily="@font/kanit_bold"
                 android:paddingStart="5dp"
-                android:paddingEnd= "5dp"
                 android:paddingTop="5dp"
+                android:paddingEnd="5dp"
                 android:text="@{generalErrorText}"
                 android:textAlignment="center"
                 android:textColor="@color/brightRed"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+                app:layout_constraintTop_toBottomOf="@+id/backupPumpRunWarning" />
 
 
             <TextView
@@ -210,27 +210,30 @@
                 app:layout_constraintStart_toStartOf="@+id/mainPumpRunWarning"
                 app:layout_constraintTop_toTopOf="@+id/mainPumpRunWarning" />
 
+
             <TextView
                 android:id="@+id/backupPumpRunWarning"
                 android:layout_width="180dp"
                 android:layout_height="48dp"
 
 
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="30dp"
                 android:background="@color/white"
+
                 android:fontFamily="@font/kanit_bold"
                 android:paddingStart="5dp"
-
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp"
                 android:text="@string/backupPumpHasRun"
                 android:textAlignment="center"
                 android:textColor="@color/brightRed"
                 android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
                 app:layout_constraintEnd_toStartOf="@+id/divider2"
+                app:layout_constraintHorizontal_bias="0.478"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
 
             <TextView
 
@@ -439,14 +442,14 @@
                 android:id="@+id/buttonSettings"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/button_selector"
                 android:text="@string/settingsTitle"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonStats" />
+                app:layout_constraintTop_toBottomOf="@+id/generalWarning" />
 
             <Button
 

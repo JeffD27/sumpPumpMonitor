@@ -388,7 +388,7 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.constraintLayoutBackupRun)?.apply {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
-                                val parent_ = parent
+
                                 Log.i("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
@@ -404,10 +404,10 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.constraintNoWater)?.apply {
                         if (this.visibility == VISIBLE){
                             if (parent != null) {
-                                val parent_ = parent
+
                                 Log.i("*i", i.toString())
                                 Log.i("(cheated)parent", findViewById<ConstraintLayout>(com.example.sumppump3.R.id.constraintNoWater).parent.toString())
-                                Log.i("*parent", parent_.toString())
+
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
                                 }
@@ -439,7 +439,7 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.noPumpControlCard)?.apply {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
-                                val parent_ = parent
+
                                 Log.i("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)

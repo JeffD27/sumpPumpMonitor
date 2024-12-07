@@ -13,6 +13,7 @@ import kotlinx.datetime.*
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.toJavaDuration
 
 
 class EvaluateResponse() {
@@ -21,6 +22,10 @@ class EvaluateResponse() {
     fun onCreate(context: Context, responseString: String, activity: Activity?) {
         Log.i("evalResp", "is this running???")
         Log.i("responseString",responseString)
+        if (responseString == "null"){
+                checkServerError(context)
+                return}
+
         val activityNull = activity == null //this is just for the log below...
         Log.i("ActivityNull?", activityNull.toString() )
 
@@ -42,8 +47,8 @@ class EvaluateResponse() {
         val midFloodingReg: Regex = "midFlooding.:\\s*(\\w+)".toRegex()
         val lowFloodingReg: Regex = "lowFlooding.:\\s*(\\w+)".toRegex()
 
-        val voltage5Reg: Regex = "voltage5.:\\s*(\\d*)".toRegex()
-        val voltage12Reg: Regex = "voltage12.:\\s*(\\d*)".toRegex()
+        val voltage5Reg: Regex = "voltage5.:\\s*\"(\\d*)".toRegex()
+        val voltage12Reg: Regex = "voltage12.:\\s*\"(\\d*)".toRegex()
         val charging5Reg: Regex = "charging5.:\\s*(\\w+)".toRegex()
 
 
@@ -466,14 +471,18 @@ class EvaluateResponse() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkServerError(context: Context){
+    fun checkServerError(context: Context){
+        Log.i("checkServerError", "initializing")
+        Log.i("serverError", serverError.first.toString())
 
         if (serverError.first){
-
-            if (java.time.Duration.between(serverError.second.toJavaInstant(), Clock.System.now().toJavaInstant()) > java.time.Duration.ofMinutes(5)){
+            Log.i("checkServerError","serverError is true")
+            Log.i("now", Clock.System.now().toString())
+            Log.i("compared to...time", serverError.second.toJavaInstant().toString())
+            Log.i("notificationServerErrorMuteDuration", notificationServerErrorMuteDuration.toString())
+            if (java.time.Duration.between(serverError.second.toJavaInstant(), Clock.System.now().toJavaInstant()) > notificationServerErrorMuteDuration.toJavaDuration()){
                 Log.i("generalWarnSilence", generalWarnSilence.toString())
                 persistentServerError = true
-
                 callDeployNotification(
                     context,
                     "serverError",

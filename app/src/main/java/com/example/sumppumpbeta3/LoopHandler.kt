@@ -16,14 +16,16 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 class LoopHandler {
+    //this preps the variables for the loop
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun run(context: Context){
         initiateDeployedVariables()
         setNotificationMuteTimes(context)
-        resetNotifications()
+        //resetNotifications()
 
     }
 
@@ -36,6 +38,8 @@ class LoopHandler {
 
     fun resetNotifications() {
         //this should run as often as the server is called
+
+        //was I supposed to finish this wiht the rest of the notifications?
         val lateClass = LateClass()
         if (lateClass.isNotificationServerErrorDeployedInitialized()) {
             val (deployed, timeDeployed) = notificationServerErrorDeployed
@@ -50,7 +54,7 @@ class LoopHandler {
 
     private fun initiateDeployedVariables(){  //check if initialized and if they aren't initialize them  //yes there are 2 identical functions...see NotificationWorker
         val lateClass = LateClass()
-        /*
+
         if (!lateClass.isNotificationServerErrorDeployedInitialized()) {
             notificationServerErrorDeployed = Pair(false, Clock.System.now())
 
@@ -82,7 +86,7 @@ class LoopHandler {
         if (!lateClass.isNotificationNoPumpControlInitialized()) {
             notificationNoPumpControl = Pair(false, Clock.System.now())
         }
-    }*/
+
 
 
         if (lateClass.isNotificationWaterLevelSensorErrorDeployedInitialized()) { //this notification was never tested
@@ -125,6 +129,13 @@ class LoopHandler {
             }
         }
 
+        if (lateClass.isNotificationServerErrorDeployedInitialized()) {
+            val (deployed, timeDeployed) = notificationServerErrorDeployed
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationServerErrorMuteDuration) {
+                notificationServerErrorDeployed = Pair(false, Clock.System.now())
+            }
+        }
+
         if (lateClass.isNotificationBackupRanInitialized()) {
             val (deployed, timeDeployed) = notificationBackupRan
             if (deployed && (Clock.System.now() - timeDeployed) > notificationBackupRanMuteDuration) {
@@ -155,8 +166,9 @@ class LoopHandler {
 
     }
 
-    private fun setNotificationMuteTimes(context: Context){
+    fun setNotificationMuteTimes(context: Context){
         val intDurationDict = LinkedHashMap<Int, kotlin.time.Duration>()
+        intDurationDict[0] = 5.seconds
         intDurationDict[5] = 5.minutes
         intDurationDict[10] = 10.minutes
         intDurationDict[15] = 15.minutes
@@ -175,14 +187,17 @@ class LoopHandler {
 
 
 
-                val durationInt = updateNotificationMuteTimes(string, context)!! //initiated in settings
+                var durationInt = updateNotificationMuteTimes(string, context)!! //initiated in settings
 
                 Log.i("notifyString", string)
+                Log.i("durationInt", durationInt.toString())
 
                 // Log.i("durationInt", durationInt.toString())
 
                 when (string) {
                     "serverError" -> {
+                        Log.i("serverErrorMuteDuration", intDurationDict[durationInt].toString())
+                        //durationInt = 10 //for testing delete this. it hard sets notificationmuteduration to 10 minutes
                         notificationServerErrorMuteDuration = intDurationDict[durationInt]!!
                     }
 
@@ -245,8 +260,9 @@ class LoopHandler {
         durationIntDict[2.days] = 48
 
         if (defaultMuteTimes.isEmpty()) {
+            Log.i("loopHandler", "setting defaults")
 
-            defaultMuteTimes["serverError"] = 1.days
+            defaultMuteTimes["serverError"] = 2.hours //change this back to 1 day or something
             defaultMuteTimes["sensorError"] = 1.days
             defaultMuteTimes["noPower"] = 1.hours
             defaultMuteTimes["highWater"] = 15.minutes
@@ -262,17 +278,19 @@ class LoopHandler {
 
         val defaultMuteInt = durationIntDict[defaultMuteTime]!!
         val prefKey = intPreferencesKey(notification)
-
+        Log.i("notificationINRead", notification)
         val apContext = context
+        Log.i("SEmuteDurINUpdate", notificationServerErrorMuteDuration.toString())
 
         val notificationSettingsFlow: Flow<Int> = apContext.dataStore.data //read data in saved data store
             .map { settings: Preferences ->
                 // No type safety.
-                settings[prefKey] ?: defaultMuteInt   //this sets the value (in exampleCounterFlow not datastore) if null
+                settings[prefKey] ?: defaultMuteInt
+                //this sets the value (in exampleCounterFlow not datastore) if null
             }
 
         //Log.i("readDurationData", exampleCounterFlow.first().toString())
-        Log.i("valueinRead", notificationSettingsFlow.first().toString())
+        Log.i("valueinRead", notificationSettingsFlow.first().toString()) //server error gets 24 here somehow always? wtf!
         return notificationSettingsFlow.first()
     }
 }

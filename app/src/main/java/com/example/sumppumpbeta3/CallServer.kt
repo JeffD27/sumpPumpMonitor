@@ -37,11 +37,25 @@ class CallServer {
             //important note that getFromServer also applies data. So mainRunning_ will be be altered (if req) for example
             responseString = getFromServer("https://sumppump.jeffs-handyman.net/", parameters)
 
-            if (responseString != null) {
+            if (responseString != null && responseString.startsWith("{\"", 0)){
                 Log.i("responseString", responseString)
+                serverError = Pair(false, Clock.System.now())
+
+
+                return responseString
             }
-            serverError = Pair(false, Clock.System.now())
-            return responseString
+            else {
+                Log.i("hiddenServerError!", "responseString is null or erroring")
+                if (responseString != null) {
+                    Log.i("responsString", responseString)
+                }
+                if (!serverError.first) {
+                    Log.i("CallServer","setting ServerError to true")
+                    serverError = Pair(true, Clock.System.now())
+                }
+                return null
+            }
+
 
         } catch (e: java.lang.Exception) {
             Log.i("serverError@#$*", Clock.System.now().toString())

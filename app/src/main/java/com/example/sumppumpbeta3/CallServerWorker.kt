@@ -48,7 +48,7 @@ class CallServerWorker(context: Context, workerParameter: WorkerParameters): Cor
         Log.i("doWork", "starting")
 
         val context = applicationContext
-        LoopHandler().run(context)//doesn't call server, but calls other things we want handled each loop
+        LoopHandler().run(context)//doesn't call server, but this preps the variables for the loop
 
         //initiateDeployedVariables() handled in loopHandler
         //setup variables to determine if notifications should run...
@@ -60,6 +60,9 @@ class CallServerWorker(context: Context, workerParameter: WorkerParameters): Cor
 
         if (responseString == null){
             Log.i("callserverworker", "ResponseString is null!!!")
+            if (!serverError.first) {
+                serverError = Pair( true, Clock.System.now())}
+            EvaluateResponse().checkServerError(context)
         }
         else{
             Log.i("responseString(())", responseString!!)
@@ -76,16 +79,7 @@ class CallServerWorker(context: Context, workerParameter: WorkerParameters): Cor
 
 
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun prepareCallServer(context: Context){
 
-
-
-
-
-
-        println("Hello")
-    }
 /*
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getForegroundInfo(): ForegroundInfo {

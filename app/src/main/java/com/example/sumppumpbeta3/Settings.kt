@@ -74,7 +74,6 @@ class Settings : ComponentActivity() {
                     durationPositionInt[24.hours] = 7
                     durationPositionInt[48.hours] = 8
 
-                    val spinnerServerErrorString = "spinnerServerError"
 
                     val buttonOK = findViewById<Button>(R.id.buttonOK)
 
@@ -97,7 +96,10 @@ class Settings : ComponentActivity() {
 
                     //add values to dictionary
                     val spinnerServerError = findViewById<Spinner>(R.id.spinnerServerError)
+                    val string = notificationServerErrorMuteDuration.toString() //just for the print statemtent
+                    Log.i("ServerError in spinners", string)
                     spinnerDurationDict[spinnerServerError] = notificationServerErrorMuteDuration
+
                     spinnerStringDict[spinnerServerError] = "serverError"
                     val spinnerNoPower = findViewById<Spinner>(R.id.spinnerNoPowerSilenceTime)
                     spinnerDurationDict[spinnerNoPower] = notificationACPowerMuteDuration
@@ -127,10 +129,13 @@ class Settings : ComponentActivity() {
 
                     for (spinner in spinnerDurationDict.keys){
                         val duration = spinnerDurationDict[spinner]
+                        Log.i("spinner", spinnerStringDict[spinner].toString())
+                        Log.i("durtaionInSettings", duration.toString())
                         val position = durationPositionInt[duration]!!
 
                         createSpinner(spinner, context, array, position)
                     }
+                    LoopHandler().setNotificationMuteTimes(context)
 
 
 
@@ -157,7 +162,7 @@ class Settings : ComponentActivity() {
 
             if (spinner != null) {
                 if (defaultMuteTimes.isEmpty()){
-                    defaultMuteTimes["serverError"] = 1.days
+                    defaultMuteTimes["serverError"] = 2.hours
                     defaultMuteTimes["sensorError"] = 1.days
                     defaultMuteTimes["noPower"] = 1.hours
                     defaultMuteTimes["highWater"] = 15.minutes
@@ -169,7 +174,7 @@ class Settings : ComponentActivity() {
                 }
                 val duration = defaultMuteTimes[string]
                 val position = durationPositionInt[duration]!!
-                runBlocking {writeData(string, duration!!)}
+                //runBlocking {writeData(string, duration!!)}
                 spinner.post(Runnable() {
                     run() {
                         spinner.setSelection(position);
@@ -214,18 +219,18 @@ class Settings : ComponentActivity() {
                     position: Int,
                     id: Long
                 ) {
-
-
-                    Log.i("spinner", spinner.selectedItem.toString())
+                    Log.i("spinner", spinnerStringDict[spinner].toString())
                     val choice = spinner.selectedItem.toString()
                     Log.i("choice", choice)
                     val durationFromChoice = durationConvertDict[choice]!!
                     if (durationFromChoice != null) {
                         spinnerDurationDict[spinner] = durationFromChoice
+
+                        Log.i("spinner choice", durationFromChoice.toString())
+                        runBlocking{
+                            //spinnerStringDict[spinner] returns notifystring
+                            launch {  writeData(spinnerStringDict[spinner]!!, durationFromChoice)} }
                     }
-                    Log.i("Spinner_noPowerSilenceTime", durationFromChoice.toString())
-                    runBlocking{
-                        launch {  writeData(spinnerStringDict[spinner]!!, durationFromChoice)} }
 
 
                 }
@@ -241,23 +246,43 @@ class Settings : ComponentActivity() {
 
     suspend fun writeData(notification: String, data:kotlin.time.Duration) {
         val key = intPreferencesKey(notification)
+        /*
+        if (notification == "serverError") {
+            Log.i("writeData", "setting serverError to 2")
+            notificationServerErrorMuteDuration = 2.hours
+            this.dataStore.edit { settings ->
+                settings[key] = 2 //for testing delet all this if statement
+            }
+            val read: Flow<Int> = this.dataStore.data //read data in saved data store
+                .map { settings: Preferences ->
+                    // No type safety.
+                    settings[key] ?: 10
+                    //this sets the value (in exampleCounterFlow not datastore) if null
+                }
+            Log.i("read@!", read.first().toString())
+
+
+            return
+        }
+        */
+        Log.i("notification string", notification)
+        Log.i("data duration", data.toString())
         val minutes = listOf(5.minutes, 10.minutes, 15.minutes, 30.minutes)
         val hours = listOf(1.hours, 2.hours, 4.hours, 8.hours, 12.hours, 24.hours, 48.hours)
         Log.i("WriteData", "initializing")
         this.dataStore.edit { settings -> //write data to saved data store
-            if (data in minutes ){
+            if (data in minutes) {
                 settings[key] = data.toInt(DurationUnit.MINUTES)
                 Log.i("minutes", settings[key].toString())
-            }
-            else if(data in hours){
+            } else if (data in hours) {
                 settings[key] = data.toInt(DurationUnit.HOURS)
                 Log.i("Hours", settings[key].toString())
-            }
-            else{
+            } else {
                 Log.i("elseWriteData", "here's your problem")
             }
         }
     }
+
 
 
 

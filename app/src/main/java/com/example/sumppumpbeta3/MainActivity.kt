@@ -135,8 +135,8 @@ var runningDry: Boolean? = false
 
 lateinit var settingsCounterFlowView: Flow<Int>
 
-var voltage12_: Int = 0
-var voltage5_: Int = 0
+var voltage12_: Int = 250
+var voltage5_: Int = 250
 var charging5_: Boolean? = true
 
 var checkBatteryVoltsTime: Temporal? = null
@@ -214,7 +214,7 @@ open class MainActivity : ComponentActivity() {
 
 
 
-        defaultMuteTimes["serverError"] = 1.days
+        defaultMuteTimes["serverError"] = 2.hours
         defaultMuteTimes["sensorError"] = 1.days
         defaultMuteTimes["noPower"] = 1.hours
         defaultMuteTimes["highWater"] = 15.minutes
@@ -340,7 +340,7 @@ open class MainActivity : ComponentActivity() {
             while (isActive) {  // While the job is active
                 Log.i("startingLoop", "loop is starting in mainActivity")
 
-
+                Log.i("serverMuteInStartRepeating", notificationServerErrorMuteDuration.toString())
                 // Enqueue the work request
 
                 //WorkManager.getInstance(applicationContext).enqueue(callServerWorkerOnce) //this needs to a periodic work request...not in a loop
@@ -349,6 +349,7 @@ open class MainActivity : ComponentActivity() {
                 if (response != null) {
                     EvaluateResponse().onCreate(context, response, activity)
                 }
+                else{EvaluateResponse().onCreate(context, "null", activity)}
                 applyWarningVisibilities()
                 checkNoWaterPumpRunning(activity, binding)
                 checkServerError(activity, binding)
@@ -360,7 +361,7 @@ open class MainActivity : ComponentActivity() {
                 assessViewWarnings()
                 Log.i("delaying", "delay coming")
 
-                delay(1000) // Delay for 1 seconds before the next call
+                delay(3000) // Delay for 1 seconds before the next call
             }
         }
     }
@@ -577,7 +578,7 @@ open class MainActivity : ComponentActivity() {
 
 
     }
-    var runThrough = 0
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkVoltages(activity: Activity, binding: ActivityMainBinding){
         if(!charging5_!!){
@@ -599,7 +600,11 @@ open class MainActivity : ComponentActivity() {
             warningVisibilities["noPowerWarning"] = Pair(0, Clock.System.now())
         }
         Log.i("checkVoltages12", voltage12_.toString())
-        binding.battery12vText = "$voltage12_%"
+        if (voltage12_ != 250){
+            binding.battery12vText = "$voltage12_%"}
+        else{
+            binding.battery12vText = "?%"
+        }
 
 
 
@@ -629,22 +634,24 @@ open class MainActivity : ComponentActivity() {
         Log.i("duration", duration.toString())
        // Log.i("sleeptimeBool", (duration > sleepTime).toString())
         //if (duration > sleepTime || binding.battery5TextView.text == "0%" || runThrough < 6){
-            runThrough += 1
+
             //Log.i("durationBatteryVolts2", sleepTime.toString())
-            binding.battery5vText = "$voltage5_%"
-            Log.i("votage5er", voltage5_.toString())
-            checkBatteryVoltsTime = Clock.System.now().toJavaInstant()
+        if (voltage5_ != 250){
+            binding.battery5vText = "$voltage5_%"}
+        else{ binding.battery5vText = "?%"}
+        Log.i("votage5er", voltage5_.toString())
+        checkBatteryVoltsTime = Clock.System.now().toJavaInstant()
 
-            if(voltage5_ < 70){
+        if(voltage5_ < 70){
 
-                binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
+            binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.red)
 
-            }
-            else {
+        }
+        else {
 
-                binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)
+            binding.battery5TextBGColor = ContextCompat.getColor(activity, R.color.green)
 
-            }
+        }
 
     }
 
@@ -685,13 +692,14 @@ open class MainActivity : ComponentActivity() {
 
     private fun checkServerError(activity: Activity, binding: ActivityMainBinding){
 
-        if (persistentServerError){
+        if (serverError.first){
             if(!generalWarnSilence){
                 binding.generalErrorView = true
                 binding.generalErrorText = "Error in Server.\n NO Data"
                 warningVisibilities["serverError"] = Pair(1, Clock.System.now()
                 )
             }
+
         }
         else{
             warningVisibilities["serverError"] = Pair(0, Clock.System.now())
@@ -735,9 +743,7 @@ open class MainActivity : ComponentActivity() {
 
         }
     }
-    private fun
-
-            assessViewWarnings(){
+    private fun assessViewWarnings(){
         if ( warningVisibilities["mainRunTimeWarning"]?.first == 0){
             closeMainPumpWarn(null)
         }
@@ -768,6 +774,10 @@ open class MainActivity : ComponentActivity() {
     }
     fun closeWaterLevelWarn(view: View?){
         val view = findViewById<Group>(R.id.WaterLevelWarningGroup)
+        view.visibility = GONE
+    }
+    fun closeMainPumpNotification(view: View?) {
+        val view = findViewById<Group>(R.id.mainPumpRunWarningGroup)
         view.visibility = GONE
     }
 }
