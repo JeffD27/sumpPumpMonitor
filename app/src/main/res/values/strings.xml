@@ -130,7 +130,7 @@
     <string name="low12vBattery">12v Battery\n is Low</string>
     <string name="restoreDefault">Reset to\nDefault</string>
     <string name="ok">OK</string>
-    <string name="warningsTitle">Warnings!</string>
+    <string name="warningsTitle">Warning Log</string>
     <string name="warningTitle">Warnings!</string>
     <string name="HighWaterBody">The sump pump well has reached\nmaximum capacity! </string>
     <string name = "noPumpControlNotificationTitle">"Warning: No Pump Control!" </string>

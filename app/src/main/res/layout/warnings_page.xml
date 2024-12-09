@@ -26,50 +26,346 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="com.example.sumppumpbeta3.Warnings">
-        <RelativeLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainSettingsConstraint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            >
+
+
+
+
+                <TextView
+                    android:id="@+id/warningPageTitleInWarnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/warningsTitle"
+                    android:textSize="35sp"
+                    android:fontFamily="serif"
+                    android:background="@color/beige2"
+                    android:textFontWeight="800"
+                    android:textAlignment="center"
+                    android:textColor="@color/brightRed"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" /> <!--title for page-->
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardHighWater"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
 
 
-
-
-                    <TextView
-                        android:id="@+id/warningPageTitleInWarnings"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="@string/warningsTitle"
-                        android:textSize="35sp"
-                        android:fontFamily="serif"
-                        android:background="@color/beige2"
-                        android:textFontWeight="800"
-                        android:textAlignment="center"
-                        android:textColor="@color/brightRed"
-
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" /> <!--title for page-->
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/warningPageTitleInWarnings">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cardHighWater"
+                    android:id="@+id/highWaterCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-
-                    android:layout_marginTop="25dp"
+                    android:background="@color/beige1"
+                    android:padding="8dp"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/warningPageTitleInWarnings">
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/cardTitleHighWater"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:layout_width="match_parent"
+                        android:layout_height="37dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1.0"
+
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="High Water"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/activityBackground"
+                        android:textColorHint="@color/darkActivityBackground"
+                        android:textColorLink="?android:attr/textColorLink"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/subheadHighWater"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{highWaterTimeStamp}"
+                        android:textColor="@color/black"
+                        android:textFontWeight="800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardTitleHighWater" />
+
+                    <TextView
+                        android:id="@+id/bodyHighWater"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@string/HighWaterBody"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/actualWhite"
+                        android:textColorHint="@color/activityBackground"
+                        android:textColorLink="@color/activityBackground"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subheadHighWater" />
+
+                    <ImageView
+                        android:id="@+id/xToCloseHighWater"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:onClick="closeHighWater"
+                        android:src="@android:drawable/btn_dialog"
+                        app:layout_constraintEnd_toEndOf="@+id/cardTitleHighWater"
+                        app:layout_constraintTop_toTopOf="@+id/cardTitleHighWater" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout> <!--highwatercard/firstcard-->
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/secondCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintTop_toBottomOf="@id/cardHighWater"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/noPowerCardinWarnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/beige1"
+                    android:padding="8dp"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/bodyNoPower"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="The ac power is unplugged\nor there is a power outage!"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subheadNoPower" />
+
+
+                    <ImageView
+                        android:id="@+id/xToCloseNoPower"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:elevation="100dp"
+                        android:onClick="closeNoACPower"
+                        app:layout_constraintBottom_toTopOf="@+id/subheadNoPower"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/cardTitleNoPower"
+                      android:src="@android:drawable/btn_dialog" />
+
+                    <TextView
+                        android:id="@+id/cardTitleNoPower"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:layout_width="match_parent"
+                        android:layout_height="41dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1.0"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="No AC Power"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/activityBackground"
+                        android:textColorHint="@color/darkActivityBackground"
+                        android:textColorLink="?android:attr/textColorLink"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/subheadNoPower"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{noPowerTimeStamp}"
+                        android:textColor="@color/black"
+                        android:textFontWeight="800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardTitleNoPower" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout><!--secondCard/NoPowerCard-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/thirdCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintTop_toBottomOf="@id/secondCard"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/highWaterCard"
+                    android:id="@+id/sensorErrorCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:background="@color/beige1"
+                    android:padding="8dp"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    >
+
+                    <TextView
+                        android:id="@+id/cardTitleSensorError"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:layout_width="match_parent"
+                        android:layout_height="41dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1.0"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="Sensor Error"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/activityBackground"
+                        android:textColorHint="@color/darkActivityBackground"
+                        android:textColorLink="?android:attr/textColorLink"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/subheadSensorError"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{sensorErrorTimeStamp}"
+                        android:textColor="@color/black"
+                        android:textFontWeight="800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardTitleSensorError" />
+
+                    <TextView
+                        android:id="@+id/bodySensorError"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="There is an error in the water level sensors.\nWater level data may not be accurate. "
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subheadSensorError" />
+
+                        <ImageView
+                        android:id="@+id/xToCloseSensorError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="4dp"
+                        android:onClick="closeSensorError"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardTitleSensorError"
+                        app:layout_constraintEnd_toEndOf="@+id/cardTitleSensorError"
+                        app:layout_constraintTop_toTopOf="@+id/cardTitleSensorError"
+                        app:layout_constraintVertical_bias="1.0"
+                        android:src="@android:drawable/btn_dialog" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout><!-- thirdCard/sensorErrorCard-->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fourthCard"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintStart_toStartOf = "parent"
+                    app:layout_constraintEnd_toEndOf = "parent"
+                    app:layout_constraintTop_toBottomOf="@id/thirdCard">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/mainRunTimeCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/beige1"
@@ -80,164 +376,19 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/cardTitleHighWater"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
-                            android:layout_width="match_parent"
-                            android:layout_height="37dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:lineSpacingMultiplier="1.0"
-
-                            android:paddingStart="5dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="High Water"
-                            android:textColor="@color/black"
-                            android:textColorHighlight="@color/activityBackground"
-                            android:textColorHint="@color/darkActivityBackground"
-                            android:textColorLink="?android:attr/textColorLink"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/subheadHighWater"
-                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:paddingStart="5dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="@{highWaterTimeStamp}"
-                            android:textColor="@color/black"
-                            android:textFontWeight="800"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cardTitleHighWater" />
-
-                        <TextView
-                            android:id="@+id/bodyHighWater"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:lineSpacingMultiplier="1"
-                            android:paddingStart="5dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="@string/HighWaterBody"
-                            android:textColor="@color/black"
-                            android:textColorHighlight="@color/actualWhite"
-                            android:textColorHint="@color/activityBackground"
-                            android:textColorLink="@color/activityBackground"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/subheadHighWater" />
-
-                        <ImageView
-                            android:id="@+id/TriangleHighWater"
-                            android:layout_width="58dp"
-                            android:layout_height="34dp"
-                            android:layout_marginStart="150dp"
-                            android:elevation="100dp"
-                            android:src="@drawable/triangle_warning"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleHighWater"
-                            app:layout_constraintStart_toStartOf="@+id/cardTitleHighWater"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleHighWater" />
-
-                        <ImageView
-                            android:id="@+id/xToCloseHighWater"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
-                            android:onClick="closeHighWater"
-                            android:src="@android:drawable/btn_dialog"
-                            app:layout_constraintBottom_toBottomOf="@+id/TriangleHighWater"
-                            app:layout_constraintEnd_toEndOf="@+id/cardTitleHighWater"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleHighWater"
-                            app:layout_constraintVertical_bias="1.0" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout> <!--highwatercard/firstcard-->
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/secondCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@id/cardHighWater"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/noPowerCardinWarnings"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/beige1"
-                        android:padding="8dp"
-                        android:visibility="visible"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        >
-
-                        <TextView
-                            android:id="@+id/bodyNoPower"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:paddingStart="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="The ac power is unplugged\nor there is a power outage!"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/subheadNoPower" />
-
-
-                        <ImageView
-                            android:id="@+id/xToCloseNoPower"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
-                            android:elevation="100dp"
-                            android:onClick="closeNoACPower"
-                            app:layout_constraintBottom_toTopOf="@+id/subheadNoPower"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleNoPower"
-                          android:src="@android:drawable/btn_dialog" />
-
-                        <TextView
-                            android:id="@+id/cardTitleNoPower"
+                            android:id="@+id/cardTitleMainRuntime"
                             style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="match_parent"
                             android:layout_height="41dp"
+
                             android:layout_marginStart="15dp"
-                            android:layout_marginTop="3dp"
                             android:layout_marginEnd="5dp"
                             android:background="@drawable/frame"
                             android:lineSpacingMultiplier="1.0"
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="No AC Power"
+                            android:text="Main Pump Runtime"
                             android:textColor="@color/black"
                             android:textColorHighlight="@color/activityBackground"
                             android:textColorHint="@color/darkActivityBackground"
@@ -248,108 +399,25 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/subheadNoPower"
+                            android:id="@+id/subheadMainRun"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="0dp"
                             android:layout_marginEnd="5dp"
                             android:background="@drawable/frame"
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="@{noPowerTimeStamp}"
+                            android:text="@{mainRunningTimeStamp}"
                             android:textColor="@color/black"
                             android:textFontWeight="800"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cardTitleNoPower" />
-
-
-                        <ImageView
-                            android:id="@+id/TriangleNoPower"
-                            android:layout_width="58dp"
-                            android:layout_height="34dp"
-                            android:layout_marginStart="150dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleNoPower"
-                            app:layout_constraintStart_toStartOf="@+id/cardTitleNoPower"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleNoPower"
-                            android:src="@drawable/triangle_warning" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout><!--secondCard/NoPowerCard-->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/thirdCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@id/secondCard"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/sensorErrorCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:background="@color/beige1"
-                        android:padding="8dp"
-                        android:visibility="visible"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-
-                        >
+                            app:layout_constraintEnd_toEndOf="@+id/cardTitleMainRuntime"
+                            app:layout_constraintStart_toStartOf="@+id/cardTitleMainRuntime"
+                            app:layout_constraintTop_toBottomOf="@+id/cardTitleMainRuntime" />
 
                         <TextView
-                            android:id="@+id/cardTitleSensorError"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
-                            android:layout_width="match_parent"
-                            android:layout_height="41dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:lineSpacingMultiplier="1.0"
-                            android:paddingStart="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="Sensor Error"
-                            android:textColor="@color/black"
-                            android:textColorHighlight="@color/activityBackground"
-                            android:textColorHint="@color/darkActivityBackground"
-                            android:textColorLink="?android:attr/textColorLink"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/subheadSensorError"
-                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:paddingStart="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="@{sensorErrorTimeStamp}"
-                            android:textColor="@color/black"
-                            android:textFontWeight="800"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cardTitleSensorError" />
-
-                        <TextView
-                            android:id="@+id/bodySensorError"
+                            android:id="@+id/bodyMainRun"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -359,483 +427,57 @@
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="There is an error in the water level sensors.\nWater level data may not be accurate. "
+                            android:text="The main pump has run for 10 minutes\nwithout stopping. There could be a float problem. Please check! "
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/subheadSensorError" />
+                            app:layout_constraintTop_toBottomOf="@+id/subheadMainRun" />
 
                         <ImageView
-                            android:id="@+id/TriangleSensorError"
-                            android:layout_width="58dp"
-                            android:layout_height="34dp"
-                            android:layout_marginStart="150dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleSensorError"
-                            app:layout_constraintStart_toStartOf="@+id/cardTitleSensorError"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleSensorError"
-                            android:src="@drawable/triangle_warning" />
-
-                        <ImageView
-                            android:id="@+id/xToCloseSensorError"
+                            android:id="@+id/xToCloseMainRun"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
                             android:layout_marginBottom="4dp"
-                            android:onClick="closeSensorError"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleSensorError"
-                            app:layout_constraintEnd_toEndOf="@+id/cardTitleSensorError"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleSensorError"
-                            app:layout_constraintVertical_bias="1.0"
-                            android:src="@android:drawable/btn_dialog" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout><!-- thirdCard/sensorErrorCard-->
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/fourthCard"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintStart_toStartOf = "parent"
-                        app:layout_constraintEnd_toEndOf = "parent"
-                        app:layout_constraintTop_toBottomOf="@id/thirdCard">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/mainRunTimeCard"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/beige1"
-                            android:padding="8dp"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/cardTitleMainRuntime"
-                                style="@style/TextAppearance.MaterialComponents.Headline5"
-                                android:layout_width="match_parent"
-                                android:layout_height="41dp"
-
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:lineSpacingMultiplier="1.0"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="Main Pump Runtime"
-                                android:textColor="@color/black"
-                                android:textColorHighlight="@color/activityBackground"
-                                android:textColorHint="@color/darkActivityBackground"
-                                android:textColorLink="?android:attr/textColorLink"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/subheadMainRun"
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="@{mainRunningTimeStamp}"
-                                android:textColor="@color/black"
-                                android:textFontWeight="800"
-                                app:layout_constraintEnd_toEndOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintStart_toStartOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintTop_toBottomOf="@+id/cardTitleMainRuntime" />
-
-                            <TextView
-                                android:id="@+id/bodyMainRun"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="The main pump has run for 10 minutes\nwithout stopping. There could be a float problem. Please check! "
-                                android:textColor="@color/black"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/subheadMainRun" />
-
-                            <ImageView
-                                android:id="@+id/TriangleMainRun"
-                                android:layout_width="58dp"
-                                android:layout_height="34dp"
-                                android:layout_marginStart="220dp"
-
-                                android:elevation="100dp"
-                                android:src="@drawable/triangle_warning"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintStart_toStartOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitleMainRuntime"
-                                tools:visibility="visible" />
-
-                            <ImageView
-                                android:id="@+id/xToCloseMainRun"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="15dp"
-                                android:layout_marginBottom="4dp"
-                                android:onClick="closeMainRunTime"
-                                android:src="@android:drawable/btn_dialog"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintEnd_toEndOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitleMainRuntime"
-                                app:layout_constraintVertical_bias="1.0" />
+                            android:onClick="closeMainRunTime"
+                            android:src="@android:drawable/btn_dialog"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleMainRuntime"
+                            app:layout_constraintEnd_toEndOf="@+id/cardTitleMainRuntime"
+                            app:layout_constraintTop_toTopOf="@+id/cardTitleMainRuntime"
+                            app:layout_constraintVertical_bias="1.0" />
 
 
 
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout> <!--fourthCard/mainRunTimeCard -->
+                </androidx.constraintlayout.widget.ConstraintLayout> <!--fourthCard/mainRunTimeCard -->
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/fifthCard"
-                        app:layout_constraintTop_toBottomOf = "@id/fourthCard"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayoutBackupRun"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/beige1"
-                            android:padding="8dp"
-                            android:visibility="visible"
-                            android:layout_marginTop="25dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/cardTitleBackupPumpRun"
-                                style="@style/TextAppearance.MaterialComponents.Headline5"
-                                android:layout_width="match_parent"
-                                android:layout_height="41dp"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:lineSpacingMultiplier="1.0"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="Backup pump has run"
-                                android:textColor="@color/black"
-                                android:textColorHighlight="@color/activityBackground"
-                                android:textColorHint="@color/darkActivityBackground"
-                                android:textColorLink="?android:attr/textColorLink"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="1.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/subheadBackupRun"
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="@{backupRunTimeStamp}"
-                                android:textColor="@color/black"
-                                android:textFontWeight="800"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/cardTitleBackupPumpRun" />
-
-                            <TextView
-                                android:id="@+id/bodyBackupRun"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="Backup Pump has run!"
-                                android:textColor="@color/black"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/subheadBackupRun" />
-
-                            <ImageView
-                                android:id="@+id/TriangleBackupRun"
-                                android:layout_width="58dp"
-                                android:layout_height="34dp"
-                                android:layout_marginStart="235dp"
-                                android:src="@drawable/triangle_warning"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitleBackupPumpRun"
-                                app:layout_constraintStart_toStartOf="@+id/cardTitleBackupPumpRun"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitleBackupPumpRun" />
-
-
-                            <ImageView
-                                android:id="@+id/xToCloseBackupRun"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="15dp"
-                                android:onClick="closeBackupRun"
-                                android:src="@android:drawable/btn_dialog"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitleBackupPumpRun"
-                                app:layout_constraintEnd_toEndOf="@+id/cardTitleBackupPumpRun"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitleBackupPumpRun" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout><!--fifthCard/backupRunTimeCard -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/sixthCard"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@id/fifthCard">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintNoWater"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-                            android:background="@color/beige1"
-                            android:padding="8dp"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/cardTitlenoWater"
-                                style="@style/TextAppearance.MaterialComponents.Headline5"
-                                android:layout_width="match_parent"
-                                android:layout_height="41dp"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:lineSpacingMultiplier="1.0"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="Pump Running Dry!"
-                                android:textColor="@color/black"
-                                android:textColorHighlight="@color/activityBackground"
-                                android:textColorHint="@color/darkActivityBackground"
-                                android:textColorLink="?android:attr/textColorLink"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                            <TextView
-                                android:id="@+id/subheadNoWater"
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="@{noWaterTimeStamp}"
-                                android:textColor="@color/black"
-                                android:textFontWeight="800"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/cardTitlenoWater" />
-
-                            <TextView
-                                android:id="@+id/bodyNoWater"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="The water level seems low,\n but the pump is running! Please check! "
-                                android:textColor="@color/black"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/subheadNoWater" />
-
-                            <ImageView
-                                android:id="@+id/TriangleNoWater"
-                                android:layout_width="58dp"
-                                android:layout_height="34dp"
-                                android:layout_marginStart="215dp"
-                                android:src="@drawable/triangle_warning"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitlenoWater"
-                                app:layout_constraintStart_toStartOf="@+id/cardTitlenoWater"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitlenoWater" />
-
-                            <ImageView
-                                android:id="@+id/xToCloseNoWater"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="15dp"
-                                android:onClick="closeNoWater"
-                                android:src="@android:drawable/btn_dialog"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitlenoWater"
-                                app:layout_constraintEnd_toEndOf="@+id/cardTitlenoWater"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitlenoWater" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout><!--sixthCard/constraintNoWater -->
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/seventhCard"
-                        android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@id/sixthCard"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLowBattery"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/beige1"
-                            android:padding="8dp"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:id="@+id/cardTitleLowBattery12"
-                                style="@style/TextAppearance.MaterialComponents.Headline5"
-                                android:layout_width="match_parent"
-                                android:layout_height="41dp"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:lineSpacingMultiplier="1.0"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="Low 12v Battery"
-                                android:textColor="@color/black"
-                                android:textColorHighlight="@color/activityBackground"
-                                android:textColorHint="@color/darkActivityBackground"
-                                android:textColorLink="?android:attr/textColorLink"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                            <TextView
-                                android:id="@+id/subheadLowBattery"
-                                style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="@{lowBattery12TimeStamp}"
-                                android:textColor="@color/black"
-                                android:textFontWeight="800"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/cardTitleLowBattery12" />
-
-                            <TextView
-                                android:id="@+id/bodyLowBattery"
-                                style="@style/TextAppearance.MaterialComponents.Body1"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="15dp"
-                                android:layout_marginEnd="5dp"
-                                android:background="@drawable/frame"
-                                android:paddingStart="10dp"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp"
-                                android:text="The 12v battery may not be charging!\n It's voltage is lower than it should be! "
-                                android:textColor="@color/black"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/subheadLowBattery" />
-
-                            <ImageView
-                                android:id="@+id/TriangleLowBattery"
-                                android:layout_width="58dp"
-                                android:layout_height="34dp"
-                                android:layout_marginStart="215dp"
-                                android:src="@drawable/triangle_warning"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitleLowBattery12"
-                                app:layout_constraintStart_toStartOf="@+id/cardTitleLowBattery12"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitleLowBattery12" />
-
-                            <ImageView
-                                android:id="@+id/xToCloseLowBattery"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="15dp"
-                                android:onClick="closeLowBattery12"
-                                android:src="@android:drawable/btn_dialog"
-                                app:layout_constraintBottom_toBottomOf="@+id/cardTitleLowBattery12"
-                                app:layout_constraintEnd_toEndOf="@+id/cardTitleLowBattery12"
-                                app:layout_constraintTop_toTopOf="@+id/cardTitleLowBattery12" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout><!--seventhCard/constraintLowBattery -->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/eighthCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:id="@+id/fifthCard"
+                    app:layout_constraintTop_toBottomOf = "@id/fourthCard"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/seventhCard">
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/noPumpControlCard"
+                        android:id="@+id/constraintLayoutBackupRun"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/beige1"
                         android:padding="8dp"
                         android:visibility="visible"
+                        android:layout_marginTop="25dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/cardTitlePumpControl"
+                            android:id="@+id/cardTitleBackupPumpRun"
                             style="@style/TextAppearance.MaterialComponents.Headline5"
                             android:layout_width="match_parent"
                             android:layout_height="41dp"
@@ -846,18 +488,18 @@
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="No Pump Control!"
+                            android:text="Backup pump has run"
                             android:textColor="@color/black"
                             android:textColorHighlight="@color/activityBackground"
                             android:textColorHint="@color/darkActivityBackground"
                             android:textColorLink="?android:attr/textColorLink"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-
                         <TextView
-                            android:id="@+id/subheadPumpControl"
+                            android:id="@+id/subheadBackupRun"
                             style="@style/TextAppearance.MaterialComponents.Subtitle1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -867,15 +509,15 @@
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="@{noPumpControlTimeStamp}"
+                            android:text="@{backupRunTimeStamp}"
                             android:textColor="@color/black"
                             android:textFontWeight="800"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/cardTitlePumpControl" />
+                            app:layout_constraintTop_toBottomOf="@+id/cardTitleBackupPumpRun" />
 
                         <TextView
-                            android:id="@+id/bodyPumpControl"
+                            android:id="@+id/bodyBackupRun"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -885,185 +527,445 @@
                             android:paddingStart="10dp"
                             android:paddingTop="5dp"
                             android:paddingBottom="5dp"
-                            android:text="The pumps will not work\nuntil this is fixed!"
+                            android:text="Backup Pump has run!"
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/subheadPumpControl" />
+                            app:layout_constraintTop_toBottomOf="@id/subheadBackupRun" />
+
 
                         <ImageView
-                            android:id="@+id/TrianglePumpControl"
-                            android:layout_width="58dp"
-                            android:layout_height="34dp"
-                            android:layout_marginStart="215dp"
-                            android:src="@drawable/triangle_warning"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
-                            app:layout_constraintStart_toStartOf="@+id/cardTitlePumpControl"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
-
-                        <ImageView
-                            android:id="@+id/xToClosePumpControl"
+                            android:id="@+id/xToCloseBackupRun"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="15dp"
-                            android:onClick="closeNoPumpControl"
+                            android:onClick="closeBackupRun"
                             android:src="@android:drawable/btn_dialog"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
-                            app:layout_constraintEnd_toEndOf="@+id/cardTitlePumpControl"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
+                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleBackupPumpRun"
+                            app:layout_constraintEnd_toEndOf="@+id/cardTitleBackupPumpRun"
+                            app:layout_constraintTop_toTopOf="@+id/cardTitleBackupPumpRun" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout> <!--eighthCard/noPumpControlCard -->
+
+                </androidx.constraintlayout.widget.ConstraintLayout><!--fifthCard/backupRunTimeCard -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sixthCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fifthCard">
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ninthCard"
+                    android:id="@+id/constraintNoWater"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+
+                    android:background="@color/beige1"
+                    android:padding="8dp"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/eighthCard">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/serverErrorCard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:background="@color/beige1"
-                        android:padding="8dp"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/cardTitleServerError"
-                            style="@style/TextAppearance.MaterialComponents.Headline5"
-                            android:layout_width="match_parent"
-                            android:layout_height="41dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:lineSpacingMultiplier="1.0"
-
-                            android:paddingStart="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="Server Error"
-                            android:textColor="@color/black"
-                            android:textColorHighlight="@color/activityBackground"
-                            android:textColorHint="@color/darkActivityBackground"
-                            android:textColorLink="?android:attr/textColorLink"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/subheadServer"
-                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:paddingStart="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="@{serverErrorTimeStamp}"
-                            android:textColor="@color/black"
-                            android:textFontWeight="800"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cardTitleServerError" />
-
-                        <TextView
-                            android:id="@+id/bodyServerError"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/frame"
-                            android:elevation="100dp"
-                            android:lineSpacingMultiplier="1"
-                            android:paddingStart="10dp"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
-                            android:text="There was an error in the server!\nThe app may not be receiving data."
-                            android:textColor="@color/black"
-                            android:textColorHighlight="@color/actualWhite"
-                            android:textColorHint="@color/activityBackground"
-                            android:textColorLink="@color/activityBackground"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/subheadServer" />
-
-                        <ImageView
-                            android:id="@+id/TriangleServer"
-                            android:layout_width="58dp"
-                            android:layout_height="34dp"
-                            android:layout_marginStart="150dp"
-                            android:src="@drawable/triangle_warning"
-                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleServerError"
-                            app:layout_constraintStart_toStartOf="@+id/cardTitleServerError"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleServerError" />
-
-                        <ImageView
-                            android:id="@+id/xToCloseServerError"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="15dp"
-                            android:onClick="closeServerError"
-                            android:src="@android:drawable/btn_dialog"
-                            app:layout_constraintBottom_toTopOf="@+id/subheadServer"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/cardTitleServerError" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout> <!--ninthCard/ServerError -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cardAllGood"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginTop="75dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ninthCard">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/textViewAllGood"
+                        android:id="@+id/cardTitlenoWater"
                         style="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:text="All Good! Nothing to Show"
-                        android:textColor="@color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="41dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1.0"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="Pump Running Dry!"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/activityBackground"
+                        android:textColorHint="@color/darkActivityBackground"
+                        android:textColorLink="?android:attr/textColorLink"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <Button
-                    android:id="@+id/buttonHome"
-                    android:layout_width="wrap_content"
+
+                    <TextView
+                        android:id="@+id/subheadNoWater"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{noWaterTimeStamp}"
+                        android:textColor="@color/black"
+                        android:textFontWeight="800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardTitlenoWater" />
+
+                    <TextView
+                        android:id="@+id/bodyNoWater"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="The water level seems low,\n but the pump is running! Please check! "
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/subheadNoWater" />
+
+                    <ImageView
+                        android:id="@+id/xToCloseNoWater"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:onClick="closeNoWater"
+                        android:src="@android:drawable/btn_dialog"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardTitlenoWater"
+                        app:layout_constraintEnd_toEndOf="@+id/cardTitlenoWater"
+                        app:layout_constraintTop_toTopOf="@+id/cardTitlenoWater" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout><!--sixthCard/constraintNoWater -->
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="10dp"
-                    android:text="Return Home"
-                    android:onClick="returnHome"
+                    android:id="@+id/seventhCard"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintTop_toBottomOf="@id/sixthCard"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLowBattery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/beige1"
+                        android:padding="8dp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/cardTitleLowBattery12"
+                            style="@style/TextAppearance.MaterialComponents.Headline5"
+                            android:layout_width="match_parent"
+                            android:layout_height="41dp"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/frame"
+                            android:lineSpacingMultiplier="1.0"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Low 12v Battery"
+                            android:textColor="@color/black"
+                            android:textColorHighlight="@color/activityBackground"
+                            android:textColorHint="@color/darkActivityBackground"
+                            android:textColorLink="?android:attr/textColorLink"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <TextView
+                            android:id="@+id/subheadLowBattery"
+                            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/frame"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="@{lowBattery12TimeStamp}"
+                            android:textColor="@color/black"
+                            android:textFontWeight="800"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cardTitleLowBattery12" />
+
+                        <TextView
+                            android:id="@+id/bodyLowBattery"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/frame"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="The 12v battery may not be charging!\n It's voltage is lower than it should be! "
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/subheadLowBattery" />
+
+                        <ImageView
+                            android:id="@+id/xToCloseLowBattery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="15dp"
+                            android:onClick="closeLowBattery12"
+                            android:src="@android:drawable/btn_dialog"
+                            app:layout_constraintBottom_toBottomOf="@+id/cardTitleLowBattery12"
+                            app:layout_constraintEnd_toEndOf="@+id/cardTitleLowBattery12"
+                            app:layout_constraintTop_toTopOf="@+id/cardTitleLowBattery12" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout><!--seventhCard/constraintLowBattery -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/eighthCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/seventhCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/noPumpControlCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/beige1"
+                    android:padding="8dp"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ninthCard" />
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <TextView
+                        android:id="@+id/cardTitlePumpControl"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:layout_width="match_parent"
+                        android:layout_height="41dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1.0"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="No Pump Control!"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/activityBackground"
+                        android:textColorHint="@color/darkActivityBackground"
+                        android:textColorLink="?android:attr/textColorLink"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <TextView
+                        android:id="@+id/subheadPumpControl"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{noPumpControlTimeStamp}"
+                        android:textColor="@color/black"
+                        android:textFontWeight="800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardTitlePumpControl" />
+
+                    <TextView
+                        android:id="@+id/bodyPumpControl"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="The pumps will not work\nuntil this is fixed!"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/subheadPumpControl" />
+
+                    <ImageView
+                        android:id="@+id/xToClosePumpControl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:onClick="closeNoPumpControl"
+                        android:src="@android:drawable/btn_dialog"
+                        app:layout_constraintBottom_toBottomOf="@+id/cardTitlePumpControl"
+                        app:layout_constraintEnd_toEndOf="@+id/cardTitlePumpControl"
+                        app:layout_constraintTop_toTopOf="@+id/cardTitlePumpControl" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout> <!--eighthCard/noPumpControlCard -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ninthCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/eighthCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/serverErrorCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:background="@color/beige1"
+                    android:padding="8dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/cardTitleServerError"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:layout_width="match_parent"
+                        android:layout_height="41dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:lineSpacingMultiplier="1.0"
+
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="Server Error"
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/activityBackground"
+                        android:textColorHint="@color/darkActivityBackground"
+                        android:textColorLink="?android:attr/textColorLink"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/subheadServer"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="@{serverErrorTimeStamp}"
+                        android:textColor="@color/black"
+                        android:textFontWeight="800"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardTitleServerError" />
+
+                    <TextView
+                        android:id="@+id/bodyServerError"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/frame"
+                        android:elevation="100dp"
+                        android:lineSpacingMultiplier="1"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="There was an error in the server!\nThe app may not be receiving data."
+                        android:textColor="@color/black"
+                        android:textColorHighlight="@color/actualWhite"
+                        android:textColorHint="@color/activityBackground"
+                        android:textColorLink="@color/activityBackground"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/subheadServer" />
+
+                    <ImageView
+                        android:id="@+id/xToCloseServerError"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:onClick="closeServerError"
+                        android:src="@android:drawable/btn_dialog"
+                        app:layout_constraintBottom_toTopOf="@+id/subheadServer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/cardTitleServerError" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout> <!--ninthCard/ServerError -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardAllGood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="75dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ninthCard">
+
+                <TextView
+                    android:id="@+id/textViewAllGood"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="All Good! Nothing to Show"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </RelativeLayout>
+
+            <Button
+                android:id="@+id/buttonHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+                android:text="Return Home"
+                android:onClick="returnHome"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ninthCard" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    t
 
 
     </ScrollView>

@@ -18,6 +18,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -32,8 +33,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 
 val warningStrings = arrayOf(
@@ -51,7 +56,6 @@ class Warnings: ComponentActivity() {
 
 
     private val warningStringToCard = LinkedHashMap<String, ConstraintLayout>()
-    private val warningStringToTimeStampBinding = LinkedHashMap<String, ConstraintLayout>()
     private val warningStringToTimeStamp = LinkedHashMap<String, LocalDateTime>()
     private val context = this
 
@@ -113,7 +117,7 @@ class Warnings: ComponentActivity() {
             sum += visData
             val card = warningStringToCard[warning]!! //getXMLCard
 
-            /*
+
             if (visData == 0){
 
                 card.visibility = GONE
@@ -123,7 +127,7 @@ class Warnings: ComponentActivity() {
                 card.visibility = VISIBLE
 
             }
-            */
+
             when (warning){
                 "serverErrorWarning" ->{
 
@@ -188,69 +192,68 @@ class Warnings: ComponentActivity() {
             Log.i("warning2", warning)
             val prefKey = stringPreferencesKey(warning + "Time")
 
-
             val exampleCounterFlow: Flow<String> =
                 dataStore.data //read data in saved data store
                     .map { settings ->
-                        // No type safety.
+                        // Default value if null
                         settings[prefKey]
-                            ?: LocalDateTime.of(2000, 11, 1, 1, 1)
-                                .toString()    //this sets the value to zero (in exampleCounterFlow not datastore) if null
+                            ?: ZonedDateTime.of(2000, 11, 1, 1, 1, 0, 0, ZoneId.of("America/New_York"))
+                                .toString()
                     }
-            val timeString = exampleCounterFlow.first()
-            val regex = Regex("(\\d{4}).(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2})")
-            val match = regex.find(timeString)!!
-            year = match.groupValues[1].toInt()
-            month = match.groupValues[2].toInt()
-            day = match.groupValues[3].toInt()
-            hour = match.groupValues[4].toInt()
-            minute = match.groupValues[5].toInt()
-            if (hour == 0){hour = 12}
 
+            val timeString = exampleCounterFlow.first()
+            val zoneId = ZoneId.of("America/New_York")
+
+            // Parse the time string to ZonedDateTime
+            val formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
+            val zonedDateTime = ZonedDateTime.parse(timeString, formatter).withZoneSameInstant(zoneId)
+
+            // Extract date-time components
+            val year = zonedDateTime.year
+            val month = zonedDateTime.monthValue
+            val day = zonedDateTime.dayOfMonth
+            var hour = zonedDateTime.hour
+            val minute = zonedDateTime.minute
+
+            if (hour == 0) hour = 12
             var amPM = "am"
-            if (hour > 12){
-                hour = hour - 12
+            if (hour > 12) {
+                hour -= 12
                 amPM = "pm"
             }
-            val dayFromString = LocalDate.of(year, month, day)
-            val timeFromString = LocalDateTime.of(year, month, day, hour, minute, 0)
-            warningStringToTimeStamp[warning] = timeFromString
-            val todayDate = LocalDate.now()
-            val nowTime = LocalDateTime.now()
 
-           // Log.i("inGetTime", (java.time.Duration.between(timeFromString,nowTime) > java.time.Duration.ofMinutes(1)).toString())
-            Log.i("durationBetween", java.time.Duration.between(timeFromString,nowTime).toString())
-            Log.i("booleanDurationBetween", (java.time.Duration.between(timeFromString,nowTime) > java.time.Duration.ofMinutes(1)).toString())
-            if (java.time.Duration.between(timeFromString,nowTime) > java.time.Duration.ofDays(1)){ //how long should a warning stay in the warnings page
+            val dayFromString = zonedDateTime.toLocalDate()
+            warningStringToTimeStamp[warning] = zonedDateTime.toLocalDateTime()
+            val todayDate = LocalDate.now(zoneId)
+            val nowTime = ZonedDateTime.now(zoneId)
+
+            Log.i("durationBetween", Duration.between(zonedDateTime, nowTime).toString())
+            Log.i(
+                "booleanDurationBetween",
+                (Duration.between(zonedDateTime, nowTime) > Duration.ofMinutes(1)).toString()
+            )
+
+            if (Duration.between(zonedDateTime, nowTime) > Duration.ofDays(1)) {
                 Log.i("warningStringToCard", warningStringToCard[warning].toString())
-                warningStringToCard[warning]!!.visibility= VISIBLE //for testing switch back to GONE
+                warningStringToCard[warning]!!.visibility = VISIBLE // Change to GONE for production
             }
 
-            var today_bool = false
-            if(todayDate.equals(dayFromString)){
-                today_bool = true
+            val todayBool = todayDate == dayFromString
 
-            }
-
-            Log.i("Today", today_bool.toString())
-            if (minute > 10) {
-                if (today_bool){
-                    newTimeString = "Today at $hour:$minute $amPM"
+            Log.i("Today", todayBool.toString())
+            newTimeString = if (minute > 10) {
+                if (todayBool) {
+                    "Today at $hour:$minute $amPM"
+                } else {
+                    "$month/$day/$year at $hour:$minute $amPM"
                 }
-                else{
-                    newTimeString = "$month/$day/$year at $hour:$minute $amPM"
-                }
-            }
-            else{
-                if (today_bool){
-                    newTimeString = "Today at $hour:0$minute $amPM"
-                }
-                else{
-                    newTimeString = "$month/$day/$year at $hour:0$minute $amPM" //add a zero to minute
+            } else {
+                if (todayBool) {
+                    "Today at $hour:0$minute $amPM"
+                } else {
+                    "$month/$day/$year at $hour:0$minute $amPM"
                 }
             }
-
-
         }
         return newTimeString
     }
@@ -264,7 +267,7 @@ class Warnings: ComponentActivity() {
         Log.i("warning size",warningStringToCard.size.toString())
         var n = 1
         for(warning in warningStringToCard.keys) {
-            Log.i("n$", n.toString())
+
             Log.i("warning#", warning)
             val card = warningStringToCard[warning]!!
             Log.i("cardVis", card.toString())
@@ -296,7 +299,7 @@ class Warnings: ComponentActivity() {
         var i= 1
 
         for ((card, time) in cardsToTimesSorted) {
-            card.visibility = VISIBLE //for testing
+            //card.visibility = VISIBLE //for testing
             if (card.visibility == GONE){
                 continue
             }
@@ -305,25 +308,25 @@ class Warnings: ComponentActivity() {
             Log.i("@visibility", card.visibility.toString())
 
             Log.i("@visibility2", card.visibility.toString())
+            val constraintLayout = findViewById<ConstraintLayout>(R.id.mainSettingsConstraint)
+            //val constraintSet = ConstraintSet()
+            //constraintSet.clone(constraintLayout)
             when(i) {
+
 
                 //arrange cards by time  //also yes this should be cleaned up by adding a function.
                 9 ->{
-                    findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard)?.apply {
+                    findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard)?.apply {//this is not necessarily highWater card. at least i hope it isn't.
                         if (this.visibility == VISIBLE){
-
-
                             if (parent != null) {
                                 Log.i("*parent", parent.toString())
                                 Log.i("parentNotNull", i.toString())
                                 Log.i("*BeforeParent", parent.toString())
-                                val parent_ = parent
                                 val child_ = findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard)
                                 Log.i("highwaterCardBefore",findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard).toString() )
 
                                 if ((parent as ViewGroup).childCount > 0){(parent as ViewGroup).removeView(child_)}
-                                Log.i("AfterParent", parent_.toString())
-
+                                //constraintSet.connect(R.id.highWaterCard, ConstraintSet.TOP, R.id.warningPageTitleInWarnings, ConstraintSet.BOTTOM, 25)
                             }
                         }
 
@@ -372,7 +375,6 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.mainRunTimeCard)?.apply {
                         if (this.visibility == VISIBLE){
                             if (parent != null) {
-                                val parent_ = parent
                                 Log.i("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
@@ -458,9 +460,6 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.serverErrorCard)?.apply {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
-                                val parent_ = parent
-                                Log.i("*parent", parent.toString())
-
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
                                 }

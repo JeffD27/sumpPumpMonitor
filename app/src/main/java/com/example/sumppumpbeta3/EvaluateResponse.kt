@@ -225,7 +225,11 @@ class EvaluateResponse() {
         }
         else    {
             Log.i("evaluateResp", "we have ELSE")
-            warningVisibilities["noPumpControlWarning"] = Pair(0, Clock.System.now())
+            val time = warningVisibilities["noPumpControlWarning"]?.second
+            if (time != null){
+                warningVisibilities["noPumpControlWarning"] = Pair(0, time)
+            }
+
             pumpControlActive = true
             return true
             }
@@ -480,9 +484,8 @@ class EvaluateResponse() {
             Log.i("now", Clock.System.now().toString())
             Log.i("compared to...time", serverError.second.toJavaInstant().toString())
             Log.i("notificationServerErrorMuteDuration", notificationServerErrorMuteDuration.toString())
-            if (java.time.Duration.between(serverError.second.toJavaInstant(), Clock.System.now().toJavaInstant()) > notificationServerErrorMuteDuration.toJavaDuration()){
+            if (java.time.Duration.between(Clock.System.now().toJavaInstant(), serverError.second.toJavaInstant())  > notificationServerErrorMuteDuration.toJavaDuration()){
                 Log.i("generalWarnSilence", generalWarnSilence.toString())
-                persistentServerError = true
                 callDeployNotification(
                     context,
                     "serverError",

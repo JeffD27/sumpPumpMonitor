@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.Group
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -51,6 +52,9 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toLocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 import java.time.temporal.Temporal
 import kotlin.time.Duration
@@ -68,8 +72,6 @@ val spinnerDurationDict = LinkedHashMap<Spinner, kotlin.time.Duration>()
 
 val durationPositionInt = LinkedHashMap<kotlin.time.Duration, Int>()
 val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12", "noPumpControl" )
-var persistentServerError: Boolean = false
-var showSettingsWindow: Boolean = false
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 var notificationServerErrorMuteDuration: kotlin.time.Duration = 1.days
 var notificationWaterLevelSensorErrorMuteDuration: kotlin.time.Duration = 1.days
@@ -188,7 +190,7 @@ open class MainActivity : ComponentActivity() {
             throw RuntimeException(e)
         }
 
-
+        adjustButtonSettings()
 
         Log.i("durationConvertDictKeys", durationConvertDict.keys.toString())
         //this is just initializing the ...deployed variables for use in reset notifications
@@ -319,7 +321,7 @@ open class MainActivity : ComponentActivity() {
         if (java.time.Duration.between(
                 timeStamp.toJavaInstant(),
                 Clock.System.now().toJavaInstant()
-            ) < java.time.Duration.ofMinutes(60)
+            ) < java.time.Duration.ofDays(2)
         ) {
             return 1
 
@@ -328,6 +330,26 @@ open class MainActivity : ComponentActivity() {
 
         }
 
+    }
+    private fun adjustButtonSettings(){
+        val constraintLayout = findViewById<ConstraintLayout>(R.id.mainConstraint)
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(constraintLayout)
+
+        when {
+            findViewById<Group>(R.id.generalWarningGroup).visibility == View.VISIBLE -> {
+                constraintSet.connect(R.id.buttonSettings, ConstraintSet.TOP, R.id.generalWarning, ConstraintSet.BOTTOM, 20)
+            }
+            findViewById<Group>(R.id.backupPumpRunWarningGroup).visibility == View.VISIBLE -> {
+                constraintSet.connect(R.id.buttonSettings, ConstraintSet.TOP, R.id.backupPumpRunWarning, ConstraintSet.BOTTOM, 20)
+            }
+            else -> {
+                Log.i("adjustButtonSettings", "else")
+                constraintSet.connect(R.id.buttonSettings, ConstraintSet.TOP, R.id.divider2, ConstraintSet.BOTTOM, 80)
+            }
+        }
+
+        constraintSet.applyTo(constraintLayout)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -351,6 +373,7 @@ open class MainActivity : ComponentActivity() {
                 }
                 else{EvaluateResponse().onCreate(context, "null", activity)}
                 applyWarningVisibilities()
+
                 checkNoWaterPumpRunning(activity, binding)
                 checkServerError(activity, binding)
                 checkPumpRuntimeBackupRun(activity, binding)
@@ -359,9 +382,10 @@ open class MainActivity : ComponentActivity() {
                 checkPumpsRunning(activity, binding)
                 checkWaterLevel(activity, binding)
                 assessViewWarnings()
+                adjustButtonSettings()
                 Log.i("delaying", "delay coming")
 
-                delay(3000) // Delay for 1 seconds before the next call
+                delay(1000) // Delay for 1 seconds before the next call
             }
         }
     }
@@ -422,7 +446,8 @@ open class MainActivity : ComponentActivity() {
 */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initiateWarningVisibilities(){ //this also will apply time stamps based on saved settings data
-        for (warning in warningStrings) { //intiates warningVisibilities
+        for (warning in warningStrings) {
+            Log.i("warning initiateWarn", warning)//intiates warningVisibilities
             runBlocking {  //com.example.sumppumpbeta3.warningVisibilities[warning]
                 val data = readWarningData(warning) //get saved settings data
                 val timeString = data.second
@@ -441,7 +466,7 @@ open class MainActivity : ComponentActivity() {
                 Log.i("timeString!", minute)
 
 
-                val restOfTimeString = ":00.99Z"
+                val restOfTimeString = ":00Z" //i removed the z at the end
                 val timeStringParsed = String.format(
                     "%s-%s-%sT%s:%s" + "%s",
                     year,
@@ -452,10 +477,13 @@ open class MainActivity : ComponentActivity() {
                     restOfTimeString
                 )
                 Log.i("timeStringParsed", timeStringParsed)
-                val timeStamp = Instant.parse(timeStringParsed)
-                val visibility = getVisibility(timeStamp)
+                val timeStampKotlin = Instant.parse(timeStringParsed)
 
-                warningVisibilities[warning] = Pair(visibility, timeStamp)
+
+                val visibility = getVisibility(timeStampKotlin)
+
+                warningVisibilities[warning] = Pair(visibility, timeStampKotlin)
+                Log.i("visibility", visibility.toString())
                 Log.i("timeString", timeString)
             }
 
