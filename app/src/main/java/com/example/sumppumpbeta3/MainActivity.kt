@@ -71,7 +71,7 @@ val spinnerStringDict = LinkedHashMap<Spinner, String>()
 val spinnerDurationDict = LinkedHashMap<Spinner, kotlin.time.Duration>()
 
 val durationPositionInt = LinkedHashMap<kotlin.time.Duration, Int>()
-val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12", "noPumpControl" )
+val notificationStrings = listOf("serverError", "sensorError", "noPower", "highWater", "mainRunTime", "backupRun", "noWater", "lowBattery12", "noPumpControl", "mainRunning" )
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 var notificationServerErrorMuteDuration: kotlin.time.Duration = 1.days
 var notificationWaterLevelSensorErrorMuteDuration: kotlin.time.Duration = 1.days
@@ -82,6 +82,7 @@ var notificationBackupRanMuteDuration: kotlin.time.Duration = 1.hours
 var notificationWaterTooLowMuteDuration:  kotlin.time.Duration = 10.minutes
 var notificationBattery12LowMuteDuration: kotlin.time.Duration = 1.days
 var notificationNoPumpControlMuteDuration: kotlin.time.Duration = 12.hours
+var notificationMainRunningMuteDuration: kotlin.time.Duration = 30.minutes
 
 
 var mainPumpRuntimeOver10: Boolean = true
@@ -226,6 +227,7 @@ open class MainActivity : ComponentActivity() {
         defaultMuteTimes["noWater"] = 10.minutes
         defaultMuteTimes["lowBattery12"] = 1.days
         defaultMuteTimes["noPumpControl"] = 12.hours
+        defaultMuteTimes["mainRunning"] = 30.minutes
 
         initiateWarningVisibilities()//also applies saved data
 
@@ -692,16 +694,20 @@ open class MainActivity : ComponentActivity() {
                 binding.generalErrorText = "No Pump Control Software!"
             }
         }
-        else if (warningVisibilities["noPowerWarning"]?.first == 0){
-            if (warningVisibilities["serverError"]?.first == 0){
-                closeGeneralWarn(null)
-            }
+        else if (warningVisibilities["noPowerWarning"]?.first == 0 && warningVisibilities["serverError"]?.first == 0){
+                if (warningVisibilities["noPumpControlWarning"]?.first==0 && warningVisibilities["noWaterWarning"]?.first == 0){
+                        closeGeneralWarn(null)
+                }
         }
 
     }
 
+
+
+
     private fun checkPumpRuntimeBackupRun(activity: Activity, binding: ActivityMainBinding) {
         Log.i("mainPumpRuntimeOver10", mainPumpRuntimeOver10.toString())
+
         if (mainPumpRuntimeOver10) { //this gets updated in applyMainPumpWarn...if pump has run > 10 min gets eval in python server side as boolean. boolean is applied in applyMainPumpWarn
             if (!mainPumpWarnSilence) {
                 binding.mainRunWarnView = true
@@ -742,6 +748,7 @@ open class MainActivity : ComponentActivity() {
                 warningVisibilities["noWaterWarning"] = Pair(1, Clock.System.now())
                 binding.generalErrorView= true
                 binding.generalErrorText = "Pump running dry,\n Please Check!"
+
             }
         }
         if (!mainRunning_ && binding.generalErrorText == "Pump running dry,\n Please Check!") {

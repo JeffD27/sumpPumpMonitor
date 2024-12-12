@@ -32,7 +32,7 @@ class NotificationChannels: Application() {
                 "e.g. \"Pump is running on no water\" or \"flooding in basement\""
 
             val mChannelA = NotificationChannel(
-                "1999",
+                "19999",
                 "sensorError",
                 NotificationManager.IMPORTANCE_DEFAULT
             )

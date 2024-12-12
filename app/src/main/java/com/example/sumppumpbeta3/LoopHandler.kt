@@ -86,6 +86,9 @@ class LoopHandler {
         if (!lateClass.isNotificationNoPumpControlInitialized()) {
             notificationNoPumpControl = Pair(false, Clock.System.now())
         }
+        if (!lateClass.isNotificationMainRunningInitialized()) {
+            notificationMainRunning = Pair(false, Clock.System.now())
+        }
 
 
 
@@ -162,6 +165,12 @@ class LoopHandler {
                 notificationNoPumpControl = Pair(false, Clock.System.now())
             }
         }
+        if (lateClass.isNotificationMainRunningInitialized()) {
+            val (deployed, timeDeployed) = notificationMainRunning
+            if (deployed && (Clock.System.now() - timeDeployed) > notificationMainRunWarnMuteDuration) {
+                notificationMainRunning = Pair(false, Clock.System.now())
+            }
+        }
 
 
     }
@@ -234,6 +243,10 @@ class LoopHandler {
                         notificationNoPumpControlMuteDuration = intDurationDict[durationInt]!!
 
                     }
+                    "mainRunning" -> {
+                       notificationMainRunningMuteDuration = intDurationDict[durationInt]!!
+
+                    }
 
 
                 }
@@ -245,6 +258,7 @@ class LoopHandler {
         Log.i("updateNotifcationMuteTimes", notification)
 
         val durationIntDict = LinkedHashMap<kotlin.time.Duration, Int>()
+
         durationIntDict[5.minutes] = 5
         durationIntDict[10.minutes] = 10
         durationIntDict[15.minutes] = 15
@@ -271,6 +285,7 @@ class LoopHandler {
             defaultMuteTimes["noWater"] = 10.minutes
             defaultMuteTimes["lowBattery12"] = 1.days
             defaultMuteTimes["noPumpControl"] = 12.hours
+            defaultMuteTimes["mainRunning"] = 30.minutes
         }
         val defaultMuteTime = defaultMuteTimes[notification]
 

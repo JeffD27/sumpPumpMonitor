@@ -11,6 +11,7 @@ lateinit var notificationBackupRan: Pair<Boolean, Instant>
 lateinit var notificationWaterTooLow: Pair<Boolean, Instant>
 lateinit var notificationBattery12Low: Pair<Boolean, Instant>
 lateinit var notificationNoPumpControl: Pair<Boolean, Instant>
+lateinit var notificationMainRunning: Pair<Boolean, Instant>
 class LateClass {
 
 
@@ -24,5 +25,5 @@ class LateClass {
     fun isNotificationWaterTooLowInitialized() = ::notificationWaterTooLow.isInitialized
     fun isNotificationBattery12LowInitialized() = ::notificationBattery12Low.isInitialized
     fun isNotificationNoPumpControlInitialized() = ::notificationNoPumpControl.isInitialized
-
+    fun isNotificationMainRunningInitialized() = ::notificationMainRunning.isInitialized
 }

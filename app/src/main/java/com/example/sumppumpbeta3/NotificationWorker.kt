@@ -47,6 +47,8 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         notificationStringToDeployed["noWater"] = notificationWaterTooLow
         notificationStringToDeployed["lowBattery12"] = notificationBattery12Low
         notificationStringToDeployed["noPumpControl"] = notificationNoPumpControl
+        notificationStringToDeployed["mainRunning"] = notificationMainRunning
+
 
 
         Log.i("NotificationsSettings", "onCreate")
@@ -55,7 +57,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         val title = inputData.getString("title") ?: "Sump Pump Monitor"
         val message = inputData.getString("message") ?: "No message provided"
         val channelID = inputData.getString("channelID") ?: "General Info"
-        val notificationString = inputData.getString("notificationString") ?: "noStringProvide"
+        val notificationString = inputData.getString("notificationString") ?: "noStringProvided"
         val priority = inputData.getString("priority") ?: "High"
         val notifid = inputData.getString("notifid") ?: "11111"
 
@@ -102,6 +104,9 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         }
         if (!lateClass.isNotificationNoPumpControlInitialized()) {
             notificationNoPumpControl = Pair(false, Clock.System.now())
+        }
+        if (!lateClass.isNotificationMainRunningInitialized()) {
+            notificationMainRunning = Pair(false, Clock.System.now())
         }
     }
     /*
@@ -187,14 +192,20 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
         Log.i("notifstring in depl", notificationString)
         Log.i("notifstring in depl",Clock.System.now().toString())
+        var deployed: Boolean = false
+        var timeDeployed = Clock.System.now()
 
         val deployedPair =
             notificationStringToDeployed[notificationString]!! //returns a pair //causes null pointer exception
         Log.i("deployNotification", "getting notif manager")
-        val (deployed, timeDeployed) = deployedPair
+        deployed = deployedPair.first
+        timeDeployed = deployedPair.second
         Log.i("time and deploy", timeDeployed.toString())
         Log.i("time and deploy", deployed.toString())
-        if (!deployed) {
+
+
+
+        if (!deployed) { //runs if notificationstring was "pass"
             Log.i("deployNotification", "starting notification for $notificationString")
             notificationBuilder(
                 applicationContext,
@@ -220,6 +231,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
                 "noWater" -> notificationWaterTooLow = Pair(true, Clock.System.now())
                 "lowBattery12" -> notificationBattery12Low = Pair(true, Clock.System.now())
                 "noPumpControl" -> notificationNoPumpControl = Pair(true, Clock.System.now())
+                "mainRunning" -> notificationMainRunning = Pair(true, Clock.System.now())
             }
 
 

@@ -141,8 +141,7 @@
     <string name="sensorErrorChannelID">19999</string>
     <string name="serverErrorChannelID">19994</string>
     <string name="noWaterNotificationID">19998</string>
-
-
+    <string name="mainRunningNotification">19992</string>
 
 
 </resources>

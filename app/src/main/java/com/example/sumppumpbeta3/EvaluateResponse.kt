@@ -162,6 +162,7 @@ class EvaluateResponse() {
         checkNoWaterPumpRunningNotify(context)
         checkMainPumpRuntime(context)
         checkVoltagesNotify(context)
+        checkMainRunning(context)
         checkServerError(context)
         checkWaterLevelForNotify(context)
         Log.i("backupRun_777", backupRunning_.toString())
@@ -355,6 +356,21 @@ class EvaluateResponse() {
             )
         }
 
+    }
+
+    private fun checkMainRunning(context: Context){
+        if (mainRunning_ == true){
+            Log.i("checkMainRunning", "main RUnning callind deployNotification")
+            callDeployNotification(
+                context,
+                "mainRunning",
+                "Main Pump Has Run",
+                "The main pump is running or has run.",
+                "high",
+                context.getString(R.string.mostUrgentWarningsChannelID),
+                context.getString(R.string.mainRunningNotification),
+            )
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
