@@ -164,6 +164,7 @@ open class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        NotificationChannels()
         Log.i("mainActivity", "onCreate")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -789,6 +790,7 @@ open class MainActivity : ComponentActivity() {
     fun closeGeneralWarn(view: View?) {
         val view = findViewById<Group>(R.id.generalWarningGroup)
         view.visibility = GONE
+        adjustButtonSettings()
     }
 
     fun closeBackupPumpWarn(view: View?){

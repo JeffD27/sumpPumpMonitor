@@ -6,6 +6,7 @@
     <string name="waterLevel_Low"></string>
     <string name="MainPump_State"></string>
     <string name="BackupPump_State"></string>
+    <string name="BackupRunningNotification">77777</string>
     <string name="batteryVolts12">11.7</string>
     <string name="batteryVolts5" >4.8</string>
     <string name="PumpRuntimeWarning" > Pump has run more\n than 10 minutes</string>
@@ -116,10 +117,12 @@
     <string name="workerNotificationChannelID">11113</string>
 
     <!--NotificationIDS-->
-    <string name = "noACPowerNotificationID">11112</string>
-    <string name="noPumpControlNotificationID">11113</string>
-    <string name="waterLevelSensorErrorNotificationID">11111</string>
-    <string name ="lowBattery12vNotificationID">22222</string>
+    <string name = "noACPowerNotificationID">11119</string>
+    <string name="noPumpControlNotificationID">11118</string>
+    <string name="waterLevelSensorErrorNotificationIDA">19997</string>
+    <string name="waterLevelSensorErrorNotificationIDB">19996</string>
+    <string name="waterLevelSensorErrorNotificationIDC">19995</string>
+    <string name ="lowBattery12vNotificationID">19993</string>
     <string name="serverErrorNotificationID">44444</string>
     <string name="highWaterNotificationID">55555</string>
     <string name="mainRunTimeNotificationID">66666</string>
@@ -135,6 +138,11 @@
     <string name="HighWaterBody">The sump pump well has reached\nmaximum capacity! </string>
     <string name = "noPumpControlNotificationTitle">"Warning: No Pump Control!" </string>
     <string name="noPumpControlNotificationContent"> "Pump Control is not running. The pumps will not work until this is fixed!"</string>
+    <string name="sensorErrorChannelID">19999</string>
+    <string name="serverErrorChannelID">19994</string>
+    <string name="noWaterNotificationID">19998</string>
+
+
 
 
 </resources>

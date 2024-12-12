@@ -3,25 +3,21 @@ package com.example.sumppumpbeta3
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.work.Configuration
-import androidx.work.WorkManager
-import com.example.sumppump3.R
-import java.security.AccessController.getContext
 
-class RunningApp: Application() {
+class NotificationChannels: Application() {
     override fun onCreate() {
         super.onCreate()
-        Log.i("RunningApp","RunningApp.kt...About to run")
+        Log.i("RunningApp","notificationChannels.kt...About to run")
        // WorkManager.initialize(this, Configuration.Builder().build())
         LateClass()
         createNotificationChannels()
     }
+    //default priority: sensorError, serverError,
+    // Low priority: low battery12,
+    // high: noPower, highWater, mainRunTime, BackupRun
     private fun createNotificationChannels(){
 
         Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
@@ -29,27 +25,31 @@ class RunningApp: Application() {
             // Create the NotificationChannel.
             Log.i("createNotifications", "software requirements met!")
             val mChannelAA = NotificationChannel(
-                "Pump Errors/Warnings",
+                "00000",
                 "Most Urgent Warnings", NotificationManager.IMPORTANCE_HIGH
             )
             mChannelAA.description =
                 "e.g. \"Pump is running on no water\" or \"flooding in basement\""
 
             val mChannelA = NotificationChannel(
-                "11111",
-                "Pump Errors/Warnings",
-                NotificationManager.IMPORTANCE_HIGH
+                "1999",
+                "sensorError",
+                NotificationManager.IMPORTANCE_DEFAULT
             )
 
-            mChannelA.description = "E.g. pump has run too long"
+            mChannelA.description = "Water level sensor error"
+
             val mChannelB = NotificationChannel(
                 "22222",
-                "Pump Errors/Warnings",
-                NotificationManager.IMPORTANCE_HIGH
+                "serverError",
+                NotificationManager.IMPORTANCE_LOW
             )
             mChannelB.description = "E.g. server issue, sensor error"
             val mChannelC =
-                NotificationChannel("33333", "General Info", NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationChannel(
+                    "33333",
+                    "General Info",
+                    NotificationManager.IMPORTANCE_LOW)
             mChannelC.description = "E.G. Main pump has run"
 
             val notificationManager =
@@ -64,6 +64,7 @@ class RunningApp: Application() {
             notificationManager.createNotificationChannel(mChannelA)
             notificationManager.createNotificationChannel(mChannelB)
             notificationManager.createNotificationChannel(mChannelC)
+            Log.i("NotificationChannels", "channels built!")
 
 
         }

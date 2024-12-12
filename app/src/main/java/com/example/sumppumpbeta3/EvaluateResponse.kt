@@ -9,6 +9,7 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
+import com.example.sumppump3.R
 import kotlinx.datetime.*
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -212,9 +213,9 @@ class EvaluateResponse() {
                 "noPumpControl",
                 "Warning: No Pump Control!",
                 "Pump Control is not running. The pumps will not work until this is fixed!",
-                "max",
-                "Pump Errors/Warnings",
-                "11112",
+                "high",
+                context.getString(R.string.mostUrgentWarningsChannelID),
+                context.getString(R.string.noACPowerNotificationID),
             )
             return false
 
@@ -349,8 +350,9 @@ class EvaluateResponse() {
                 "backupRun",
                 "Check Sump Pump",
                 "Backup Pump has run!",
-                "high", "Pump Errors/Warnings",
-                "77777")
+                "high", context.getString(R.string.mostUrgentWarningsChannelID),
+                context.getString(R.string.BackupRunningNotification)
+            )
         }
 
     }
@@ -384,10 +386,9 @@ class EvaluateResponse() {
                     "sensorError",
                     "SumpPump WaterLevel Sensor Error",
                     "Error In water level sensor\nhigh=true mid/low = false",
-                    "high",
-                    "22222",
-                    "11111",
-
+                    "default",
+                    context.getString(R.string.sensorErrorChannelID),
+                    context.getString(R.string.waterLevelSensorErrorNotificationIDA),
                     )
             }
         }
@@ -411,9 +412,9 @@ class EvaluateResponse() {
                     "sensorError",
                     "SumpPump WaterLevel Sensor Error",
                     "Error In water level sensor\nmid=true low = false",
-                    "high",
-                    "22222",
-                    "11111",
+                    "default",
+                    context.getString(R.string.sensorErrorChannelID),
+                   context.getString(R.string.waterLevelSensorErrorNotificationIDB),
                 )}
             }
 
@@ -450,9 +451,9 @@ class EvaluateResponse() {
                 "sensorError",
                 "Sensor Error",
                 "Error detected in water level sensors!",
-                "high",
-                "Pump Errors/Warnings",
-                "11111"
+                "default",
+                context.getString(R.string.sensorErrorChannelID),
+                context.getString(R.string.waterLevelSensorErrorNotificationIDC)
             )
 
 
@@ -466,8 +467,8 @@ class EvaluateResponse() {
                 "WARNING: HIGH Water in Sump Well",
                 "The water has reached the top of the well.\nBasement flooding is imminent.",
                 "high",
-                "Pump Errors/Warnings",
-                "55555",
+                context.getString(R.string.mostUrgentWarningsChannelID),
+                context.getString(R.string.highWaterNotificationID)
             )
         }
     }
@@ -491,11 +492,9 @@ class EvaluateResponse() {
                     "serverError",
                     "Server Error",
                     "Error In Server\nNo Data is being received",
-                    "high", "22222",
-                    "44444")
-
-
-
+                    "low",
+                    context.getString(R.string.serverErrorChannelID),
+                    context.getString(R.string.serverErrorNotificationID))
             }
         }
     }
@@ -510,8 +509,8 @@ class EvaluateResponse() {
                 "SumpPump RPi: No AC Power",
                 "Usb is disconnected\nOr there is no power going to RPi",
                 "high",
-                "22222",
-                "11112",
+                context.getString(R.string.mostUrgentWarningsChannelID),
+                context.getString(R.string.noACPowerNotificationID),
             )
             }
         if (voltage12_ < 95){
@@ -521,9 +520,9 @@ class EvaluateResponse() {
                 "lowBattery12",
                 "Sump Pump Battery is LOW",
                 "12 Volt battery is low. Check AC power.",
-                "high",
-                "Pump Errors/Warnings",
-                "22222",
+                "low",
+                context.getString(R.string.GeneralInfoChannelID),
+                context.getString(R.string.lowBattery12vNotificationID),
             )
         }
     }
@@ -535,8 +534,9 @@ class EvaluateResponse() {
                 "mainRunTime",
                 "Check Sump Pump",
                 "The pump has run for 10 minutes without stopping",
-                "high", "Pump Errors/Warnings",
-                "77777")
+                "high",
+                 context.getString(R.string.mostUrgentWarningsChannelID),
+                 context.getString(R.string.mainRunTimeNotificationID))
         }
     }
 
@@ -548,9 +548,9 @@ class EvaluateResponse() {
                     "noWater",
                     "URGENT: Check Sump Pump",
                     "Pump may be running dry! Reporting no water, but pump is running.",
-                    "high", "Pump Errors/Warnings",
-                    "77777"
-                )
+                    "high",
+                    context.getString(R.string.mostUrgentWarningsChannelID),
+                    context.getString(R.string.noWaterNotificationID)                )
             }
         }
     }

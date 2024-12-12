@@ -150,6 +150,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         notificationManager: NotificationManager
     ) { //priority: high default low
         Log.i("notificationBuilder()", "starting notification builder")
+        Log.i("channel_ID", CHANNEL_ID)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         val intent = Intent(context, Notification::class.java)
         val pendingIntent: PendingIntent =
@@ -166,6 +167,9 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
             builder.priority = NotificationCompat.PRIORITY_DEFAULT
         } else if (priority == "low") {
             builder.priority = NotificationCompat.PRIORITY_LOW
+        }
+        else if (priority == "min") { //no sound
+            builder.priority = NotificationCompat.PRIORITY_MIN
         }
         //return builder here
         notificationManager.notify(notifid.toInt(), builder.build())

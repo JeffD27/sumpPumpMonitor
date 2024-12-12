@@ -26,6 +26,7 @@ class BootCompletedReceiver : BroadcastReceiver() {
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context!!.startService(i)
                 */
+                NotificationChannels()
                 startPeriodicWork(context)
 
             }
