@@ -66,14 +66,8 @@ class Warnings: ComponentActivity() {
 
         val buttonHome = findViewById<Button>(R.id.buttonHome)
 
-        buttonHome.setOnClickListener(){
-
-            // Create an Intent to start the new activity
-            val intent = Intent(context, MainActivity()::class.java)
-
-
-            // Start the new activity
-            startActivity(intent)
+        buttonHome.setOnClickListener {
+            finish()
         }
 
 
@@ -577,7 +571,11 @@ class Warnings: ComponentActivity() {
 
         parent.addView(this)
     }
+    override fun onDestroy() {
+        super.onDestroy()
 
+        // Cancel tasks that depend on the activity
+    }
 }
 
 

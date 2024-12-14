@@ -78,13 +78,7 @@ class Settings : ComponentActivity() {
                     val buttonOK = findViewById<Button>(R.id.buttonOK)
 
                     buttonOK.setOnClickListener(){
-
-                        // Create an Intent to start the new activity
-                        val intent = Intent(context, MainActivity()::class.java)
-
-
-                        // Start the new activity
-                        startActivity(intent)
+                        finish()
                     }
                     val buttonRestore = findViewById<Button>(R.id.buttonRestoreDefault)
 
@@ -162,14 +156,16 @@ class Settings : ComponentActivity() {
 
             if (spinner != null) {
                 if (defaultMuteTimes.isEmpty()){
-                    defaultMuteTimes["serverError"] = 2.hours
+                    defaultMuteTimes["serverError"] = 2.hours //change this back to 1 day or something
                     defaultMuteTimes["sensorError"] = 1.days
                     defaultMuteTimes["noPower"] = 1.hours
-                    defaultMuteTimes["highWater"] = 15.minutes
-                    defaultMuteTimes["mainRunTime"] = 10.minutes
-                    defaultMuteTimes["backupRun"] = 10.minutes
+                    defaultMuteTimes["highWater"] = 2.hours
+                    defaultMuteTimes["mainRunTime"] = 30.minutes
+                    defaultMuteTimes["backupRun"] = 30.minutes
                     defaultMuteTimes["noWater"] = 10.minutes
                     defaultMuteTimes["lowBattery12"] = 1.days
+                    defaultMuteTimes["noPumpControl"] = 12.hours
+                    defaultMuteTimes["mainRunning"] = 30.minutes
 
                 }
                 val duration = defaultMuteTimes[string]

@@ -142,6 +142,7 @@
     <string name="serverErrorChannelID">19994</string>
     <string name="noWaterNotificationID">19998</string>
     <string name="mainRunningNotification">19992</string>
+    <string name="fullScreenChannel">000111000</string>
 
 
 </resources>

@@ -71,7 +71,6 @@ class CallServerWorker(context: Context, workerParameter: WorkerParameters): Cor
         }
 
 
-        // Do your periodic work here
         println("doWork is running")
 
 

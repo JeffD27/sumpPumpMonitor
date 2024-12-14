@@ -88,7 +88,7 @@ var notificationMainRunningMuteDuration: kotlin.time.Duration = 30.minutes
 var mainPumpRuntimeOver10: Boolean = true
 var backupRunWarnVis: Boolean = true
 
-
+var voltage12Low: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
 
 var serverError: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
 
@@ -155,6 +155,7 @@ var waterLevelWarnSilence = false
 lateinit var mainPumpSilenceTime: Instant
 lateinit var backupPumpSilenceTime:Instant
 
+var fullScreenDeployedTime: Instant = Clock.System.now()
 
 
 
@@ -183,7 +184,7 @@ open class MainActivity : ComponentActivity() {
         //val binding: DataBindingUtil.inflate(layoutInflater, R.layout.list_item, viewGroup, false)
         val activity: Activity = this
 
-
+        //this is for debugging..check for things that weren't closed properly
         try {
             Class.forName("dalvik.system.CloseGuard")
                 .getMethod("setEnabled", Boolean::class.javaPrimitiveType)
@@ -193,7 +194,9 @@ open class MainActivity : ComponentActivity() {
         }
 
         adjustButtonSettings()
-
+        //Log.i("FUllScreenTest", "starting full screen test" ) //it passed
+        //val intent = Intent(this, FullScreenNotificationActivity::class.java)
+        startActivity(intent)
         Log.i("durationConvertDictKeys", durationConvertDict.keys.toString())
         //this is just initializing the ...deployed variables for use in reset notifications
 
@@ -221,7 +224,7 @@ open class MainActivity : ComponentActivity() {
         defaultMuteTimes["serverError"] = 2.hours
         defaultMuteTimes["sensorError"] = 1.days
         defaultMuteTimes["noPower"] = 1.hours
-        defaultMuteTimes["highWater"] = 15.minutes
+        defaultMuteTimes["highWater"] = 2.hours
         defaultMuteTimes["mainRunTime"] = 10.minutes
         defaultMuteTimes["backupRun"] = 10.minutes
         defaultMuteTimes["noWater"] = 10.minutes
@@ -688,12 +691,16 @@ open class MainActivity : ComponentActivity() {
 
     private fun checkGeneralErrors(activity: Activity, binding: ActivityMainBinding){
         Log.i("pumpControlCheckGen", pumpControlActive.toString())
+        Log.i("noPowerWarning.first", warningVisibilities["noPowerWarning"]?.first.toString() )
+        Log.i("noPowerWarning.first", warningVisibilities["serverError"]?.first.toString() )
+        Log.i("noPowerWarning.first", warningVisibilities["noWaterWarning"]?.first.toString() )
         if (!pumpControlActive){ //gets set in evaluateResponse
             if(!generalWarnSilence){
                 binding.generalErrorView = true
                 binding.generalErrorText = "No Pump Control Software!"
             }
         }
+
         else if (warningVisibilities["noPowerWarning"]?.first == 0 && warningVisibilities["serverError"]?.first == 0){
                 if (warningVisibilities["noPumpControlWarning"]?.first==0 && warningVisibilities["noWaterWarning"]?.first == 0){
                         closeGeneralWarn(null)
@@ -744,6 +751,8 @@ open class MainActivity : ComponentActivity() {
     }
     private fun checkNoWaterPumpRunning(activity: Activity, binding: ActivityMainBinding){
         if (mainRunning_|| backupRunning_ == true){
+            Log.i("mainRunning nowater", mainRunning_.toString())
+            Log.i("backupRunning nowater", backupRunning_.toString())
             if (lowFlooding_ == false){
                 warningVisibilities["noWaterWarning"] = Pair(1, Clock.System.now())
                 binding.generalErrorView= true
@@ -751,7 +760,7 @@ open class MainActivity : ComponentActivity() {
 
             }
         }
-        if (!mainRunning_ && binding.generalErrorText == "Pump running dry,\n Please Check!") {
+        else{
             binding.generalErrorView = false
             warningVisibilities["noWaterWarning"] = Pair(0, Clock.System.now())
         }

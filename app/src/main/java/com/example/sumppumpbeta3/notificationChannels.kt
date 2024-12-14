@@ -51,6 +51,21 @@ class NotificationChannels: Application() {
                     "General Info",
                     NotificationManager.IMPORTANCE_LOW)
             mChannelC.description = "E.G. Main pump has run"
+            val mChannelAlpha =
+                NotificationChannel(
+                    "000111000",
+                    "Full Screen Urgent",
+                    NotificationManager.IMPORTANCE_HIGH)
+            mChannelC.description = "Full Screen (Yelling At You) Notification"
+
+
+
+            val foregroundServiceNotification =
+                NotificationChannel(
+                    "foregroundService",
+                    "Full Screen Urgent",
+                    NotificationManager.IMPORTANCE_HIGH)
+            foregroundServiceNotification.description = "Urgent Notification!" //this is not the actual notification. this is notification for the foreground service to show the fullscreen notification (000111000)
 
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -64,6 +79,8 @@ class NotificationChannels: Application() {
             notificationManager.createNotificationChannel(mChannelA)
             notificationManager.createNotificationChannel(mChannelB)
             notificationManager.createNotificationChannel(mChannelC)
+            notificationManager.createNotificationChannel(mChannelAlpha)
+            notificationManager.createNotificationChannel(foregroundServiceNotification)
             Log.i("NotificationChannels", "channels built!")
 
 

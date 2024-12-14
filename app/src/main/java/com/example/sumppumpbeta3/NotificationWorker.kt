@@ -1,5 +1,6 @@
 package com.example.sumppumpbeta3
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import androidx.work.Worker
@@ -11,9 +12,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -27,6 +32,7 @@ import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 
 val notificationStringToDeployed = LinkedHashMap<String, Pair<Boolean, Instant>>()
@@ -34,7 +40,7 @@ val notificationStringToDeployed = LinkedHashMap<String, Pair<Boolean, Instant>>
 //to calculate if notification needs to be reset <if deployed, time deployed>
 class NotificationWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
-
+    val context = context
     override fun doWork(): Result {
         initiateDeployedVariables()
 
@@ -179,16 +185,67 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         //return builder here
         notificationManager.notify(notifid.toInt(), builder.build())
     }
+    private fun callFullScreenNotification(context: Context, title: String, message: String, notifid: String): Boolean {
+        if(Clock.System.now() - fullScreenDeployedTime < 5.seconds){
+            Log.i("callFullScreenNotification", "self muting")
+            return false
+        }
+        Log.i("callFullScreen", message)
+        val appContext = context.applicationContext
+        fullScreenDeployedTime = Clock.System.now()
+        val serviceIntent = Intent(applicationContext, FullScreenNotificationService::class.java)
 
-    private fun deployNotification(
-        notificationString: String,
-        title: String,
-        message: String,
-        priority: String,
-        CHANNEL_ID: String,
-        notifid: String,
-        notificationManager: NotificationManager
-    ) {
+        // You can pass any extra data to the service here if needed
+        serviceIntent.putExtra("MESSAGE", message)
+        serviceIntent.putExtra("TITLE", title)
+
+        // Start the service in the foreground
+        ContextCompat.startForegroundService(applicationContext, serviceIntent)
+       /* val fullScreenIntent = Intent(appContext, FullScreenNotificationActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            putExtra("MESSAGE", "Backup Pump has run! Please Check Main Pump")}*/
+        /*val fullScreenPendingIntent = PendingIntent.getActivity(
+            appContext, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        Log.i("NotificationWorker", "will this run?1")*/
+        /*
+        val notification = NotificationCompat.Builder(context, context.getString(R.string.fullScreenChannel))
+            .setContentTitle(title)
+            .setContentText(message)
+            .setSmallIcon(R.drawable.floodedhouse)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_CALL) // Use CATEGORY_CALL for incoming call-style notifications
+            .setFullScreenIntent(fullScreenPendingIntent, true) // This triggers the full-screen Activity
+            //.setSilent(true) //from stackoverflow...0 votes on it but worth a try because Idk what else to do
+            .build()
+
+        with(NotificationManagerCompat.from(appContext)) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Log.i("callFullScreen", "permission DENIED")
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return false
+            }
+            Log.i("fullScreenNotification", "calling notify")
+            notify(2020, notification)
+
+
+        }*/
+        Log.i("NotificationWorker", message)
+        Log.i("callFullScreen", "done with calling fullscreen notification")
+        return true
+    }
+    private fun deployNotification( notificationString: String, title: String, message: String, priority: String, CHANNEL_ID: String, notifid: String, notificationManager: NotificationManager,) {
 
         Log.i("notifstring in depl", notificationString)
         Log.i("notifstring in depl",Clock.System.now().toString())
@@ -197,7 +254,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
         val deployedPair =
             notificationStringToDeployed[notificationString]!! //returns a pair //causes null pointer exception
-        Log.i("deployNotification", "getting notif manager")
+        Log.i("deployNotification", CHANNEL_ID)
         deployed = deployedPair.first
         timeDeployed = deployedPair.second
         Log.i("time and deploy", timeDeployed.toString())
@@ -205,25 +262,33 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
 
 
-        if (!deployed) { //runs if notificationstring was "pass"
+        if (!deployed) {
             Log.i("deployNotification", "starting notification for $notificationString")
-            notificationBuilder(
-                applicationContext,
-                title,
-                message,
-                priority,
-                CHANNEL_ID,
-                notifid,
-                notificationManager
-            )
+
+            if (CHANNEL_ID == context.getString(R.string.fullScreenChannel)){
+                Log.i("FullScreenCHannel", "fullScreenChannel")
+
+                Log.i("notifywork channelIDCheck", notificationString)
+                if (!callFullScreenNotification(context, title, message, notifid)){
+                    return //makes sure we do not set ErrorDeployed since nothing was deployed
+                }
+            }
+            else{
+                notificationBuilder(
+                    applicationContext,
+                    title,
+                    message,
+                    priority,
+                    CHANNEL_ID,
+                    notifid,
+                    notificationManager
+                )
+            }
+
 
             when (notificationString) {
                 "serverError" -> notificationServerErrorDeployed = Pair(true, Clock.System.now())
-                "sensorError" -> notificationWaterLevelSensorErrorDeployed = Pair(
-                    true,
-                    Clock.System.now()
-                )
-
+                "sensorError" -> notificationWaterLevelSensorErrorDeployed = Pair (true, Clock.System.now())
                 "noPower" -> notificationACPowerDeployed = Pair(true, Clock.System.now())
                 "highWater" -> notificationHighWaterDeployed = Pair(true, Clock.System.now())
                 "mainRunTime" -> notificationMainRunWarnDeployed = Pair(true, Clock.System.now())
@@ -233,6 +298,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
                 "noPumpControl" -> notificationNoPumpControl = Pair(true, Clock.System.now())
                 "mainRunning" -> notificationMainRunning = Pair(true, Clock.System.now())
             }
+
 
 
         }

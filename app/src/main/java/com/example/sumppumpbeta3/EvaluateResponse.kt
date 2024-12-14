@@ -1,10 +1,17 @@
 package com.example.sumppumpbeta3
 
+import android.Manifest
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -350,12 +357,12 @@ class EvaluateResponse() {
                 context,
                 "backupRun",
                 "Check Sump Pump",
-                "Backup Pump has run!",
-                "high", context.getString(R.string.mostUrgentWarningsChannelID),
+                "Backup Pump has run!\n Please Check Main Pump",
+                "high", context.getString(R.string.fullScreenChannel),
                 context.getString(R.string.BackupRunningNotification)
             )
-        }
 
+        }
     }
 
     private fun checkMainRunning(context: Context){
@@ -483,7 +490,7 @@ class EvaluateResponse() {
                 "WARNING: HIGH Water in Sump Well",
                 "The water has reached the top of the well.\nBasement flooding is imminent.",
                 "high",
-                context.getString(R.string.mostUrgentWarningsChannelID),
+                context.getString(R.string.fullScreenChannel),
                 context.getString(R.string.highWaterNotificationID)
             )
         }
@@ -530,16 +537,26 @@ class EvaluateResponse() {
             )
             }
         if (voltage12_ < 95){
+            if (!voltage12Low.first){
+                voltage12Low = Pair(true, Clock.System.now())
+            }
+            else{
+                if (Clock.System.now() - voltage12Low.second > 10.minutes){
+                    callDeployNotification(
+                        context,
+                        "lowBattery12",
+                        "Sump Pump Battery is LOW",
+                        "12V battery is low.",
+                        "low",
+                        context.getString(R.string.GeneralInfoChannelID),
+                        context.getString(R.string.lowBattery12vNotificationID),
+                    )
+                }
+            }
 
-            callDeployNotification(
-                context,
-                "lowBattery12",
-                "Sump Pump Battery is LOW",
-                "12 Volt battery is low. Check AC power.",
-                "low",
-                context.getString(R.string.GeneralInfoChannelID),
-                context.getString(R.string.lowBattery12vNotificationID),
-            )
+        }
+        else{
+            voltage12Low = Pair(false, Clock.System.now())
         }
     }
 
@@ -549,9 +566,9 @@ class EvaluateResponse() {
                 context,
                 "mainRunTime",
                 "Check Sump Pump",
-                "The pump has run for 10 minutes without stopping",
+                "The pump has run\nfor 10 minutes\nwithout stopping.\n\nIf possible check\nif it is actually\npumping.",
                 "high",
-                 context.getString(R.string.mostUrgentWarningsChannelID),
+                 context.getString(R.string.fullScreenChannel),
                  context.getString(R.string.mainRunTimeNotificationID))
         }
     }
@@ -565,7 +582,7 @@ class EvaluateResponse() {
                     "URGENT: Check Sump Pump",
                     "Pump may be running dry! Reporting no water, but pump is running.",
                     "high",
-                    context.getString(R.string.mostUrgentWarningsChannelID),
+                    context.getString(R.string.fullScreenChannel),
                     context.getString(R.string.noWaterNotificationID)                )
             }
         }

@@ -279,9 +279,9 @@ class LoopHandler {
             defaultMuteTimes["serverError"] = 2.hours //change this back to 1 day or something
             defaultMuteTimes["sensorError"] = 1.days
             defaultMuteTimes["noPower"] = 1.hours
-            defaultMuteTimes["highWater"] = 15.minutes
-            defaultMuteTimes["mainRunTime"] = 10.minutes
-            defaultMuteTimes["backupRun"] = 10.minutes
+            defaultMuteTimes["highWater"] = 2.hours
+            defaultMuteTimes["mainRunTime"] = 30.minutes
+            defaultMuteTimes["backupRun"] = 30.minutes
             defaultMuteTimes["noWater"] = 10.minutes
             defaultMuteTimes["lowBattery12"] = 1.days
             defaultMuteTimes["noPumpControl"] = 12.hours
