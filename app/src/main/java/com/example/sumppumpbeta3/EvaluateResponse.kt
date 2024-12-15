@@ -22,6 +22,8 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.toJavaDuration
+import java.time.LocalDateTime
+import java.time.Duration
 
 
 class EvaluateResponse() {
@@ -179,43 +181,50 @@ class EvaluateResponse() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun checkPumpControlRunning(context: Context, dateTimeMatch: MatchResult): Boolean { //this takes a time stamp from the server that gets updated every 200ms. if that timestamp is more than 1 minute ago...we know pumpcontrol.py is not running
+    fun checkPumpControlRunning(context: Context, dateTimeMatch: MatchResult): Boolean {
         Log.i("checkingPumpControl", dateTimeMatch.toString())
-        var year = dateTimeMatch?.groupValues?.get(1)!!.toString()
-        var month = dateTimeMatch?.groupValues?.get(2)!!.toString()
-        if (month.length == 1){month = "0" + month}
-        var day = dateTimeMatch?.groupValues?.get(3)!!.toString()
-        if (day.length == 1){day = "0" + day}
-        var hour = dateTimeMatch?.groupValues?.get(4)!!.toString()
-        if (hour.length == 1){hour = "0" + hour}
-        var minute = dateTimeMatch?.groupValues?.get(5)!!.toString()
-        if (minute.length == 1){minute = "0" + minute}
-        var second = dateTimeMatch?.groupValues?.get(6)!!.toString()
-        if (second.length == 1){second = "0" + second}
 
-        var timeToParse = String.format("%s-%s-%sT%s:%s:%s.000-05:00", year, month, day, hour, minute, second)
-        Log.i("timeTOPARSE", timeToParse.toString())
-        //          2016-09-18T12:17:21:000Z
-        //          2024-12-012T11:23:52.000-05:00
-        var timeStamp = Instant.parse(timeToParse).toJavaInstant()
+        // Extract the values from the match result
+        val year = dateTimeMatch.groupValues[1].padStart(4, '0')
+        val month = dateTimeMatch.groupValues[2].padStart(2, '0')
+        val day = dateTimeMatch.groupValues[3].padStart(2, '0')
+        val hour = dateTimeMatch.groupValues[4].padStart(2, '0')
+        val minute = dateTimeMatch.groupValues[5].padStart(2, '0')
+        val second = dateTimeMatch.groupValues[6].padStart(2, '0')
+
+        // Format the date and time string
+
+        val timeToParse = "$year-$month-$day"+"T$hour:$minute:$second.000-05:00"
+        Log.i("timeTOPARSE", timeToParse)
+
+        // Parse the timestamp to Instant
+        val timeStamp = Instant.parse(timeToParse).toJavaInstant()
+
+        // Convert the Instant to ZonedDateTime with the desired timezone (but will remove it later)
         val zonedTimeStamp = ZonedDateTime.ofInstant(timeStamp, ZoneId.of("America/New_York"))
-        Log.i("timestampCheckPump", timeStamp.toString())
-        val zonedDateTime = ZonedDateTime.now(ZoneId.of("America/New_York"))
-        val duration = java.time.Duration.between(
-            zonedTimeStamp,
-            zonedDateTime)
-        Log.i("zonedDateTime", zonedDateTime.toString())
+        Log.i("timestampCheckPump", zonedTimeStamp.toString())
+
+        // Convert ZonedDateTime to LocalDateTime (removes timezone)
+        val localTimeStamp = zonedTimeStamp.toLocalDateTime()
+        Log.i("localTimeStamp", localTimeStamp.toString())
+
+        // Get the current time as LocalDateTime (without timezone information)
+        val currentLocalDateTime = LocalDateTime.now()  // This uses the system's default time zone, no offset
+        Log.i("currentLocalDateTime", currentLocalDateTime.toString())
+
+        // Calculate the duration between the timestamps (now comparing LocalDateTime to LocalDateTime)
+        val duration = Duration.between(localTimeStamp, currentLocalDateTime)
         Log.i("duration&^%", duration.toString())
-        if (java.time.Duration.between(
-                zonedTimeStamp,
-                zonedDateTime
-            ) > java.time.Duration.ofMinutes(1)
-        ) {
+
+        // Check if the duration exceeds 1 minute
+        if (duration > Duration.ofMinutes(1)) {
             Log.i("noPumpControl!", "Pump Control is not running")
+
+            // Set the warning visibility and deactivate pump control
             warningVisibilities["noPumpControlWarning"] = Pair(1, Clock.System.now())
             pumpControlActive = false
 
-
+            // Call the notification function
             callDeployNotification(
                 context,
                 "noPumpControl",
@@ -226,22 +235,8 @@ class EvaluateResponse() {
                 context.getString(R.string.noACPowerNotificationID),
             )
             return false
-
-
-
-
-
         }
-        else    {
-            Log.i("evaluateResp", "we have ELSE")
-            val time = warningVisibilities["noPumpControlWarning"]?.second
-            if (time != null){
-                warningVisibilities["noPumpControlWarning"] = Pair(0, time)
-            }
-
-            pumpControlActive = true
-            return true
-            }
+        return true
     }
     private fun applyMainPumpWarn(mainRunWarnStr: String) { //if pump has run > 10 min gets eval in python server side as boolean. boolean is applied here
         Log.i("applymainpumpwarn", "starting apply main pump warn")

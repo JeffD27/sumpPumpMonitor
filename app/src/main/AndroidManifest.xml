@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
@@ -48,7 +50,8 @@
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:showWhenLocked="true"
-            android:turnScreenOn="true">
+            android:turnScreenOn="true"
+            android:exported="true">
 
         </activity>
         <activity
@@ -68,6 +71,7 @@
             </receiver>
         <service android:name="com.example.sumppumpbeta3.FullScreenNotificationService"
             android:permission="android.permission.FOREGROUND_SERVICE"
+            android:foregroundServiceType="dataSync"
             android:exported="false"/>
     </application>
     

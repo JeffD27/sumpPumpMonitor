@@ -10,15 +10,16 @@ import android.util.Log
 class NotificationChannels: Application() {
     override fun onCreate() {
         super.onCreate()
-        Log.i("RunningApp","notificationChannels.kt...About to run")
-       // WorkManager.initialize(this, Configuration.Builder().build())
+        Log.i("RunningApp", "notificationChannels.kt...About to run")
+        // WorkManager.initialize(this, Configuration.Builder().build())
         LateClass()
         createNotificationChannels()
     }
+
     //default priority: sensorError, serverError,
     // Low priority: low battery12,
     // high: noPower, highWater, mainRunTime, BackupRun
-    private fun createNotificationChannels(){
+    private fun createNotificationChannels() {
 
         Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -49,23 +50,26 @@ class NotificationChannels: Application() {
                 NotificationChannel(
                     "33333",
                     "General Info",
-                    NotificationManager.IMPORTANCE_LOW)
+                    NotificationManager.IMPORTANCE_LOW
+                )
             mChannelC.description = "E.G. Main pump has run"
             val mChannelAlpha =
                 NotificationChannel(
                     "000111000",
                     "Full Screen Urgent",
-                    NotificationManager.IMPORTANCE_HIGH)
-            mChannelC.description = "Full Screen (Yelling At You) Notification"
-
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+            mChannelAlpha.description = "Urgent Attention Needed"
 
 
             val foregroundServiceNotification =
                 NotificationChannel(
                     "foregroundService",
                     "Full Screen Urgent",
-                    NotificationManager.IMPORTANCE_HIGH)
-            foregroundServiceNotification.description = "Urgent Notification!" //this is not the actual notification. this is notification for the foreground service to show the fullscreen notification (000111000)
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+            foregroundServiceNotification.description =
+                "Urgent Notification!" //this is not the actual notification. this is notification for the foreground service to show the fullscreen notification (000111000)
 
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -86,13 +90,5 @@ class NotificationChannels: Application() {
 
         }
     }
-
-
-
-
-
-
-
-
 
 }

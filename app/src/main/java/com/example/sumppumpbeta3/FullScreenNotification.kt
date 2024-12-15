@@ -50,5 +50,6 @@ class FullScreenNotificationActivity : AppCompatActivity() {
         if (this::wakeLock.isInitialized && wakeLock.isHeld) {
             wakeLock.release()
         }
+        FullScreenNotificationService().stopSelf()
     }
 }

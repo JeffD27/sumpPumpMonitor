@@ -62,13 +62,19 @@ class Warnings: ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.sumppump3.R.layout.warnings_page)
-
+        setContentView(R.layout.warnings_page)
+        Log.i("warnings.kt","starting warning.kt")
         val buttonHome = findViewById<Button>(R.id.buttonHome)
-
-        buttonHome.setOnClickListener {
+        Log.e("buttonHome", "Button ID: ${buttonHome.id}")
+        Log.e("buttonHome", buttonHome.id.toString())
+        buttonHome.isEnabled = true
+        buttonHome.isClickable = true
+        /*buttonHome.setOnClickListener() {
+            Log.i("buttomHome", "finishing")
             finish()
-        }
+            Log.i("buttomHome", "finished")
+        }*/
+
 
 
         val back = this.onBackPressedDispatcher
@@ -229,7 +235,7 @@ class Warnings: ComponentActivity() {
 
             if (Duration.between(zonedDateTime, nowTime) > Duration.ofDays(1)) {
                 Log.i("warningStringToCard", warningStringToCard[warning].toString())
-                warningStringToCard[warning]!!.visibility = VISIBLE // Change to GONE for production
+                warningStringToCard[warning]!!.visibility = GONE // Change to GONE for production
             }
 
             val todayBool = todayDate == dayFromString
@@ -309,8 +315,9 @@ class Warnings: ComponentActivity() {
 
 
                 //arrange cards by time  //also yes this should be cleaned up by adding a function.
+
                 9 ->{
-                    findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard)?.apply {//this is not necessarily highWater card. at least i hope it isn't.
+                    findViewById<ConstraintLayout>(R.id.highWaterCard)?.apply {//this is not necessarily highWater card. at least i hope it isn't.
                         if (this.visibility == VISIBLE){
                             if (parent != null) {
                                 Log.i("*parent", parent.toString())
@@ -570,6 +577,9 @@ class Warnings: ComponentActivity() {
         Log.i("!addview", "addingView!!")
 
         parent.addView(this)
+    }
+    fun callFinish(){
+        finish()
     }
     override fun onDestroy() {
         super.onDestroy()

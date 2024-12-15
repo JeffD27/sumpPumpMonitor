@@ -186,11 +186,11 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         notificationManager.notify(notifid.toInt(), builder.build())
     }
     private fun callFullScreenNotification(context: Context, title: String, message: String, notifid: String): Boolean {
-        if(Clock.System.now() - fullScreenDeployedTime < 5.seconds){
-            Log.i("callFullScreenNotification", "self muting")
-            return false
-        }
-        Log.i("callFullScreen", message)
+       // if(Clock.System.now() - fullScreenDeployedTime < 5.seconds){
+         //   Log.i("callFullScreenNotification", "self muting")
+          //  return false
+        //}
+        Log.i("start fullScreen", message)
         val appContext = context.applicationContext
         fullScreenDeployedTime = Clock.System.now()
         val serviceIntent = Intent(applicationContext, FullScreenNotificationService::class.java)
@@ -305,6 +305,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
 
     }
+
 
 
 
