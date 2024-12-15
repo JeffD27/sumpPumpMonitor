@@ -192,16 +192,15 @@ class EvaluateResponse() {
         val minute = dateTimeMatch.groupValues[5].padStart(2, '0')
         val second = dateTimeMatch.groupValues[6].padStart(2, '0')
 
-        // Format the date and time string
-
-        val timeToParse = "$year-$month-$day"+"T$hour:$minute:$second.000-05:00"
+        // Format the date and time string in UTC (no hardcoded timezone)
+        val timeToParse = "$year-$month-$day"+"T$hour:$minute:$second.000Z"
         Log.i("timeTOPARSE", timeToParse)
 
-        // Parse the timestamp to Instant
-        val timeStamp = Instant.parse(timeToParse).toJavaInstant()
+        // Parse the timestamp to Instant using Kotlin's Instant (assumes UTC)
+        val timeStamp = Instant.parse(timeToParse)
 
-        // Convert the Instant to ZonedDateTime with the desired timezone (but will remove it later)
-        val zonedTimeStamp = ZonedDateTime.ofInstant(timeStamp, ZoneId.of("America/New_York"))
+        // Convert to ZonedDateTime in UTC using ZoneId.of("UTC")
+        val zonedTimeStamp = ZonedDateTime.ofInstant(timeStamp.toJavaInstant(), ZoneId.of("UTC"))
         Log.i("timestampCheckPump", zonedTimeStamp.toString())
 
         // Convert ZonedDateTime to LocalDateTime (removes timezone)
