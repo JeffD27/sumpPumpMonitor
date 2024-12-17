@@ -13,7 +13,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -91,6 +94,7 @@ var backupRunWarnVis: Boolean = true
 var voltage12Low: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
 
 var serverError: Pair<Boolean, Instant> = Pair(false, Clock.System.now())
+var responseStringReceived = false
 
 //@JsonClass(generateAdapter = true)
 data class PyDataLayout (
@@ -166,6 +170,7 @@ open class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        BatteryOptimizationHelper.requestBatteryOptimizationExemption(this)
         NotificationChannels()
         Log.i("mainActivity", "onCreate")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -175,6 +180,7 @@ open class MainActivity : ComponentActivity() {
                 0
             )
         }
+
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -732,19 +738,31 @@ open class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun checkServerError(activity: Activity, binding: ActivityMainBinding){
 
+    private fun checkServerError(activity: Activity, binding: ActivityMainBinding){
+        val radioTowerSymbol = findViewById<ImageView>(R.id.radioTowerImageView)
+        if (!responseStringReceived){
+            Log.i("checkServerError", "removing radio tower")
+            radioTowerSymbol.visibility = INVISIBLE
+        }
+        else{
+            Log.i("checkServerError", "radio towerView=true")
+            radioTowerSymbol.visibility = VISIBLE
+        }
         if (serverError.first){
+
             if(!generalWarnSilence){
                 binding.generalErrorView = true
                 binding.generalErrorText = "Error in Server.\n NO Data"
                 warningVisibilities["serverError"] = Pair(1, Clock.System.now()
+
                 )
             }
 
         }
         else{
             warningVisibilities["serverError"] = Pair(0, Clock.System.now())
+            radioTowerSymbol.visibility = VISIBLE
         }
 
 

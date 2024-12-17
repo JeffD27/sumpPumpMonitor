@@ -33,9 +33,9 @@ class EvaluateResponse() {
         Log.i("evalResp", "is this running???")
         Log.i("responseString",responseString)
         if (responseString == "null"){
+                responseStringReceived = false
                 checkServerError(context)
                 return}
-
         val activityNull = activity == null //this is just for the log below...
         Log.i("ActivityNull?", activityNull.toString() )
 

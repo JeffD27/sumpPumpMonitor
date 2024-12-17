@@ -39,13 +39,14 @@ class CallServer {
 
             if (responseString != null && responseString.startsWith("{\"", 0)){
                 Log.i("responseString", responseString)
+                Log.i("callServer", "radio tower view = true")
+                responseStringReceived = true
                 serverError = Pair(false, Clock.System.now())
-
-
-
                 return responseString
             }
             else {
+                responseStringReceived = false
+                Log.i("callServer", "radio tower view = false")
                 Log.i("hiddenServerError!", "responseString is null or erroring")
                 if (responseString != null) {
                     Log.i("responsString", responseString)

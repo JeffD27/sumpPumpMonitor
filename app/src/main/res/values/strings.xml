@@ -10,7 +10,7 @@
     <string name="batteryVolts12">11.7</string>
     <string name="batteryVolts5" >4.8</string>
     <string name="PumpRuntimeWarning" > Pump has run more\n than 10 minutes</string>
-    <string name="title">Sump Pump Monitor</string>
+    <string name="title">Sump Pump\nMonitor</string>
     <string name="data_all"> </string>
     <string name="waterLevelWarning">ERROR in water\n level sensor</string>
     <string name="mainPumpTitle">Main Pump</string>
