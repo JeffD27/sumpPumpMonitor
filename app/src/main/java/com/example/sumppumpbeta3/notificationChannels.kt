@@ -10,7 +10,7 @@ import android.util.Log
 class NotificationChannels: Application() {
     override fun onCreate() {
         super.onCreate()
-        Log.i("RunningApp", "notificationChannels.kt...About to run")
+        Log.d("RunningApp", "notificationChannels.kt...About to run")
         // WorkManager.initialize(this, Configuration.Builder().build())
         LateClass()
         createNotificationChannels()
@@ -21,10 +21,10 @@ class NotificationChannels: Application() {
     // high: noPower, highWater, mainRunTime, BackupRun
     private fun createNotificationChannels() {
 
-        Log.i("createNotifications", Build.VERSION.SDK_INT.toString())
+        Log.d("createNotifications", Build.VERSION.SDK_INT.toString())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel.
-            Log.i("createNotifications", "software requirements met!")
+            Log.d("createNotifications", "software requirements met!")
             val mChannelAA = NotificationChannel(
                 "00000",
                 "Most Urgent Warnings", NotificationManager.IMPORTANCE_HIGH
@@ -85,7 +85,7 @@ class NotificationChannels: Application() {
             notificationManager.createNotificationChannel(mChannelC)
             notificationManager.createNotificationChannel(mChannelAlpha)
             notificationManager.createNotificationChannel(foregroundServiceNotification)
-            Log.i("NotificationChannels", "channels built!")
+            Log.d("NotificationChannels", "channels built!")
 
 
         }

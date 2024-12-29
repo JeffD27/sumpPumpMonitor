@@ -172,7 +172,7 @@ open class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         BatteryOptimizationHelper.requestBatteryOptimizationExemption(this)
         NotificationChannels()
-        Log.i("mainActivity", "onCreate")
+        Log.d("mainActivity", "onCreate")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                 this,
@@ -200,10 +200,10 @@ open class MainActivity : ComponentActivity() {
         }
 
         adjustButtonSettings()
-        //Log.i("FUllScreenTest", "starting full screen test" ) //it passed
+        //Log.d("FUllScreenTest", "starting full screen test" ) //it passed
         //val intent = Intent(this, FullScreenNotificationActivity::class.java)
         startActivity(intent)
-        Log.i("durationConvertDictKeys", durationConvertDict.keys.toString())
+        Log.d("durationConvertDictKeys", durationConvertDict.keys.toString())
         //this is just initializing the ...deployed variables for use in reset notifications
 
 
@@ -276,7 +276,7 @@ open class MainActivity : ComponentActivity() {
             // Start the new activity
             startActivity(intent)
         }
-        Log.i("callStartRepeating", "calling startrepeatingServer...")
+        Log.d("callStartRepeating", "calling startrepeatingServer...")
         startRepeatingServerCalls(activity, binding)
 
 
@@ -356,7 +356,7 @@ open class MainActivity : ComponentActivity() {
                 constraintSet.connect(R.id.buttonSettings, ConstraintSet.TOP, R.id.backupPumpRunWarning, ConstraintSet.BOTTOM, 20)
             }
             else -> {
-                Log.i("adjustButtonSettings", "else")
+                Log.d("adjustButtonSettings", "else")
                 constraintSet.connect(R.id.buttonSettings, ConstraintSet.TOP, R.id.divider2, ConstraintSet.BOTTOM, 80)
             }
         }
@@ -365,21 +365,23 @@ open class MainActivity : ComponentActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    private val client = createOkHttpClient().client
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun startRepeatingServerCalls(activity: Activity, binding: ActivityMainBinding) {
-        Log.i("startRepeatingServerCalls", "starting Repeated Server calls")
+        Log.d("startRepeatingServerCalls", "starting Repeated Server calls")
         val context = this
         job = coroutineScope.launch {
 
 
             while (isActive) {  // While the job is active
-                Log.i("startingLoop", "loop is starting in mainActivity")
+                Log.d("startingLoop", "loop is starting in mainActivity")
 
-                Log.i("serverMuteInStartRepeating", notificationServerErrorMuteDuration.toString())
+                Log.d("serverMuteInStartRepeating", notificationServerErrorMuteDuration.toString())
                 // Enqueue the work request
 
                 //WorkManager.getInstance(applicationContext).enqueue(callServerWorkerOnce) //this needs to a periodic work request...not in a loop
                 LoopHandler().run(context)
-                val response = CallServer().run()
+                val response = CallServer().runWithDebounce(client)
                 if (response != null) {
                     EvaluateResponse().onCreate(context, response, activity)
                 }
@@ -395,7 +397,7 @@ open class MainActivity : ComponentActivity() {
                 checkWaterLevel(activity, binding)
                 assessViewWarnings()
                 adjustButtonSettings()
-                Log.i("delaying", "delay coming")
+                Log.d("delaying", "delay coming")
 
                 delay(1000) // Delay for 1 seconds before the next call
             }
@@ -424,7 +426,7 @@ open class MainActivity : ComponentActivity() {
                 settings[prefKeyTime] ?: Instant.parse("2000-01-01T12:35:24.00Z").toString()
             }
         val stringToParse = settingsCounterFlowTime.first()
-        Log.i("stringToParse", stringToParse)
+        Log.d("stringToParse", stringToParse)
 
         return Pair(settingsCounterFlowView.first(), settingsCounterFlowTime.first())
 
@@ -459,7 +461,7 @@ open class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initiateWarningVisibilities(){ //this also will apply time stamps based on saved settings data
         for (warning in warningStrings) {
-            Log.i("warning initiateWarn", warning)//intiates warningVisibilities
+            Log.d("warning initiateWarn", warning)//intiates warningVisibilities
             runBlocking {  //com.example.sumppumpbeta3.warningVisibilities[warning]
                 val data = readWarningData(warning) //get saved settings data
                 val timeString = data.second
@@ -470,12 +472,12 @@ open class MainActivity : ComponentActivity() {
                 val day = match.groupValues[3]
                 val hour = match.groupValues[4]
                 val minute = match.groupValues[5]
-                Log.i("timeString!", timeString)
-                Log.i("timeString!", year)
-                Log.i("timeString!", month)
-                Log.i("timeString!", day)
-                Log.i("timeString!", hour)
-                Log.i("timeString!", minute)
+                Log.d("timeString!", timeString)
+                Log.d("timeString!", year)
+                Log.d("timeString!", month)
+                Log.d("timeString!", day)
+                Log.d("timeString!", hour)
+                Log.d("timeString!", minute)
 
 
                 val restOfTimeString = ":00Z" //i removed the z at the end
@@ -488,15 +490,15 @@ open class MainActivity : ComponentActivity() {
                     minute,
                     restOfTimeString
                 )
-                Log.i("timeStringParsed", timeStringParsed)
+                Log.d("timeStringParsed", timeStringParsed)
                 val timeStampKotlin = Instant.parse(timeStringParsed)
 
 
                 val visibility = getVisibility(timeStampKotlin)
 
                 warningVisibilities[warning] = Pair(visibility, timeStampKotlin)
-                Log.i("visibility", visibility.toString())
-                Log.i("timeString", timeString)
+                Log.d("visibility", visibility.toString())
+                Log.d("timeString", timeString)
             }
 
         }
@@ -505,9 +507,9 @@ open class MainActivity : ComponentActivity() {
 
     private fun checkWaterLevel(activity: Activity, binding: ActivityMainBinding){
         val waterLevelWarningBox = findViewById<TextView>(R.id.waterLevelWarning)
-        Log.i("checkWaterLevel", "initiating check water level")
+        Log.d("checkWaterLevel", "initiating check water level")
         if (sensorError_ == true){
-            Log.i("checkWaterLevel", "sensor Error True")
+            Log.d("checkWaterLevel", "sensor Error True")
             waterLevelWarningBox.visibility = View.VISIBLE
             warningVisibilities["sensorErrorWarning"] = Pair(1, Clock.System.now())
         }
@@ -569,7 +571,7 @@ open class MainActivity : ComponentActivity() {
                 binding.mainRunningBoxColor =
                     ContextCompat.getColor(activity, R.color.green)
             }
-            Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
+            Log.d("mainRunningColor", binding.mainRunningBoxColor.toString())
 
 
         }
@@ -578,21 +580,21 @@ open class MainActivity : ComponentActivity() {
                 binding.mainRunning = "Pump Is Not Running"
                 binding.mainRunningBoxColor =
                     ContextCompat.getColor(activity, R.color.red)
-                Log.i("mainTimeStartedStr", mainTimeStartedStr)
+                Log.d("mainTimeStartedStr", mainTimeStartedStr)
                 binding.mainRunTime = "Last Ran On:\n$mainTimeStartedStr"
-                Log.i(
+                Log.d(
                     "mainRunningColor",
                     binding.mainRunningBoxColor.toString()
                 )
             }
         }
-        Log.i("mainRunTime_", mainRunTime_)
+        Log.d("mainRunTime_", mainRunTime_)
 
 
 
         if (backupRunning_ == true) {
 
-            Log.i("evaluateResp", "backup Running#")
+            Log.d("evaluateResp", "backup Running#")
 
             warningVisibilities["backupRunWarning"] = Pair(1, Clock.System.now())
 
@@ -603,7 +605,7 @@ open class MainActivity : ComponentActivity() {
 
             binding.backupRunningBoxColor =
                 ContextCompat.getColor(activity, R.color.green)
-            Log.i("backupRunningColor", binding.backupRunningBoxColor.toString())
+            Log.d("backupRunningColor", binding.backupRunningBoxColor.toString())
             backupRunTime_.let{binding.backupRunTime}
             backupPumpWarnSilence = false}
 
@@ -613,7 +615,7 @@ open class MainActivity : ComponentActivity() {
             binding.backupRunningBoxColor =
                 ContextCompat.getColor(activity, R.color.red)
 
-            Log.i("mainRunningColor", binding.mainRunningBoxColor.toString())
+            Log.d("mainRunningColor", binding.mainRunningBoxColor.toString())
         }
 
 
@@ -622,7 +624,7 @@ open class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkVoltages(activity: Activity, binding: ActivityMainBinding){
         if(!charging5_!!){
-            Log.i("generalWarnCharging5", generalWarnSilence.toString())
+            Log.d("generalWarnCharging5", generalWarnSilence.toString())
 
             warningVisibilities["noPowerWarning"] = Pair(1, Clock.System.now())
 
@@ -639,7 +641,7 @@ open class MainActivity : ComponentActivity() {
             activity.let { ContextCompat.getDrawable(it, R.drawable.acplug) }//if charger is connect draw plug
             warningVisibilities["noPowerWarning"] = Pair(0, Clock.System.now())
         }
-        Log.i("checkVoltages12", voltage12_.toString())
+        Log.d("checkVoltages12", voltage12_.toString())
         if (voltage12_ != 250){
             binding.battery12vText = "$voltage12_%"}
         else{
@@ -653,7 +655,7 @@ open class MainActivity : ComponentActivity() {
             binding.battery12TextBGColor = ContextCompat.getColor(activity, R.color.red)
 
 
-            Log.i("checkVoltages()", "low voltage12")
+            Log.d("checkVoltages()", "low voltage12")
         }
 
         else{
@@ -661,25 +663,25 @@ open class MainActivity : ComponentActivity() {
         }
 
 
-        Log.i("voltage5_", voltage5_.toString())
+        Log.d("voltage5_", voltage5_.toString())
         //val sleepTime = java.time.Duration.ofMinutes(1)
 
         val currentTime = Clock.System.now().toJavaInstant()
-        Log.i("current_herewegoagain", currentTime.toString())
-       // Log.i("sleeptime", sleepTime.toString() )
+        Log.d("current_herewegoagain", currentTime.toString())
+       // Log.d("sleeptime", sleepTime.toString() )
         checkBatteryVoltsTime?.let{}?: run{ checkBatteryVoltsTime = currentTime - java.time.Duration.ofMinutes(40)} // if checkBatteryVoltsTime doesn't exist, create it and make it equal to 40 minutes ago so that way it is almost certiantly greater than sleeptime and we check the battery voltage
-        Log.i("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
+        Log.d("checkBatteryVoltsTime", checkBatteryVoltsTime.toString())
         val duration = java.time.Duration.between(checkBatteryVoltsTime!!, currentTime) // how long has it been since we check the battery voltage. we only want to check every sleeptime or it jumps like crazy
-        Log.i("durationBatteryVolts", duration.toString())
-        Log.i("duration", duration.toString())
-       // Log.i("sleeptimeBool", (duration > sleepTime).toString())
+        Log.d("durationBatteryVolts", duration.toString())
+        Log.d("duration", duration.toString())
+       // Log.d("sleeptimeBool", (duration > sleepTime).toString())
         //if (duration > sleepTime || binding.battery5TextView.text == "0%" || runThrough < 6){
 
-            //Log.i("durationBatteryVolts2", sleepTime.toString())
+            //Log.d("durationBatteryVolts2", sleepTime.toString())
         if (voltage5_ != 250){
             binding.battery5vText = "$voltage5_%"}
         else{ binding.battery5vText = "?%"}
-        Log.i("votage5er", voltage5_.toString())
+        Log.d("votage5er", voltage5_.toString())
         checkBatteryVoltsTime = Clock.System.now().toJavaInstant()
 
         if(voltage5_ < 70){
@@ -696,10 +698,10 @@ open class MainActivity : ComponentActivity() {
     }
 
     private fun checkGeneralErrors(activity: Activity, binding: ActivityMainBinding){
-        Log.i("pumpControlCheckGen", pumpControlActive.toString())
-        Log.i("noPowerWarning.first", warningVisibilities["noPowerWarning"]?.first.toString() )
-        Log.i("noPowerWarning.first", warningVisibilities["serverError"]?.first.toString() )
-        Log.i("noPowerWarning.first", warningVisibilities["noWaterWarning"]?.first.toString() )
+        Log.d("pumpControlCheckGen", pumpControlActive.toString())
+        Log.d("noPowerWarning.first", warningVisibilities["noPowerWarning"]?.first.toString() )
+        Log.d("noPowerWarning.first", warningVisibilities["serverError"]?.first.toString() )
+        Log.d("noPowerWarning.first", warningVisibilities["noWaterWarning"]?.first.toString() )
         if (!pumpControlActive){ //gets set in evaluateResponse
             if(!generalWarnSilence){
                 binding.generalErrorView = true
@@ -719,7 +721,7 @@ open class MainActivity : ComponentActivity() {
 
 
     private fun checkPumpRuntimeBackupRun(activity: Activity, binding: ActivityMainBinding) {
-        Log.i("mainPumpRuntimeOver10", mainPumpRuntimeOver10.toString())
+        Log.d("mainPumpRuntimeOver10", mainPumpRuntimeOver10.toString())
 
         if (mainPumpRuntimeOver10) { //this gets updated in applyMainPumpWarn...if pump has run > 10 min gets eval in python server side as boolean. boolean is applied in applyMainPumpWarn
             if (!mainPumpWarnSilence) {
@@ -742,14 +744,8 @@ open class MainActivity : ComponentActivity() {
     private fun checkServerError(activity: Activity, binding: ActivityMainBinding){
         val radioTowerSymbol = findViewById<ImageView>(R.id.radioTowerImageView)
         if (!responseStringReceived){
-            Log.i("checkServerError", "removing radio tower")
+            Log.d("checkServerError", "removing radio tower")
             radioTowerSymbol.visibility = INVISIBLE
-        }
-        else{
-            Log.i("checkServerError", "radio towerView=true")
-            radioTowerSymbol.visibility = VISIBLE
-        }
-        if (serverError.first){
 
             if(!generalWarnSilence){
                 binding.generalErrorView = true
@@ -758,10 +754,9 @@ open class MainActivity : ComponentActivity() {
 
                 )
             }
-
         }
         else{
-            warningVisibilities["serverError"] = Pair(0, Clock.System.now())
+            Log.d("checkServerError", "radio towerView=true")
             radioTowerSymbol.visibility = VISIBLE
         }
 
@@ -769,8 +764,8 @@ open class MainActivity : ComponentActivity() {
     }
     private fun checkNoWaterPumpRunning(activity: Activity, binding: ActivityMainBinding){
         if (mainRunning_|| backupRunning_ == true){
-            Log.i("mainRunning nowater", mainRunning_.toString())
-            Log.i("backupRunning nowater", backupRunning_.toString())
+            Log.d("mainRunning nowater", mainRunning_.toString())
+            Log.d("backupRunning nowater", backupRunning_.toString())
             if (lowFlooding_ == false){
                 warningVisibilities["noWaterWarning"] = Pair(1, Clock.System.now())
                 binding.generalErrorView= true
@@ -792,10 +787,10 @@ open class MainActivity : ComponentActivity() {
             dataStore.edit { settings -> //write data to saved data store
                 for(warnVis in warningVisibilities) {
                     val warnStart = warnVis.value.second
-                    Log.i("warnvis", warnVis.key)
+                    Log.d("warnvis", warnVis.key)
                     val timeStampKey = warnVis.key + "Time"
                     settings[stringPreferencesKey(timeStampKey)] = warnStart.toString()
-                    Log.i("duration", java.time.Duration.between(Clock.System.now().toJavaInstant(), warnVis.value.second.toJavaInstant()).toString())
+                    Log.d("duration", java.time.Duration.between(Clock.System.now().toJavaInstant(), warnVis.value.second.toJavaInstant()).toString())
                     val visibility = getVisibility(warnVis.value.second)
                     settings[intPreferencesKey(warnVis.key)] = visibility
 

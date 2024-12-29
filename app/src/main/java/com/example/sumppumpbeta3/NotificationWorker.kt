@@ -57,7 +57,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
 
 
 
-        Log.i("NotificationsSettings", "onCreate")
+        Log.d("NotificationsSettings", "onCreate")
 
         // Get the string input from WorkManager
         val title = inputData.getString("title") ?: "Sump Pump Monitor"
@@ -119,7 +119,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
     private fun setupChannels(notificationManager: NotificationManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel.
-            Log.i("createNotifications", "software requirements met!")
+            Log.d("createNotifications", "software requirements met!")
 
             val mChannelA = NotificationChannel(
                 "11111",
@@ -160,8 +160,8 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         notifid: String,
         notificationManager: NotificationManager
     ) { //priority: high default low
-        Log.i("notificationBuilder()", "starting notification builder")
-        Log.i("channel_ID", CHANNEL_ID)
+        Log.d("notificationBuilder()", "starting notification builder")
+        Log.d("channel_ID", CHANNEL_ID)
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         val intent = Intent(context, Notification::class.java)
         val pendingIntent: PendingIntent =
@@ -170,7 +170,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         builder.setContentText(content)
         builder.setContentIntent(pendingIntent)
 
-        Log.i("notificationBuilder", content)
+        Log.d("notificationBuilder", content)
         builder.setSmallIcon(R.drawable.floodedhouse)
         if (priority == "high") {
             builder.priority = NotificationCompat.PRIORITY_HIGH
@@ -187,10 +187,10 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
     }
     private fun callFullScreenNotification(context: Context, title: String, message: String, notifid: String): Boolean {
        // if(Clock.System.now() - fullScreenDeployedTime < 5.seconds){
-         //   Log.i("callFullScreenNotification", "self muting")
+         //   Log.d("callFullScreenNotification", "self muting")
           //  return false
         //}
-        Log.i("start fullScreen", message)
+        Log.d("start fullScreen", message)
         val appContext = context.applicationContext
         fullScreenDeployedTime = Clock.System.now()
         val serviceIntent = Intent(applicationContext, FullScreenNotificationService::class.java)
@@ -208,7 +208,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
         /*val fullScreenPendingIntent = PendingIntent.getActivity(
             appContext, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        Log.i("NotificationWorker", "will this run?1")*/
+        Log.d("NotificationWorker", "will this run?1")*/
         /*
         val notification = NotificationCompat.Builder(context, context.getString(R.string.fullScreenChannel))
             .setContentTitle(title)
@@ -226,7 +226,7 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                Log.i("callFullScreen", "permission DENIED")
+                Log.d("callFullScreen", "permission DENIED")
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
@@ -236,39 +236,39 @@ class NotificationWorker(context: Context, workerParams: WorkerParameters) : Wor
                 // for ActivityCompat#requestPermissions for more details.
                 return false
             }
-            Log.i("fullScreenNotification", "calling notify")
+            Log.d("fullScreenNotification", "calling notify")
             notify(2020, notification)
 
 
         }*/
-        Log.i("NotificationWorker", message)
-        Log.i("callFullScreen", "done with calling fullscreen notification")
+        Log.d("NotificationWorker", message)
+        Log.d("callFullScreen", "done with calling fullscreen notification")
         return true
     }
     private fun deployNotification( notificationString: String, title: String, message: String, priority: String, CHANNEL_ID: String, notifid: String, notificationManager: NotificationManager,) {
 
-        Log.i("notifstring in depl", notificationString)
-        Log.i("notifstring in depl",Clock.System.now().toString())
+        Log.d("notifstring in depl", notificationString)
+        Log.d("notifstring in depl",Clock.System.now().toString())
         var deployed: Boolean = false
         var timeDeployed = Clock.System.now()
 
         val deployedPair =
             notificationStringToDeployed[notificationString]!! //returns a pair //causes null pointer exception
-        Log.i("deployNotification", CHANNEL_ID)
+        Log.d("deployNotification", CHANNEL_ID)
         deployed = deployedPair.first
         timeDeployed = deployedPair.second
-        Log.i("time and deploy", timeDeployed.toString())
-        Log.i("time and deploy", deployed.toString())
+        Log.d("time and deploy", timeDeployed.toString())
+        Log.d("time and deploy", deployed.toString())
 
 
 
         if (!deployed) {
-            Log.i("deployNotification", "starting notification for $notificationString")
+            Log.d("deployNotification", "starting notification for $notificationString")
 
             if (CHANNEL_ID == context.getString(R.string.fullScreenChannel)){
-                Log.i("FullScreenCHannel", "fullScreenChannel")
+                Log.d("FullScreenCHannel", "fullScreenChannel")
 
-                Log.i("notifywork channelIDCheck", notificationString)
+                Log.d("notifywork channelIDCheck", notificationString)
                 if (!callFullScreenNotification(context, title, message, notifid)){
                     return //makes sure we do not set ErrorDeployed since nothing was deployed
                 }

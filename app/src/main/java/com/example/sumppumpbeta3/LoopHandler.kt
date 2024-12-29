@@ -43,9 +43,9 @@ class LoopHandler {
         val lateClass = LateClass()
         if (lateClass.isNotificationServerErrorDeployedInitialized()) {
             val (deployed, timeDeployed) = notificationServerErrorDeployed
-            Log.i("resetNotifications() server", timeDeployed.toString())
+            Log.d("resetNotifications() server", timeDeployed.toString())
             val timeDif = (Clock.System.now() - timeDeployed)
-            Log.i("timeDIFf_ResetNotifications", timeDif.toString())
+            Log.d("timeDIFf_ResetNotifications", timeDif.toString())
             if (deployed && timeDif > notificationServerErrorMuteDuration) {
                 notificationServerErrorDeployed = Pair(false, Clock.System.now())
             }
@@ -94,30 +94,30 @@ class LoopHandler {
 
         if (lateClass.isNotificationWaterLevelSensorErrorDeployedInitialized()) { //this notification was never tested
             val (deployed, timeDeployed) = notificationWaterLevelSensorErrorDeployed
-            Log.i("resetNotifications() wl sensor", timeDeployed.toString())
+            Log.d("resetNotifications() wl sensor", timeDeployed.toString())
             if (deployed && (Clock.System.now() - timeDeployed) > notificationWaterLevelSensorErrorMuteDuration) {
                 notificationWaterLevelSensorErrorDeployed = Pair(false, Clock.System.now())
             }
         }
         if (lateClass.isNotificationWaterLevelSensorErrorBDeployedInitialized()) { //this notification was never tested
             val (deployed, timeDeployed) = notificationWaterLevelSensorErrorDeployed
-            Log.i("resetNotifications() wl sensor", timeDeployed.toString())
+            Log.d("resetNotifications() wl sensor", timeDeployed.toString())
             if (deployed && (Clock.System.now() - timeDeployed) > notificationWaterLevelSensorErrorMuteDuration) {
                 notificationWaterLevelSensorErrorBDeployed = Pair(false, Clock.System.now())
             }
         }
         if (lateClass.isNotificationACPowerDeployedInitialized()) {
             val (deployed, timeDeployed) = notificationACPowerDeployed
-            Log.i("resetNotifications() ac power", timeDeployed.toString())
-            Log.i("deployed", deployed.toString())
+            Log.d("resetNotifications() ac power", timeDeployed.toString())
+            Log.d("deployed", deployed.toString())
             if (deployed && (Clock.System.now() - timeDeployed) > notificationACPowerMuteDuration) {
                 notificationACPowerDeployed = Pair(false, Clock.System.now())
             }
         }
         if (lateClass.isNotificationHighWaterDeployedInitialized()) {
             val (deployed, timeDeployed) = notificationHighWaterDeployed
-            Log.i("resetNotifications() ac power", timeDeployed.toString())
-            Log.i("deployed", deployed.toString())
+            Log.d("resetNotifications() ac power", timeDeployed.toString())
+            Log.d("deployed", deployed.toString())
             if (deployed && (Clock.System.now() - timeDeployed) > notificationHighWaterMuteDuration) {
                 notificationHighWaterDeployed = Pair(false, Clock.System.now())
             }
@@ -125,8 +125,8 @@ class LoopHandler {
 
         if (lateClass.isNotificationMainRunWarnDeployedInitialized()) {
             val (deployed, timeDeployed) = notificationMainRunWarnDeployed
-            Log.i("resetNotifications() ac power", timeDeployed.toString())
-            Log.i("deployed", deployed.toString())
+            Log.d("resetNotifications() ac power", timeDeployed.toString())
+            Log.d("deployed", deployed.toString())
             if (deployed && (Clock.System.now() - timeDeployed) > notificationMainRunWarnMuteDuration) {
                 notificationMainRunWarnDeployed = Pair(false, Clock.System.now())
             }
@@ -198,14 +198,14 @@ class LoopHandler {
 
                 var durationInt = updateNotificationMuteTimes(string, context)!! //initiated in settings
 
-                Log.i("notifyString", string)
-                Log.i("durationInt", durationInt.toString())
+                Log.d("notifyString", string)
+                Log.d("durationInt", durationInt.toString())
 
-                // Log.i("durationInt", durationInt.toString())
+                // Log.d("durationInt", durationInt.toString())
 
                 when (string) {
                     "serverError" -> {
-                        Log.i("serverErrorMuteDuration", intDurationDict[durationInt].toString())
+                        Log.d("serverErrorMuteDuration", intDurationDict[durationInt].toString())
                         //durationInt = 10 //for testing delete this. it hard sets notificationmuteduration to 10 minutes
                         notificationServerErrorMuteDuration = intDurationDict[durationInt]!!
                     }
@@ -255,7 +255,7 @@ class LoopHandler {
     }
 
     private suspend fun updateNotificationMuteTimes(notification:String, context: Context): Int? {
-        Log.i("updateNotifcationMuteTimes", notification)
+        Log.d("updateNotifcationMuteTimes", notification)
 
         val durationIntDict = LinkedHashMap<kotlin.time.Duration, Int>()
 
@@ -274,7 +274,7 @@ class LoopHandler {
         durationIntDict[2.days] = 48
 
         if (defaultMuteTimes.isEmpty()) {
-            Log.i("loopHandler", "setting defaults")
+            Log.d("loopHandler", "setting defaults")
 
             defaultMuteTimes["serverError"] = 2.hours //change this back to 1 day or something
             defaultMuteTimes["sensorError"] = 1.days
@@ -289,13 +289,13 @@ class LoopHandler {
         }
         val defaultMuteTime = defaultMuteTimes[notification]
 
-        Log.i("defaultMuteTime", defaultMuteTime.toString())
+        Log.d("defaultMuteTime", defaultMuteTime.toString())
 
         val defaultMuteInt = durationIntDict[defaultMuteTime]!!
         val prefKey = intPreferencesKey(notification)
-        Log.i("notificationINRead", notification)
+        Log.d("notificationINRead", notification)
         val apContext = context
-        Log.i("SEmuteDurINUpdate", notificationServerErrorMuteDuration.toString())
+        Log.d("SEmuteDurINUpdate", notificationServerErrorMuteDuration.toString())
 
         val notificationSettingsFlow: Flow<Int> = apContext.dataStore.data //read data in saved data store
             .map { settings: Preferences ->
@@ -304,8 +304,8 @@ class LoopHandler {
                 //this sets the value (in exampleCounterFlow not datastore) if null
             }
 
-        //Log.i("readDurationData", exampleCounterFlow.first().toString())
-        Log.i("valueinRead", notificationSettingsFlow.first().toString()) //server error gets 24 here somehow always? wtf!
+        //Log.d("readDurationData", exampleCounterFlow.first().toString())
+        Log.d("valueinRead", notificationSettingsFlow.first().toString()) //server error gets 24 here somehow always? wtf!
         return notificationSettingsFlow.first()
     }
 }

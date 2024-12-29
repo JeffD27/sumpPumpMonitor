@@ -63,16 +63,16 @@ class Warnings: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.warnings_page)
-        Log.i("warnings.kt","starting warning.kt")
+        Log.d("warnings.kt","starting warning.kt")
         val buttonHome = findViewById<Button>(R.id.buttonHome)
         Log.e("buttonHome", "Button ID: ${buttonHome.id}")
         Log.e("buttonHome", buttonHome.id.toString())
         buttonHome.isEnabled = true
         buttonHome.isClickable = true
         /*buttonHome.setOnClickListener() {
-            Log.i("buttomHome", "finishing")
+            Log.d("buttomHome", "finishing")
             finish()
-            Log.i("buttomHome", "finished")
+            Log.d("buttomHome", "finished")
         }*/
 
 
@@ -110,10 +110,10 @@ class Warnings: ComponentActivity() {
 
         var sum = 0
         for (warning in warningStrings){
-            Log.i("warning^%", warning)
+            Log.d("warning^%", warning)
             val timeData = getTimeData(warning)
             val visData = getVisData(warning, timeData) //read from datastore
-            Log.i("visdata", visData.toString())
+            Log.d("visdata", visData.toString())
             sum += visData
             val card = warningStringToCard[warning]!! //getXMLCard
 
@@ -189,7 +189,7 @@ class Warnings: ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getTimeData(warning: String): String {
         runBlocking {
-            Log.i("warning2", warning)
+            Log.d("warning2", warning)
             val prefKey = stringPreferencesKey(warning + "Time")
 
             val exampleCounterFlow: Flow<String> =
@@ -227,20 +227,20 @@ class Warnings: ComponentActivity() {
             val todayDate = LocalDate.now(zoneId)
             val nowTime = ZonedDateTime.now(zoneId)
 
-            Log.i("durationBetween", Duration.between(zonedDateTime, nowTime).toString())
-            Log.i(
+            Log.d("durationBetween", Duration.between(zonedDateTime, nowTime).toString())
+            Log.d(
                 "booleanDurationBetween",
                 (Duration.between(zonedDateTime, nowTime) > Duration.ofMinutes(1)).toString()
             )
 
             if (Duration.between(zonedDateTime, nowTime) > Duration.ofDays(1)) {
-                Log.i("warningStringToCard", warningStringToCard[warning].toString())
+                Log.d("warningStringToCard", warningStringToCard[warning].toString())
                 warningStringToCard[warning]!!.visibility = GONE // Change to GONE for production
             }
 
             val todayBool = todayDate == dayFromString
 
-            Log.i("Today", todayBool.toString())
+            Log.d("Today", todayBool.toString())
             newTimeString = if (minute > 10) {
                 if (todayBool) {
                     "Today at $hour:$minute $amPM"
@@ -264,15 +264,15 @@ class Warnings: ComponentActivity() {
 
         val cardsToTimes = LinkedHashMap<ConstraintLayout, LocalDateTime>()
 
-        Log.i("warning size",warningStringToCard.size.toString())
+        Log.d("warning size",warningStringToCard.size.toString())
         var n = 1
         for(warning in warningStringToCard.keys) {
 
-            Log.i("warning#", warning)
+            Log.d("warning#", warning)
             val card = warningStringToCard[warning]!!
-            Log.i("cardVis", card.toString())
+            Log.d("cardVis", card.toString())
             val timestamp = warningStringToTimeStamp[warning]!!
-            Log.i("timestamp@!", timestamp.toString())
+            Log.d("timestamp@!", timestamp.toString())
             cardsToTimes[card] = timestamp
             n +=1
         }
@@ -282,18 +282,18 @@ class Warnings: ComponentActivity() {
             for ((card, time) in cardsToTimes.entries){
                 if (time == sortedTime){cardsToTimesSorted[card] = time }                }
             }
-        Log.i("cardsToTimeSorted", cardsToTimesSorted.values.toString())
-        Log.i("timesToCardsSize", cardsToTimes.size.toString())
-        Log.i("timesToCards", cardsToTimes.keys.toString())
+        Log.d("cardsToTimeSorted", cardsToTimesSorted.values.toString())
+        Log.d("timesToCardsSize", cardsToTimes.size.toString())
+        Log.d("timesToCards", cardsToTimes.keys.toString())
 
 
         //val timeToCard = timesToCards.entries.associate{ (k,v)-> v to k} //uno reverse
-       // for (time in timeToCard.keys){Log.i("(unsorted) time", time.toString())}
+       // for (time in timeToCard.keys){Log.d("(unsorted) time", time.toString())}
 
         //val mapTimeToCards = timeToCard.toSortedMap()
         //val sortedTimes = mapTimeToCards.keys
-        //Log.i("sortedTimes", sortedTimes.toString())
-        //Log.i("mapCardToTimes", mapTimeToCards.entries.toString())
+        //Log.d("sortedTimes", sortedTimes.toString())
+        //Log.d("mapCardToTimes", mapTimeToCards.entries.toString())
 
 
         var i= 1
@@ -303,11 +303,11 @@ class Warnings: ComponentActivity() {
             if (card.visibility == GONE){
                 continue
             }
-            Log.i("i in Warnings sortedCards", i.toString())
-            Log.i("PleasebeSorted", time.toString())
-            Log.i("@visibility", card.visibility.toString())
+            Log.d("i in Warnings sortedCards", i.toString())
+            Log.d("PleasebeSorted", time.toString())
+            Log.d("@visibility", card.visibility.toString())
 
-            Log.i("@visibility2", card.visibility.toString())
+            Log.d("@visibility2", card.visibility.toString())
             val constraintLayout = findViewById<ConstraintLayout>(R.id.mainSettingsConstraint)
             //val constraintSet = ConstraintSet()
             //constraintSet.clone(constraintLayout)
@@ -320,11 +320,11 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(R.id.highWaterCard)?.apply {//this is not necessarily highWater card. at least i hope it isn't.
                         if (this.visibility == VISIBLE){
                             if (parent != null) {
-                                Log.i("*parent", parent.toString())
-                                Log.i("parentNotNull", i.toString())
-                                Log.i("*BeforeParent", parent.toString())
+                                Log.d("*parent", parent.toString())
+                                Log.d("parentNotNull", i.toString())
+                                Log.d("*BeforeParent", parent.toString())
                                 val child_ = findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard)
-                                Log.i("highwaterCardBefore",findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard).toString() )
+                                Log.d("highwaterCardBefore",findViewById<ConstraintLayout>(com.example.sumppump3.R.id.highWaterCard).toString() )
 
                                 if ((parent as ViewGroup).childCount > 0){(parent as ViewGroup).removeView(child_)}
                                 //constraintSet.connect(R.id.highWaterCard, ConstraintSet.TOP, R.id.warningPageTitleInWarnings, ConstraintSet.BOTTOM, 25)
@@ -340,8 +340,8 @@ class Warnings: ComponentActivity() {
                     if (this.visibility == VISIBLE){
 
                         if (parent != null) {
-                            Log.i("*parent", parent.toString())
-                            Log.i("parentNotNull", i.toString())
+                            Log.d("*parent", parent.toString())
+                            Log.d("parentNotNull", i.toString())
                             val parent_ = parent
                             if ((parent as ViewGroup).childCount > 0) {
                                 (parent as ViewGroup).removeView(this)
@@ -359,8 +359,8 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.sensorErrorCard)?.apply {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
-                                Log.i("*parent", parent.toString())
-                                Log.i("parentNotNull", i.toString())
+                                Log.d("*parent", parent.toString())
+                                Log.d("parentNotNull", i.toString())
                                 val parent_ = parent
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
@@ -376,7 +376,7 @@ class Warnings: ComponentActivity() {
                     findViewById<ConstraintLayout>(com.example.sumppump3.R.id.mainRunTimeCard)?.apply {
                         if (this.visibility == VISIBLE){
                             if (parent != null) {
-                                Log.i("*parent", parent.toString())
+                                Log.d("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
                                 }
@@ -392,7 +392,7 @@ class Warnings: ComponentActivity() {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
 
-                                Log.i("*parent", parent.toString())
+                                Log.d("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
                                 }
@@ -408,8 +408,8 @@ class Warnings: ComponentActivity() {
                         if (this.visibility == VISIBLE){
                             if (parent != null) {
 
-                                Log.i("*i", i.toString())
-                                Log.i("(cheated)parent", findViewById<ConstraintLayout>(com.example.sumppump3.R.id.constraintNoWater).parent.toString())
+                                Log.d("*i", i.toString())
+                                Log.d("(cheated)parent", findViewById<ConstraintLayout>(com.example.sumppump3.R.id.constraintNoWater).parent.toString())
 
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
@@ -427,7 +427,7 @@ class Warnings: ComponentActivity() {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
                                 val parent_ = parent
-                                Log.i("*parent", parent.toString())
+                                Log.d("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
                                 }
@@ -443,7 +443,7 @@ class Warnings: ComponentActivity() {
                         if (this.visibility == VISIBLE) {
                             if (parent != null) {
 
-                                Log.i("*parent", parent.toString())
+                                Log.d("*parent", parent.toString())
                                 if ((parent as ViewGroup).childCount > 0) {
                                     (parent as ViewGroup).removeView(this)
                                 }
@@ -510,7 +510,7 @@ class Warnings: ComponentActivity() {
                         }
                 visData = exampleCounterFlow.first()
 
-                Log.i("dataInWarnings", visData.toString())
+                Log.d("dataInWarnings", visData.toString())
 
 
 
@@ -564,17 +564,17 @@ class Warnings: ComponentActivity() {
     }
     private fun View?.addTo(parent: ViewGroup? ) {
 
-        Log.i("attemptAddView", "trying to addview")
+        Log.d("attemptAddView", "trying to addview")
 
 
 
         this ?: return //this is where everything is getting fucked
-        Log.i("thisExists", "congrats")
-        Log.i("@parent", parent.toString())
+        Log.d("thisExists", "congrats")
+        Log.d("@parent", parent.toString())
         parent ?: return
         val parent_ = this.parent
         if (parent_ != null){(parent_ as ViewGroup).removeView(this)}
-        Log.i("!addview", "addingView!!")
+        Log.d("!addview", "addingView!!")
 
         parent.addView(this)
     }
