@@ -22,7 +22,7 @@ class getData():
     def __init__(self):
        
        print("get data initialized")
-       #self.call_parse_data()
+       self.call_parse_data()
        
        '''
         q = queue.Queue()

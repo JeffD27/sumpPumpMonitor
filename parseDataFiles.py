@@ -70,7 +70,7 @@ class parseDataFiles():
                                           print(mainPrevTimeStampRe.group(i), "mainPRevTimeStamp")
                                           self.main_date_dict[convert_dict[i]] = int(mainPrevTimeStampRe.group(i) )#should be: "Year" : 2024 etc.
                                    except Exception as e: #i think this except block is what is fucking things up. turn off server and debug with print statements next
-                                          print("%s IN Read data\n    +++++++++++++" %e)
+                                          print("ERROR in parseData Files: %s IN Read data\n    +++++++++++++" %e)
                                           
                                           print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n\!!!!!!!!!!!!!!!!!\n\n\n","data=%s"% data,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~","i =",i)
                                           #why reset based on one bad data point. more data is coming...try again...
@@ -144,69 +144,71 @@ class parseDataFiles():
                      
               with open("pumpData.txt", 'r') as f:
                      data = f.read()
-                     while len(data)<1:
-                            print("data is empty in parse data files!")
-                            data = f.read() 
-                     print(data, "in parsedatafiles+++++++++++++++++++++++")
-                     try:
-                            mainRunningRe = re.search(r"mainRunning\'{0,1}:\s*(\w*)", data)
-                     except: 
-                            mainRunningRe = re.search(r"(False)", "False")
-                     print(mainRunningRe.string, 'here')
-                     try:
-                            backupRunningRe = re.search(r"backupRunning\'{0,1}:\s*(\w*)",data)
-                     except: 
-                            backupRunningRe = re.search(r"(False)", "False")
+                     print(data, "data")
+              while len(data)<1:
+                     print("data is empty in parse data files!")
+                     data = f.read() 
+                     time.sleep(1)
+              print(data, "in parsedatafiles+++++++++++++++++++++++")
+              try:
+                     mainRunningRe = re.search(r"mainRunning\'{0,1}:\s*(\w*)", data)
+              except: 
+                     mainRunningRe = re.search(r"(False)", "False")
+              print(mainRunningRe.string, 'here')
+              try:
+                     backupRunningRe = re.search(r"backupRunning\'{0,1}:\s*(\w*)",data)
+              except: 
+                     backupRunningRe = re.search(r"(False)", "False")
 
-                   
-                     timeStampRe = re.findall(r"datetime\((\d{4},\s\d{1,2},\s(\d{1,2},\s(\d{1,2})),\s(\d{1,2}),\s(\d{1,2}))",data)
-                     
-                     self.timeStampCheckRunning = timeStampRe
-                     
-                     
-                     try:
-                            mainRunningStr = mainRunningRe.group(1)
-                     except AttributeError as e:
-                            print(e)
-                            
-                     try:
-                            backupRunningStr = backupRunningRe.group(1)
-                     except AttributeError as e:
-                            print(e)
-                     
-
-                     if mainRunningStr == "False":
-                            self.mainRunning = False
-                            
-                     elif mainRunningStr == "True":
-                            
-                            with open("previouslyRunning.txt", 'r') as f:
-                                   prev_running_data = f.read() #if the pump just started and this var was not updated yet
-                                   main_prev_run_reg = re.search("MainRunning..\s*(\w*)", prev_running_data)
-                                   if main_prev_run_reg.group(1) == "False":  #if pump is running now, but wasn't before
-
-                                          self.timeStartedMain = datetime.now()
-                           
-                            self.mainRunning = True
-                     
-                     if backupRunningStr == "False":
-                            self.backupRunning = False
-                     elif backupRunningStr == "True":
-                            
-                            with open("previouslyRunning.txt", 'r') as f:
-                                   prev_running_data = f.read() #if the pump just started and this var was not updated yet
-                                   backup_prev_run_reg = re.search("BackupRunning..\s*(\w*)", prev_running_data)
-                                   if backup_prev_run_reg.group(1) == "False":
-
-                                          self.timeStartedBackup = datetime.now()
-                           
-                                  
-                            self.backupRunning = True
-                            
               
-                     print(self.mainRunning, self.backupRunning, str(self.timeStartedMain), str(self.timeStartedBackup),
-                           "\n~~~~~~~~~~~~~~~~~~~~~~~IN PARSE DAT READ DATA````````````````````")
+              timeStampRe = re.findall(r"datetime\((\d{4},\s\d{1,2},\s(\d{1,2},\s(\d{1,2})),\s(\d{1,2}),\s(\d{1,2}))",data)
+              
+              self.timeStampCheckRunning = timeStampRe
+              
+              
+              try:
+                     mainRunningStr = mainRunningRe.group(1)
+              except AttributeError as e:
+                     print(e)
+                     
+              try:
+                     backupRunningStr = backupRunningRe.group(1)
+              except AttributeError as e:
+                     print(e)
+              
+
+              if mainRunningStr == "False":
+                     self.mainRunning = False
+                     
+              elif mainRunningStr == "True":
+                     
+                     with open("previouslyRunning.txt", 'r') as f:
+                            prev_running_data = f.read() #if the pump just started and this var was not updated yet
+                            main_prev_run_reg = re.search("MainRunning..\s*(\w*)", prev_running_data)
+                            if main_prev_run_reg.group(1) == "False":  #if pump is running now, but wasn't before
+
+                                   self.timeStartedMain = datetime.now()
+                     
+                     self.mainRunning = True
+              
+              if backupRunningStr == "False":
+                     self.backupRunning = False
+              elif backupRunningStr == "True":
+                     
+                     with open("previouslyRunning.txt", 'r') as f:
+                            prev_running_data = f.read() #if the pump just started and this var was not updated yet
+                            backup_prev_run_reg = re.search("BackupRunning..\s*(\w*)", prev_running_data)
+                            if backup_prev_run_reg.group(1) == "False":
+
+                                   self.timeStartedBackup = datetime.now()
+                     
+                            
+                     self.backupRunning = True
+                     
        
+              print(self.mainRunning, self.backupRunning, str(self.timeStartedMain), str(self.timeStartedBackup),
+                     "\n~~~~~~~~~~~~~~~~~~~~~~~IN PARSE DAT READ DATA````````````````````")
+
       
                      
        def checkRunTime(self):#somehow the clock is being reset...but i'm going to do this in android

@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/graph_battery_data.py", line 92, in <module>
+    main()
+  File "/home/sp_server_beta/sp_monitor_beta4/graph_battery_data.py", line 87, in main
+    plot_data(data)
+  File "/home/sp_server_beta/sp_monitor_beta4/graph_battery_data.py", line 51, in plot_data
+    plt.plot(timestamps, voltage12, label='12V Voltage (Units)', marker='o', color='green')
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/pyplot.py", line 3794, in plot
+    return gca().plot(
+           ^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/axes/_axes.py", line 1781, in plot
+    self.add_line(line)
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2339, in add_line
+    self._update_line_limits(line)
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 2362, in _update_line_limits
+    path = line.get_path()
+           ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/lines.py", line 1037, in get_path
+    self.recache()
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/lines.py", line 679, in recache
+    y = _to_unmasked_float_array(yconv).ravel()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/matplotlib/cbook.py", line 1398, in _to_unmasked_float_array
+    return np.asarray(x, float)
+           ^^^^^^^^^^^^^^^^^^^^
