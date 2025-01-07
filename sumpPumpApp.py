@@ -40,14 +40,15 @@ def __init__(first_run = True):
             else:
                 print('yeah nice try')
   
-        if first_run: #let's get this working NEXT4425
+        if first_run: #let's get this working NEXT
           
             print("firstRun geting data")
-            dataObj = getData()
+            dataObj = getData() #This doesn't do shit at the moment
             #lock = threading.Lock()
             print("PARSE DATA LOOP WILL BE CALLED------------------------------------------------------------------------------------")
             print(data, 'here%^&')
             data = dataObj.call_parse_data()
+            
             print('''
               
 
@@ -59,8 +60,11 @@ def __init__(first_run = True):
 
 
 
-             '''%data) 
-            return jsonify(data)
+             '''%data)
+            print(len(data), "data size")
+            #print(data.length, "this could be it++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            if len(data) > 0: 
+                return jsonify(data)
             
         
 
@@ -99,9 +103,12 @@ def __init__(first_run = True):
 
     
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # run app in debug mode on port 5000
-
-    app.run(debug=False, host="0.0.0.0", port= 8080)
-
-#https://jbacoy3.wixsite.com/datascience/single-post/2017/05/26/simple-tutorial-on-flask
+    print("Flask Started.")
+    app.run(debug=False, host="0.0.0.0", port=8080)
+    print("Flask Ended ¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬")
+else:
+    print("else in sumpPumpApp.py")
+    
+    #https://jbacoy3.wixsite.com/datascience/single-post/2017/05/26/simple-tutorial-on-flask

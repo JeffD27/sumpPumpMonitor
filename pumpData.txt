@@ -1,1 +1,1 @@
-{'mainRunning': True, 'backupRunning': False}
+{'mainRunning': False, 'backupRunning': False, 'Time!:': datetime.datetime(2025, 1, 7, 15, 31, 4, 587379)}

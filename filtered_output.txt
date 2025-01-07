@@ -1,0 +1,4 @@
+voltage5: 100, charging5: True, voltage12: 100
+voltage5: 100, charging5: True, voltage12: 100
+voltage5: 100, charging5: True, voltage12: 100
+voltage5: 100, charging5: True, voltage12: 0.9026996028121717

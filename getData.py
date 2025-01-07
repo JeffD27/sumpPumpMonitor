@@ -23,7 +23,7 @@ class getData():
     def __init__(self):
        
        print("get data initialized")
-       #self.call_parse_data()
+       self.call_parse_data()
        
        '''
         q = queue.Queue()
@@ -56,8 +56,8 @@ class getData():
         
         
         self.pulse_hardware()
-        print(self.pumpData["mainRunning"], "here@~~")
-        allDataDict = {"time":datetime.now(), "pumpData": self.pumpData, "wl_data": self.wl_data, "bi_data": self.bi_data}
+        print(self.pumpData, "here@~~")
+        allDataDict = {"time@":datetime.now(), "pumpData": self.pumpData, "wl$_data": self.wl_data, "bi_data": self.bi_data}
         
         return  allDataDict
         

@@ -1,0 +1,10 @@
+voltage5: 100.00, charging5: True, voltage12: 13.65
+ltage5: 100.00, charging5: True, voltage12: 0.05
+voltage5: 98.14, charging5: True, voltage12: 0.05
+voltage5: 98.76, charging5: True, voltage12: 0.05
+voltage5: 97.89, charging5: True, voltage12: 0.16
+voltage5: 99.13, charging5: True, voltage12: 0.05
+voltage5: 98.63, charging5: True, voltage12: 0.05
+voltage5: 98.76, charging5: True, voltage12: 0.05
+voltage5: 98.26, charging5: True, voltage12: 0.05
+voltage5: 66.72, charging5: True, voltage12: 1.86
