@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white"> #f2f2f2</color>
+    <color name="brightRed">#e60000</color>
+    <color name="black">#404040</color>
+    <color name="green"> #00b33c</color>
+    <color name="red">#990000</color>
+    <color name="darkActivityBackground">#0086b3</color>
+    <color name="activityBackground">#0099cc</color>
+    <color name="darkerBlack">#202020</color>
+    <color name="darkGreen">#009688</color>
+    <color name="purple">#533696</color>
+    <color name="lightPurple">#6844BC</color>
+    <color name="lightestPurple">#8959F8</color>
+    <color name="beige1">#EEECC5</color>
+    <color name="actualWhite">#FFFFFF</color>
+    <color name="regularRed">#940b01</color>
+    <color name="beige2">#fffceb</color>
+
+</resources>

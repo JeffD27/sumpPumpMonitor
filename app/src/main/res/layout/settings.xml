@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/noAcPowerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/settingsTitle"
+        android:textColor="@color/darkerBlack"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/serverError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/noPowerConnectedNotification"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notificationTitle" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/ServerError"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/serverError"
+        app:layout_constraintTop_toBottomOf="@+id/serverError" />
+
+    <TextView
+        android:id="@+id/highWaterSensorError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/highWaterWarning"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/mainRunWarn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/PumpRunTimeError"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/highWaterSensorError"
+        app:layout_constraintTop_toBottomOf="@+id/highWaterSensorError" />
+
+    <TextView
+        android:id="@+id/backupRunWarn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/backupPumpHasRun"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/mainRunWarn"
+        app:layout_constraintTop_toBottomOf="@+id/mainRunWarn" />
+
+    <TextView
+        android:id="@+id/pumpRunningNoWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/PumpRunningWithoutWater"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/backupRunWarn"
+        app:layout_constraintTop_toBottomOf="@+id/backupRunWarn" />
+
+    <TextView
+        android:id="@+id/sensorError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/waterLevelSensorError"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/pumpRunningNoWater"
+        app:layout_constraintTop_toBottomOf="@+id/pumpRunningNoWater" />
+
+    <TextView
+        android:id="@+id/lowBattery12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/low12vBattery"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/sensorError"
+        app:layout_constraintTop_toBottomOf="@+id/sensorError" />
+
+    <Spinner
+        android:id="@+id/spinnerNoPowerSilenceTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/serverError"
+        app:layout_constraintStart_toEndOf="@+id/serverError"
+        app:layout_constraintTop_toTopOf="@+id/serverError" />
+
+
+    <Spinner
+        android:id="@+id/spinnerServerError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/spinnerNoPowerSilenceTime"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+
+    <Spinner
+        android:id="@+id/spinnerHighWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/highWaterSensorError"
+        app:layout_constraintStart_toStartOf="@+id/spinnerServerError"
+        app:layout_constraintTop_toTopOf="@+id/highWaterSensorError" />
+
+    <Spinner
+        android:id="@+id/spinnerBackupRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/backupRunWarn"
+        app:layout_constraintStart_toStartOf="@+id/spinnerMainRun"
+        app:layout_constraintTop_toTopOf="@+id/backupRunWarn" />
+
+    <Spinner
+        android:id="@+id/spinnerPumpRunNoWater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/pumpRunningNoWater"
+        app:layout_constraintStart_toStartOf="@+id/spinnerBackupRun"
+        app:layout_constraintTop_toTopOf="@+id/pumpRunningNoWater" />
+
+    <Spinner
+        android:id="@+id/spinnerWaterLevelSensorError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/sensorError"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPumpRunNoWater"
+        app:layout_constraintTop_toTopOf="@+id/sensorError" />
+
+    <Spinner
+        android:id="@+id/spinnerLow12v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/lowBattery12"
+        app:layout_constraintStart_toStartOf="@+id/spinnerWaterLevelSensorError"
+        app:layout_constraintTop_toTopOf="@+id/lowBattery12" />
+
+    <Spinner
+        android:id="@+id/spinnerMainRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintBottom_toBottomOf="@+id/mainRunWarn"
+        app:layout_constraintStart_toStartOf="@+id/spinnerServerError"
+        app:layout_constraintTop_toTopOf="@+id/mainRunWarn"
+        app:layout_constraintVertical_bias="0.523" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/notificationMuteTitle"
+        android:textAlignment="center"
+        android:textColor="@color/darkerBlack"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noAcPowerTextView" />
+
+    <TextView
+        android:id="@+id/notificationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/Notification"
+        android:textColor="@color/darkerBlack"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/muteClockTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/Time"
+        android:textColor="@color/darkerBlack"
+        app:layout_constraintStart_toStartOf="@+id/spinnerNoPowerSilenceTime"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/buttonRestoreDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="50dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="10dp"
+        android:onClick="restoreDefaults"
+        android:text="@string/restoreDefault"
+        app:layout_constraintStart_toStartOf="@+id/lowBattery12"
+        app:layout_constraintTop_toBottomOf="@+id/lowBattery12" />
+
+    <Button
+        android:id="@+id/buttonOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:paddingStart="50dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="20dp"
+        android:text="@string/ok"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonRestoreDefault"
+        app:layout_constraintStart_toEndOf="@+id/buttonRestoreDefault"
+        app:layout_constraintTop_toTopOf="@+id/buttonRestoreDefault" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

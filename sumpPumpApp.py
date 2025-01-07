@@ -46,7 +46,7 @@ def __init__(first_run = True):
             dataObj = getData() #This doesn't do shit at the moment
             #lock = threading.Lock()
             print("PARSE DATA LOOP WILL BE CALLED------------------------------------------------------------------------------------")
-
+            print(data, 'here%^&')
             data = dataObj.call_parse_data()
             
             print('''

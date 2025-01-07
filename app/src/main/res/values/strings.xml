@@ -1,0 +1,148 @@
+<resources>
+    <string name="app_name">sumpPumpBeta3</string>
+
+    <string name="waterLevel_High"></string>
+    <string name="waterLevel_Mid"></string>
+    <string name="waterLevel_Low"></string>
+    <string name="MainPump_State"></string>
+    <string name="BackupPump_State"></string>
+    <string name="BackupRunningNotification">77777</string>
+    <string name="batteryVolts12">11.7</string>
+    <string name="batteryVolts5" >4.8</string>
+    <string name="PumpRuntimeWarning" > Pump has run more\n than 10 minutes</string>
+    <string name="title">Sump Pump\nMonitor</string>
+    <string name="data_all"> </string>
+    <string name="waterLevelWarning">ERROR in water\n level sensor</string>
+    <string name="mainPumpTitle">Main Pump</string>
+    <string name="WaterLevelTitle">Water Level</string>
+    <string name="warnTriangContentDescript">warning triangle</string>
+    <string name="statisticsTitle">Statistics</string>
+    <string name="backupPumpTitle">Backup Pump</string>
+    <string name="largeBattery">Large Battery</string>
+    <string name="smallBattery">small battery</string>
+    <string name="batteryVoltsTitle">Battery Levels</string>
+    <string name="settingsTitle">Settings</string>
+    <string name="waterLevelemptycontentdescription">An empty tank</string>
+    <string name="warningsButtonText">Warnings Log</string>
+    <string name="xToClose">\"X\" to close</string>
+    <string name="pumpProblemsChannel">Pump Errors/Warnings</string>
+    <string name="pumpProblemsChannelDescription">E.g. pump has run too long</string>
+    <string name="systemProblemsChannel">System Issues</string>
+    <string name="systemProblemsChannelDescription">E.g. server issue, sensor error</string>
+    <string name="generalInfoChannel"> General Info</string>
+    <string name="generalInfoChannelDescription">E.G. Main pump has run</string>
+    <string name="SettingsTitle">Settings</string>
+    <string name="ServerError">Server Error</string>
+    <string-array name="spinnerTimes">
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+        <item>48 hours</item>
+    </string-array>
+    <string-array name="noPowerNotificationSilenceTime">
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+    </string-array>
+    <string-array name="serverErrorNotificationSilenceTime">
+        <item>1 hour</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+    </string-array>
+    <string-array name="highWaterNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="pumpRunTimeNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="backupRunNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="noWaterNotificationSilenceTime">
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="sensorErrorNotificationSilenceTime">
+        <item>1 hour</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>24 hours</item>
+        <item>2 days</item>
+    </string-array>
+    <string name="selected_item">Selected item:</string>
+    <string name="notificationMuteTitle">If a notification is dismissed,\n how long does it stay dismissed?</string>
+    <string name="noPowerConnectedNotification">No AC Power:</string>
+    <string name="Notification">Notification</string>
+    <string name="Time">Time</string>
+    <string name="waterLevelSensorError">Water Level\n Sensor Error</string>
+    <string name="highWaterWarning" >High water\n Level Warning</string>
+    <string name="PumpRunTimeError"> Pump running\n over 10 min</string>
+    <string name="backupPumpHasRun">The backup \npump has run</string>
+    <string name="PumpRunningWithoutWater">Pump Running\nwithout water</string>
+    <string name="workerNotification">Sump Pump Monitor Is\nRunning In The Background</string>
+    <string name="mostUrgentWarningsName">Most Urgent Warnings</string>
+    <string name="persistentNotificationTitle">Sump Pump Monitor</string>
+    <string name="cancelDownload">Cancel Download</string>
+
+    <!--channelIDs-->
+    <string name="mostUrgentWarningsChannelID">00000</string>
+    <string name="pumpProblemsChannelID">11111</string>
+    <string name="systemIssuesChannelID">22222</string>
+    <string name="GeneralInfoChannelID">33333</string>
+    <string name="workerNotificationChannelID">11113</string>
+
+    <!--NotificationIDS-->
+    <string name = "noACPowerNotificationID">11119</string>
+    <string name="noPumpControlNotificationID">11118</string>
+    <string name="waterLevelSensorErrorNotificationIDA">19997</string>
+    <string name="waterLevelSensorErrorNotificationIDB">19996</string>
+    <string name="waterLevelSensorErrorNotificationIDC">19995</string>
+    <string name ="lowBattery12vNotificationID">19993</string>
+    <string name="serverErrorNotificationID">44444</string>
+    <string name="highWaterNotificationID">55555</string>
+    <string name="mainRunTimeNotificationID">66666</string>
+    <string name ="backupRunNotificationID">77777</string>
+    <string name="waterTooLowNotificationID">88888</string>
+    <string name="persistentWorkerNotificationID">99999</string>
+    <string name="high">high</string>
+    <string name="low12vBattery">12v Battery\n is Low</string>
+    <string name="restoreDefault">Reset to\nDefault</string>
+    <string name="ok">OK</string>
+    <string name="warningsTitle">Warning Log</string>
+    <string name="warningTitle">Warnings!</string>
+    <string name="HighWaterBody">The sump pump well has reached\nmaximum capacity! </string>
+    <string name = "noPumpControlNotificationTitle">"Warning: No Pump Control!" </string>
+    <string name="noPumpControlNotificationContent"> "Pump Control is not running. The pumps will not work until this is fixed!"</string>
+    <string name="sensorErrorChannelID">19999</string>
+    <string name="serverErrorChannelID">19994</string>
+    <string name="noWaterNotificationID">19998</string>
+    <string name="mainRunningNotification">19992</string>
+    <string name="fullScreenChannel">000111000</string>
+
+
+</resources>
