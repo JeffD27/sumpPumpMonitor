@@ -1,0 +1,295 @@
+DEBUG:root:Incoming message
+DEBUG:root:Received token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 112, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:root:Received token: token
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 112, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:root:Received token: token
+DEBUG:root:Incoming message
+DEBUG:root:Received token: token
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+ERROR:root:Error sending notification: {'timeToMute': 1, 'unit': 'hours'}
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    raise Exception(data["serverError"])
+Exception: {'timeToMute': 1, 'unit': 'hours'}
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+ERROR:root:Error sending notification: {'timeToMute': 1, 'unit': 'hours'}
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    raise Exception(data["serverError"])
+Exception: {'timeToMute': 1, 'unit': 'hours'}
+ERROR:root:Error sending notification: {'timeToMute': 1, 'unit': 'hours'}
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    raise Exception(data["serverError"])
+Exception: {'timeToMute': 1, 'unit': 'hours'}
+ERROR:root:Error sending notification: {'timeToMute': 1, 'unit': 'hours'}
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    raise Exception(data["serverError"])
+Exception: {'timeToMute': 1, 'unit': 'hours'}
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+ERROR:root:Error sending notification: {'timeToMute': 1, 'unit': 'hours'}
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    raise Exception(data["serverError"])
+Exception: {'timeToMute': 1, 'unit': 'hours'}
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("will this print?")
+                      ^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 76, in sendSettings
+    print("deviceID", data["deviceID"])
+                      ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+ERROR:root:Error sending notification: 'deviceID'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 75, in sendSettings
+    print("will this print?", data["deviceID"],)
+                              ~~~~^^^^^^^^^^^^
+KeyError: 'deviceID'
+DEBUG:root:new token coming, dyoxvwcETrmAPVVoYhLVq4:APA91bGLtIlMKa4gDzzwUaYvdsjxhjuWtTmC5fd-w3pMHXDf1eCF72YZmguody_fbwYwOXvBZkkwR2zz6VRC75iv95Wnf-J3m7ZI1vy70eU8XluZdkd0M7U
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 121, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+DEBUG:root:new token coming, c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+DEBUG:root:new token coming, c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+DEBUG:root:Incoming message(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+DEBUG:root:Received token: None
+ERROR:root:Token is missing or empty in the request.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 121, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 121, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 121, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 121, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+DEBUG:root:Incoming message(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+DEBUG:root:Received token: None
+ERROR:root:Token is missing or empty in the request.

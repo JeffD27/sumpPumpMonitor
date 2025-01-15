@@ -23,9 +23,9 @@ class parseDataFiles():
               self.readDataFiles()
               self.checkRunTime()
               self.writeTimeStamp()
-              print(self.main_run_warning, 'main Run waring')
-              print(self.backup_run_warning, 'backup run warning')
-              print(self.timeStampCheckRunning)
+              #print(self.main_run_warning, 'main Run waring')
+              #print(self.backup_run_warning, 'backup run warning')
+              #print(self.timeStampCheckRunning)
               self.all_data = {
                      "mainRunning": self.mainRunning, 
                      "backupRunning": self.backupRunning,
@@ -43,10 +43,10 @@ class parseDataFiles():
        def writeTimeStamp(self):
               if self.timeStartedMain is not None and self.timeStartedBackup is not None:
                      with open("timeStamps.txt", 'w') as f:
-                            print("saving Time started = %s" %self.timeStartedBackup,"/n(((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
+                            #print("saving Time started = %s" %self.timeStartedBackup,"/n(((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
                             f.write(str({'MainRunning': self.timeStartedMain, 'BackupRunning': self.timeStartedBackup}))
                      with open("previouslyRunning.txt", 'w') as f: #this is to know if the pumps were running so we can update start times
-                            print("saveing previously run")
+                            #print("saveing previously run")
                             f.write(str({'MainRunning': self.mainRunning, 'BackupRunning': self.backupRunning}))
                      
        def readDataFiles(self ):
@@ -55,7 +55,7 @@ class parseDataFiles():
                      
                      data = f.read()
                      
-                     print(data, 'data%^')
+                     #print(data, 'data%^')
                      
                      
                      
@@ -67,13 +67,12 @@ class parseDataFiles():
                      for i in range(1,7):
                             if data is not None: 
                                    try:
-                                          print(mainPrevTimeStampRe.group(i), "mainPRevTimeStamp")
+                                          #print(mainPrevTimeStampRe.group(i), "mainPRevTimeStamp")
                                           self.main_date_dict[convert_dict[i]] = int(mainPrevTimeStampRe.group(i) )#should be: "Year" : 2024 etc.
-                                   except Exception as e: #i think this except block is what is fucking things up. turn off server and debug with print statements next
-                                          print("ERROR in parseData Files: %s IN Read data\n    +++++++++++++" %e)
+                                   except Exception as e:
+                                          #print("ERROR in parseData Files: %s IN Read data\n    +++++++++++++" %e)
                                           
-                                          print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n\!!!!!!!!!!!!!!!!!\n\n\n","data=%s"% data,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~","i =",i)
-                                          #why reset based on one bad data point. more data is coming...try again...
+                                          #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n\!!!!!!!!!!!!!!!!!\n\n\n","data=%s"% data,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~","i =",i)
                                           '''
                                           if i == 1:
                                                  self.main_date_dict[convert_dict[i]] = int(datetime.now().year) 
@@ -98,10 +97,10 @@ class parseDataFiles():
                                    
                                    self.backup_date_dict[convert_dict[i]] = int(backupPrevTimeStampRe.group(i) )#should be: "Year" : 2024 etc.
                             except Exception as e:
-                                   print("%s IN Read data\n    +++++++++++++" %e)
+                                   #print("%s IN Read data\n    +++++++++++++" %e)
                                    
                                    
-                                   print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n\!!!!!!!!!!!!!!!!!\n\n\n","data=%s"% data,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~","i =",i)
+                                   #print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\n\!!!!!!!!!!!!!!!!!\n\n\n","data=%s"% data,"\n~~~~~~~~~~~~~~~~~~~~~~~~~~","i =",i)
                                    if i == 1:
                                           self.backup_date_dict[convert_dict[i]] = int(datetime.now().year) 
                                    elif i == 2:
@@ -115,11 +114,9 @@ class parseDataFiles():
                                    elif i == 6:
                                           self.backup_date_dict[convert_dict[i]] = int(datetime.now().second)      
                                    #self.backup_date_dict[convert_dict[i]] = 69     #for testing DELETE!
-                     print(str(self.main_date_dict), "mainDateDict")
-                     print(str(self.backup_date_dict), "BackupDateDict")
-                     #print(mainPrevTimeStampRe.string, "re")
-                     #print(backupPrevTimeStampRe.string)
-                    
+                     #print(str(self.main_date_dict), "mainDateDict")
+                     #print(str(self.backup_date_dict), "BackupDateDict")
+                     ##print(mainPrevTimeStampRe.string, "re")
                      self.timeStartedMain = datetime(
                             year = self.main_date_dict["Year"],
                             month = self.main_date_dict["Month"],
@@ -144,17 +141,18 @@ class parseDataFiles():
                      
               with open("pumpData.txt", 'r') as f:
                      data = f.read()
-                     print(data, "data")
-              while len(data)<1:
-                     print("data is empty in parse data files!")
-                     data = f.read() 
-                     time.sleep(1)
-              print(data, "in parsedatafiles+++++++++++++++++++++++")
+                     #print(data, "data")
+                     while len(data)<1:
+                            #print("data is empty in parse data files!")
+                            data = f.read()
+                            sleep(1)
+                            
+              #print(data, "in parsedatafiles+++++++++++++++++++++++")
               try:
                      mainRunningRe = re.search(r"mainRunning\'{0,1}:\s*(\w*)", data)
               except: 
                      mainRunningRe = re.search(r"(False)", "False")
-              print(mainRunningRe.string, 'here')
+              #print(mainRunningRe.string, 'here')
               try:
                      backupRunningRe = re.search(r"backupRunning\'{0,1}:\s*(\w*)",data)
               except: 
@@ -206,17 +204,17 @@ class parseDataFiles():
                      self.backupRunning = True
                      
        
-              print(self.mainRunning, self.backupRunning, str(self.timeStartedMain), str(self.timeStartedBackup),
-                     "\n~~~~~~~~~~~~~~~~~~~~~~~IN PARSE DAT READ DATA````````````````````")
+              #print(self.mainRunning, self.backupRunning, str(self.timeStartedMain), str(self.timeStartedBackup),
+             #        "\n~~~~~~~~~~~~~~~~~~~~~~~IN PARSE DAT READ DATA````````````````````")
 
       
                      
        def checkRunTime(self):#somehow the clock is being reset...but i'm going to do this in android
               if self.mainRunning: 
                      now = datetime.now()
-                     print(self.timeStartedMain, 'time started main')
+                     #print(self.timeStartedMain, 'time started main')
                      self.timeRunningMain = now - self.timeStartedMain 
-                     print(self.timeRunningMain, "&&&&&&&&&&&&&&MAIN")
+                     #print(self.timeRunningMain, "&&&&&&&&&&&&&&MAIN")
                      if self.timeRunningMain> timedelta(minutes = 10):
                             self.main_run_warning = True
                      else:
@@ -226,9 +224,9 @@ class parseDataFiles():
               else: self.timeRunningMainStr = "Not Running"
               if self.backupRunning:
                      now = datetime.now()
-                     print(self.timeStartedBackup, 'time started backup')
+                     #print(self.timeStartedBackup, 'time started backup')
                      self.timeRunningBackup = now - self.timeStartedBackup 
-                     print(self.timeRunningBackup, "&&&&&&&&&&&&&&BACKUP")
+                     #print(self.timeRunningBackup, "&&&&&&&&&&&&&&BACKUP")
                      if self.timeRunningBackup > timedelta(seconds = 2):
                             self.backup_run_warning = True
                      else:

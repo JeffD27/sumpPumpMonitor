@@ -1,0 +1,402 @@
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: write() argument must be str, not list
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 99, in send_notification
+    f.write(tokens)
+TypeError: write() argument must be str, not list
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: TokenDataBaseHandler.closeConnection() missing 1 required positional argument: 'self'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 101, in send_notification
+    TokenDataBaseHandler.closeConnection()
+TypeError: TokenDataBaseHandler.closeConnection() missing 1 required positional argument: 'self'
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    response = messaging.send(message)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    for token in tokens:
+           ^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    t = TokenDataBaseHandler()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: Message.token must be a non-empty string.
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 103, in send_notification
+    t = TokenDataBaseHandler()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 121, in send
+    return _get_messaging_service(app).send(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 409, in send
+    data = self._message_data(message, dry_run)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 521, in _message_data
+    data = {'message': _MessagingService.encode_message(message)}
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/messaging.py", line 405, in encode_message
+    return cls.JSON_ENCODER.default(message)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 683, in default
+    'token': _Validators.check_string('Message.token', o.token, non_empty=True),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/firebase_admin/_messaging_encoder.py", line 102, in check_string
+    raise ValueError('{0} must be a non-empty string.'.format(label))
+ValueError: Message.token must be a non-empty string.

@@ -2,16 +2,25 @@
 # import main Flask class and request object
 
 from flask import Flask, render_template, request, url_for, jsonify, abort
-from getData import *
+from getData import getData
 import threading
 from time import sleep
 import queue
 import json
 import sys
 import subprocess as sp 
+import firebase_admin
+from firebase_admin import credentials, messaging
+from TokenDatabaseHandler import TokenDataBaseHandler
+import logging
+import sqlite3
+from settingsDatabase import Database
+
+logging.basicConfig(filename='flask2.log', level=logging.DEBUG)
 
 
-#note: DON'T FORGET TO RUN PUMPCONTROL.PY. IT WON'T RUN ON IT'S OWN
+
+#note: DON'T FORGET TO RUN PUMPCONTROL.PY.
  
 #https://www.java.com/en/download/help/linux_x64_install.html#install
 #https://www.baeldung.com/java-home-on-windows-mac-os-x-linux
@@ -19,9 +28,11 @@ import subprocess as sp
 # create the Flask app
 app = Flask(__name__)
 dataObj = ""
-print("createdApp")
-@app.route('/',methods=['GET', 'POST'])
-def __init__(first_run = True):
+cred = credentials.Certificate("sumppumpmonitor-6e852-firebase-adminsdk-pt2wb-009a409c70.json")
+firebase_admin.initialize_app(cred)
+print("Firebase Initialized!")
+@app.route('/',methods=['GET'])
+def get(first_run = True):
     print("flask Inititializing")
     if request.method == 'GET':
         print('server get request')
@@ -49,57 +60,138 @@ def __init__(first_run = True):
 
             data = dataObj.call_parse_data()
             
-            print('''
-              
-
-
-                %s
-
-
-
-
-
-
-             '''%data)
+            print(data)
             print(len(data), "data size")
             #print(data.length, "this could be it++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             if len(data) > 0: 
                 return jsonify(data)
             
         
-
-            
-       
-        
-        #data_thread.join()
-       
-       
-        #data_thread.start()
-       
-        
-       # print(getDataObj.bi_data, "ouuurr newest edition$%^#^$^&%&%")
-        #data_thread.join() #this stops the code below from running until the above is completed
-        
-        
-        #que.put()
-        #print(que.get(), 'in getdatafromthread in app')
-       
-
-    elif request.method == 'POST':
-        print("\n<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>\nPOST REQUEST\n")    
-        args = request.get_data().decode()
-        print(args, "yaaarrg")
-       
-        if args == "firstRun: False":
-            print("\n9999999999999\n \n\nFALSE\n")
-            first_run = False
-        elif args == "firstRun: True":
-            print("\n9999999999999\n \nTRUE\n")
-            first_run = True
-        else:
-            print("FAILED!!")
-        return(jsonify("message Received"))
+@app.route('/sendSettings', methods=['POST'])
+def sendSettings():
     
+    try:
+        data = request.get_json()
+       
+        deviceID = data["deviceID"]
+        if not data:
+            print("No data provided")
+            return jsonify({"success": False, "error": "No data provided"}), 400
+        
+    except Exception as e:
+        logging.exception(f"Error sending notification: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+    conn = Database.get_connection()
+    cursor = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    
+    # Create the table if it doesn't exist
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS device_settings (
+            device_id TEXT PRIMARY KEY,
+            settings JSON
+        );
+    """)
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO device_settings (device_id, settings) VALUES (?, ?) "
+        "ON CONFLICT(device_id) DO UPDATE SET settings = excluded.settings",
+        (deviceID, json.dumps(data)),
+    )
+    
+    conn.commit()
+    conn.close()
+@app.route('/newToken', methods=['POST'])
+def logNewToken():
+    try:
+        data = request.get_json()
+        if not data:
+            logging.error("No data provided")
+            return jsonify({"success": False, "error": "No data provided"}), 400
+
+        deviceId = data.get('deviceId')
+        token = data.get('token')
+        conn = Database.get_connection("device_to_token")
+        cursor = conn.cursor()
+        conn.row_factory = sqlite3.Row
+    
+        # Create the table if it doesn't exist
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS device_settings (
+                device_id TEXT PRIMARY KEY,
+                settings JSON
+            );
+        """)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO device_settings (device_id, settings) VALUES (?, ?) "
+            "ON CONFLICT(device_id) DO UPDATE SET settings = excluded.settings",
+            (deviceId, json.dumps(data)),
+        )
+        
+        conn.commit()
+        conn.close()
+        if not token:
+            logging.error("Token is missing or empty in the request.")
+            return jsonify({"success": False, "error": "Token is missing or empty"}), 400
+        
+        else:
+            logging.debug(f"new token coming, {token}")
+            t = TokenDataBaseHandler()
+            t.save_token(deviceId, token)
+            tokens = t.get_all_tokens()
+            for token_ in tokens:
+                print("this is a token", str(token_))
+                with open("tokens.txt", 'w') as f:
+                    f.write(str(token_))
+            t.closeConnection()
+            return "New Token Databased"
+    except Exception as e:
+        logging.exception(f"Error sending notification: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+    
+@app.route('/sendNotification', methods=['POST'])
+def send_notification():
+    try:
+        logging.debug("Incoming message(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))")
+        data = request.get_json()
+        if not data:
+            logging.error("No data provided")
+            return jsonify({"success": False, "error": "No data provided"}), 400
+
+        title = data.get('title', 'Sump Pump Monitor')
+        deviceId = data.get('deviceId')
+        body = data.get('body', 'Message from Sump Pump Monitor')
+        token = data.get('token')
+        topic = data.get('topic')
+        
+
+        if not token and not topic:
+            logging.error("Token or topic not provided")
+            return jsonify({"success": False, "error": "Token or topic not provided"}), 400
+        
+        
+        logging.debug(f"Received token: {token}")
+        if not token:
+            logging.error("Token is missing or empty in the request.")
+            return jsonify({"success": False, "error": "Token is missing or empty"}), 400
+
+        else:
+            notification = messaging.Notification(title=title, body=body)
+            message = messaging.Message(notification=notification, token=token)
+            response = messaging.send(message)
+            logging.info(f"Notification sent to token: {token}")
+            return jsonify({"success": True, "response": response}), 200
+
+        if topic:
+            message = messaging.Message(notification=notification, topic=topic)
+            response = messaging.send(message)
+            logging.info(f"Notification sent to topic: {topic}")
+            return jsonify({"success": True, "response": response}), 200
+
+    except Exception as e:
+        logging.exception(f"Error sending notification: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
 
     
 

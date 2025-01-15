@@ -1,0 +1,1969 @@
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in __init__
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in __init__
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 150, in readDataFiles
+    data = f.read()
+          ^^^^^^^^
+ValueError: I/O operation on closed file.
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): fcm.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to topic: all_users
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): fcm.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+DEBUG:root:Incoming message
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 124, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): fcm.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+    time.sleep(1)
+    ^^^^^^^^^^
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): fcm.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 151, in readDataFiles
+AttributeError: type object 'datetime.time' has no attribute 'sleep'
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): fcm.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+DEBUG:root:Incoming message
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): fcm.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://fcm.googleapis.com:443 "POST /v1/projects/sumppumpmonitor-6e852/messages:send HTTP/1.1" 200 None
+INFO:root:Notification sent to token: c183suowTjqvvX-kRz2Cqz:APA91bFHwq3E5wHuuvoEOtkWzykHyr1jZobptWPHGAqPCQSy5SE1EAlgbJjaJ0jtlNbwpvW8TLMiyQ7P37MCtxk-m1vo6pRvfBEbSIXfxtwD2Kav7DAqhjY
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: TokenDataBaseHandler.save_token() missing 1 required positional argument: 'token'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 94, in send_notification
+    t.save_token(deviceId, token)
+TypeError: TokenDataBaseHandler.save_token() missing 1 required positional argument: 'token'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 124, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: TokenDataBaseHandler.closeConnection() missing 1 required positional argument: 'self'
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 97, in send_notification
+    TokenDataBaseHandler.closeConnection()
+TypeError: TokenDataBaseHandler.closeConnection() missing 1 required positional argument: 'self'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 55, in get
+    dataObj = getData() #This doesn't do shit at the moment
+              ^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 25, in __init__
+    self.call_parse_data()
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 124, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 123, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: write() argument must be str, not list
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 99, in send_notification
+    f.write(tokens)
+TypeError: write() argument must be str, not list
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: write() argument must be str, not list
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 99, in send_notification
+    f.write(tokens)
+TypeError: write() argument must be str, not list
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: write() argument must be str, not list
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 99, in send_notification
+    f.write(tokens)
+TypeError: write() argument must be str, not list
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: write() argument must be str, not list
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 99, in send_notification
+    f.write(tokens)
+TypeError: write() argument must be str, not list
+ERROR:sumpPumpApp:Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 1463, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 872, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sp_monitor_ENV/lib/python3.11/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 59, in get
+    data = dataObj.call_parse_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/getData.py", line 50, in call_parse_data
+    self.pumpData = parseData.run()
+                    ^^^^^^^^^^^^^^^
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 23, in run
+    self.readDataFiles()
+  File "/home/sp_server_beta/sp_monitor_beta4/parseDataFiles.py", line 123, in readDataFiles
+    year = self.main_date_dict["Year"],
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'Year'
+DEBUG:root:Incoming message
+ERROR:root:Error sending notification: write() argument must be str, not list
+Traceback (most recent call last):
+  File "/home/sp_server_beta/sp_monitor_beta4/sumpPumpApp.py", line 99, in send_notification
+    f.write(tokens)
+TypeError: write() argument must be str, not list
